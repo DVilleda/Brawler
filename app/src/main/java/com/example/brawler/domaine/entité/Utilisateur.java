@@ -1,16 +1,17 @@
 package com.example.brawler.domaine.entité;
 
-import android.location.Location;
+import java.io.File;
 
 public class Utilisateur {
     private String nom;
     private Niveau niveau;
     private String location;
-
-    public Utilisateur(String nom, Niveau niveau, String location) {
+    private byte[] photo;
+    public Utilisateur(String nom, Niveau niveau, String location, byte[] photo) {
         this.nom = nom;
         this.niveau = niveau;
         this.location = location;
+        this.photo = photo;
     }
 
     public String getNom() {
@@ -27,5 +28,21 @@ public class Utilisateur {
 
     public void setNiveau(Niveau niveau) {
         this.niveau = niveau;
+    }
+
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
+    }
+
+    public byte[] getPhoto() {
+        return photo;
+    }
+
+    public void setPhoto(byte[] photo) {
+        this.photo = photo;
     }
 }
