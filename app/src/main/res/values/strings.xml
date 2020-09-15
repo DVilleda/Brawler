@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">Brawler</string>
+    <string name="nom_utilisateur">Nom_Utilisateur</string>
+    <string name="emplacement_actuel">Emplacement_Actuel</string>
+    <string name="niveau_jeu">Niveau_Jeu</string>
+    <string name="modifier_les_informations">Modifier les informations</string>
 </resources>
