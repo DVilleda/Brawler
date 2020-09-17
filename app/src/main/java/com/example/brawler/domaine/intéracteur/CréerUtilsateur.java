@@ -3,9 +3,9 @@ package com.example.brawler.domaine.intéracteur;
 import com.example.brawler.domaine.entité.Niveau;
 import com.example.brawler.domaine.entité.Utilisateur;
 
-public class CréerUtilsateur {
+public class CréerUtilsateur implements InterfaceUtiliasteur.créerUtiliasteur {
 
-    public Utilisateur créerUnUtilisateur (String nom, Niveau niveau, String location, byte[] image) throws Exception {
+    public Utilisateur créerUnUtilisateur (String nom, Niveau niveau, String location) throws Exception {
         Boolean validation = true;
         String exception = "";
 
@@ -18,14 +18,11 @@ public class CréerUtilsateur {
         } else if (location.trim().isEmpty() || location.equals(null)) {
             exception = "l'utilisateur n'à pas de location";
             validation = false;
-        } else if (image.equals(null)) {
-            exception = "l'utilisateur n'à pas d'image";
-            validation = false;
         }
         if(!validation) {
             throw new Exception(exception);
         }
-        return new Utilisateur(nom, niveau, location, image);
+        return new Utilisateur(nom, niveau, location);
     }
 
 }

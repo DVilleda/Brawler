@@ -7,11 +7,11 @@ public class Utilisateur {
     private Niveau niveau;
     private String location;
     private byte[] photo;
-    public Utilisateur(String nom, Niveau niveau, String location, byte[] photo) {
+
+    public Utilisateur(String nom, Niveau niveau, String location) {
         this.nom = nom;
         this.niveau = niveau;
         this.location = location;
-        this.photo = photo;
     }
 
     public String getNom() {
