@@ -6,12 +6,14 @@ public class Utilisateur {
     private String nom;
     private Niveau niveau;
     private String location;
+    private Statistique statistique;
     private byte[] photo;
 
-    public Utilisateur(String nom, Niveau niveau, String location) {
+    public Utilisateur(String nom, Niveau niveau, String location, int nombreVictoire, int nombrePerdu) {
         this.nom = nom;
         this.niveau = niveau;
         this.location = location;
+        this.statistique = new Statistique(nombreVictoire, nombrePerdu);
     }
 
     public String getNom() {
@@ -44,5 +46,13 @@ public class Utilisateur {
 
     public void setPhoto(byte[] photo) {
         this.photo = photo;
+    }
+
+    public Statistique getStatistique() {
+        return statistique;
+    }
+
+    public void setStatistique(Statistique statistique) {
+        this.statistique = statistique;
     }
 }

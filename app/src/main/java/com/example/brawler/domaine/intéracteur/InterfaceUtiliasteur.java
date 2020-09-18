@@ -1,11 +1,12 @@
 package com.example.brawler.domaine.intéracteur;
 
+import com.example.brawler.domaine.entité.Niveau;
 import com.example.brawler.domaine.entité.Utilisateur;
 
 public interface InterfaceUtiliasteur {
 
     public interface créerUtiliasteur {
-        public Utilisateur créerUnUtilisateur();
+        public Utilisateur créerUnUtilisateur(String nom, Niveau niveau, String location, int partieGagnée, int partiePerdue) throws Exception;
 
     }
 
