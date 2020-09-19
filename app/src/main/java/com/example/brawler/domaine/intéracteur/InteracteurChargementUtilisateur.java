@@ -2,6 +2,10 @@ package com.example.brawler.domaine.intéracteur;
 
 import com.example.brawler.domaine.entité.Utilisateur;
 
+/**
+ * Cette classe à pour but de faire la gestion des interactions entre la source de données et le UI
+ * de l'application.
+ */
 public class InteracteurChargementUtilisateur {
     SourceUtilisateur _sourceUtilisateur;
     Utilisateur _utilisateur;
@@ -17,16 +21,22 @@ public class InteracteurChargementUtilisateur {
         return instance;
     }
 
+    /**
+     * Constructeur de la classe
+     * @param source
+     */
     private InteracteurChargementUtilisateur(SourceUtilisateur source) {
         assert source != null;
-
         _utilisateur = null;
         _sourceUtilisateur = source;
     }
 
+    /**
+     * Cette methode va charger un nouvel utilisateur et le placer comme utilisateur actuel
+     * @return l'utilisateur chargé par l'application
+     */
     public Utilisateur chargerNouveauUtilisateur(){
         Utilisateur nouveauUtiliateur = _sourceUtilisateur.getUtilisateur();
-
         _utilisateur = nouveauUtiliateur;
         return _utilisateur;
     }
