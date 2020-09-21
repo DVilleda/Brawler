@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">Brawler</string>
+    <string name="parNiveau">Par Niveau</string>
+    <string name="parLocation">Par Location</string>
+    <string name="seBattre">Se Battre</string>
+    <string name="fairePaix">Faire la paix</string>
 </resources>

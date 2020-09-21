@@ -11,6 +11,7 @@ public class PrésenteurRechercheMatch {
     private VueRechercheMatch vue;
     private Modèle modèle;
     private SourceUtilisateurs source;
+    private Boolean parNiveau;
 
     public PrésenteurRechercheMatch(VueRechercheMatch vue, Modèle modèle) {
         this.vue = vue;
@@ -22,7 +23,25 @@ public class PrésenteurRechercheMatch {
     }
 
     public void prochainUtilsateur() {
-        modèle.setUtilisateurEnRevue(InteracteurAquisitionUtilisateur.getInstance(source).getNouvelUtilsaiteur("Montréal", Niveau.DÉBUTANT));
+
+        if (modèle.getListUtilisateurs().size() == 0) {
+            chargerNouvelleUtilisateur();
+        }
+
         vue.afficherUtilisateur(modèle.getUtilisateurEnRevue());
     }
+
+    public void changerRecherche() {
+        modèle.viderList();
+        parNiveau = !parNiveau;
+    }
+
+    private void chargerNouvelleUtilisateur() {
+        if (parNiveau) {
+            modèle.setUtilisateurEnRevue(InteracteurAquisitionUtilisateur.getInstance(source).getNouvelUtilsaiteurParNiveau("Montréal", Niveau.DÉBUTANT));
+        } else {
+            modèle.setUtilisateurEnRevue(InteracteurAquisitionUtilisateur.getInstance(source).getNouvelleUtilisateur("Montréal"));
+        }
+    }
+
 }

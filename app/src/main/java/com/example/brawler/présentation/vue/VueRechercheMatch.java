@@ -21,6 +21,8 @@ public class VueRechercheMatch extends Fragment {
     private TextView txtVictoire;
     private Button btnAccepter;
     private Button btnPasser;
+    private Button btnParLocation;
+    private Button btnParNiveau;
 
     public void setPrésenteur(PrésenteurRechercheMatch présenteur) {
         this.présenteur = présenteur;
@@ -38,6 +40,8 @@ public class VueRechercheMatch extends Fragment {
         txtVictoire = vue.findViewById(R.id.txt_nombre_victoire);
         btnAccepter = vue.findViewById(R.id.btn_accepter);
         btnPasser = vue.findViewById(R.id.btn_passer);
+        btnParLocation = vue.findViewById(R.id.btn_parLocation);
+        btnParNiveau = vue.findViewById(R.id.btn_ParNiveau);
 
         btnAccepter.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v){
@@ -48,6 +52,18 @@ public class VueRechercheMatch extends Fragment {
         btnPasser.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v){
                 présenteur.prochainUtilsateur();
+            }
+        });
+
+        btnParLocation.setOnClickListener(new View.OnClickListener(){
+            public void onClick(View v){
+                présenteur.changerRecherche();
+            }
+        });
+
+        btnParNiveau.setOnClickListener(new View.OnClickListener(){
+            public void onClick(View v){
+                présenteur.changerRecherche();
             }
         });
 
