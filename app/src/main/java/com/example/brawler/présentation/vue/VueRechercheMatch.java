@@ -57,13 +57,13 @@ public class VueRechercheMatch extends Fragment {
 
         btnParLocation.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v){
-                présenteur.changerRecherche();
+                présenteur.changerRecherche(false);
             }
         });
 
         btnParNiveau.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v){
-                présenteur.changerRecherche();
+                présenteur.changerRecherche(true);
             }
         });
 
@@ -73,7 +73,8 @@ public class VueRechercheMatch extends Fragment {
     public void afficherUtilisateur(Utilisateur utilisateur){
         txtLocation.setText(utilisateur.getLocation());
         txtNom.setText(utilisateur.getNom());
-        txtVictoire.setText(utilisateur.getStatistique().getNombreVictoire());
+        txtVictoire.setText(String.valueOf(utilisateur.getStatistique().getNombreVictoire()));
     }
-    
+
+
 }

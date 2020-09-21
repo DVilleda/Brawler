@@ -24,11 +24,11 @@ public class InteracteurAquisitionUtilisateur {
         this.source = source;
     }
 
-    public Utilisateur getNouvelleUtilisateur(String location){
-        return source.getUtilsiateur(location);
+    public ArrayList<Utilisateur> getNouvelleUtilisateur(String location){
+        return source.getUtilisateur(location);
     }
 
-    public Utilisateur getNouvelUtilsaiteurParNiveau(String location, Niveau niveau){
+    public ArrayList<Utilisateur> getNouvelUtilsaiteurParNiveau(String location, Niveau niveau){
         return source.getNouvelleUtilisateurParNiveau(location, niveau);
     }
 

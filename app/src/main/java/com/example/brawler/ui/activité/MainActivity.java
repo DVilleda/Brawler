@@ -1,8 +1,10 @@
-package com.example.brawler;
+package com.example.brawler.ui.activité;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+
+import com.example.brawler.R;
 
 public class MainActivity extends AppCompatActivity {
 
