@@ -4,4 +4,7 @@
     <string name="emplacement_actuel">Emplacement_Actuel</string>
     <string name="niveau_jeu">Niveau_Jeu</string>
     <string name="modifier_les_informations">Modifier les informations</string>
+    <string name="annuler">Annuler</string>
+    <string name="ex_100">Ex:100</string>
+    <string name="mofidier">Mofidier</string>
 </resources>

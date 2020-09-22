@@ -15,6 +15,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.example.brawler.R;
 import com.example.brawler.domaine.entité.Utilisateur;
@@ -26,12 +28,12 @@ public class VueProfil extends Fragment {
      * Paramètres
      */
     private PrésenteurProfil _presenteur;
-    private Button modifier;
     private TextView txtNom;
     private TextView txtEmplacement;
     private TextView txtNiveau;
-    LinearLayout expandableView;
-    CardView cardView;
+    private LinearLayout expandableView;
+    private CardView cardView;
+    private Button modifierProfil;
 
     /**
      * Méthode pour changer le présenteur du fragment
@@ -50,6 +52,21 @@ public class VueProfil extends Fragment {
         txtNiveau = vue.findViewById(R.id.niveau_profil);
         expandableView = vue.findViewById(R.id.expandable_view);
         cardView= vue.findViewById(R.id.profil_cardview);
+        modifierProfil = vue.findViewById(R.id.aller_modif_profil);
+
+        modifierProfil.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                VueProfilModif vueProfilModif = new VueProfilModif(_presenteur);
+                vueProfilModif.chargerInfosActuel(_presenteur.getUtilisateur());
+                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.replace(((ViewGroup)getView().getParent()).getId(),vueProfilModif);
+                fragmentTransaction.addToBackStack(null);
+                fragmentTransaction.commit();
+
+            }
+        });
 
         return vue;
     }
@@ -69,6 +86,7 @@ public class VueProfil extends Fragment {
      * Cette méthode permet de changer la visibilité du Expandable View qui contient les
      * informations du profil public. Le TransitionManager est charge de gérer les animations
      * et la visibilité des informations.
+     * Pour utiliser la méthode on doit cliquer sur la photo de profil
      */
     public void expandInfosProfil() {
         if (expandableView.getVisibility() == View.INVISIBLE) {

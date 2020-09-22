@@ -11,6 +11,12 @@
         android:id="@+id/profil_cardview"
         >
 
+        <Button
+            android:id="@+id/aller_modif_profil"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/mofidier" />
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -28,7 +34,7 @@
                     android:layout_height="match_parent"
                     android:clickable="true"
                     android:contentDescription="TODO"
-                    android:onClick="showmore"
+                    android:onClick="ShowInfoProfil"
                     android:src="@drawable/game2"></ImageView>
 
             </LinearLayout>
@@ -53,26 +59,23 @@
                         android:layout_width="250dp"
                         android:layout_height="wrap_content"
                         android:gravity="center_horizontal"
-                        android:text="Hello World"
                         android:textAlignment="viewStart"
-                        android:textSize="20sp"
-                        android:textColor="@android:color/white"></TextView>
+                        android:textColor="@android:color/white"
+                        android:textSize="20sp"></TextView>
 
                     <TextView
                         android:id="@+id/niveau_profil"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="TextView"
                         android:textAlignment="textEnd"
-                        android:textColor="@android:color/white"/>
+                        android:textColor="@android:color/white" />
                 </LinearLayout>
 
                 <TextView
                     android:id="@+id/txt_description"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="TextView"
-                    android:textColor="@android:color/white"/>
+                    android:textColor="@android:color/white" />
             </LinearLayout>
         </LinearLayout>
 

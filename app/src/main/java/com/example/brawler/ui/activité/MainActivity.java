@@ -1,15 +1,10 @@
 package com.example.brawler.ui.activité;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.cardview.widget.CardView;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.os.Bundle;
-import android.transition.AutoTransition;
-import android.transition.TransitionManager;
 import android.view.View;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import com.example.brawler.R;
 import com.example.brawler.SourceDonnées.MockUtilisateur;
@@ -21,7 +16,7 @@ public class MainActivity extends AppCompatActivity {
     /**
      * Paramètres
      */
-    private PrésenteurProfil _presenteur;
+    private PrésenteurProfil présenteurProfil;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,9 +26,9 @@ public class MainActivity extends AppCompatActivity {
         Modèle modèle = new Modèle();
 
         VueProfil vueProfil = new VueProfil();
-        _presenteur = new PrésenteurProfil(vueProfil,modèle);
-        _presenteur.setSourceUtilisateur(new MockUtilisateur());
-        vueProfil.setPresenteur(_presenteur);
+        présenteurProfil = new PrésenteurProfil(vueProfil,modèle);
+        présenteurProfil.setSourceUtilisateur(new MockUtilisateur());
+        vueProfil.setPresenteur(présenteurProfil);
 
         //Transaction pour changer au fragement
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
@@ -43,13 +38,13 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onStart(){
         super.onStart();
-        _presenteur.setUtilisateur();
+        présenteurProfil.setUtilisateur();
     }
 
     /**
      * Appel de la méthode du présenteur pour changer la visibilté des informations du profil
      */
-    public void showmore(View view){
-        _presenteur.setVisibleInfos();
+    public void ShowInfoProfil(View view){
+        présenteurProfil.setVisibleInfos();
     }
 }
