@@ -8,6 +8,7 @@ public class Modèle {
 
     private ArrayList<Utilisateur> listeUtilisateurs;
     private int utilisateurEnRevue;
+    private Utilisateur utilisateur;
 
     public Modèle(){
         listeUtilisateurs = new ArrayList<>();
@@ -39,4 +40,11 @@ public class Modèle {
         }
     }
 
-}
+    public Utilisateur getUtilisateur(){
+        return utilisateur;
+    }
+
+    public void setUtilisateur(Utilisateur utilisateur) {
+        this.utilisateur = utilisateur;
+    }
+  }
