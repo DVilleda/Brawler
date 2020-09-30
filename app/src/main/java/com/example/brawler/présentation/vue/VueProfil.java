@@ -9,7 +9,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -70,7 +69,6 @@ public class VueProfil extends Fragment {
 
         return vue;
     }
-
     /**
      * Méthode qui permet d'Affichier les informations de l'utilisateur en utilisant un
      * objet de type Utilisateur

@@ -5,4 +5,10 @@
     android:id="@+id/layoutPrincipal"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.activité.MainActivity" />
+    tools:context=".ui.activité.MainActivity"
+    >
+    <include
+        android:id="@+id/navigation_app"
+        layout="@layout/navigation_app">
+    </include>
+</androidx.constraintlayout.widget.ConstraintLayout>
