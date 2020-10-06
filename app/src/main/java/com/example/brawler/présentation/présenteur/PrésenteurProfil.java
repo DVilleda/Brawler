@@ -58,4 +58,12 @@ public class PrésenteurProfil {
     public void setVisibleInfos(){
         vueProfil.expandInfosProfil();
     }
+
+    /**
+     * Permet de modifier le profil de l'utilisateur stocke dans le modele
+     * @param utilisateur
+     */
+    public void modifierUtilisateur(Utilisateur utilisateur){
+        _modèle.setUtilisateur(utilisateur);
+    }
 }

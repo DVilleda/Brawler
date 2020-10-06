@@ -7,9 +7,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -29,10 +29,13 @@ public class VueProfil extends Fragment {
      */
     private PrésenteurProfil _presenteur;
     private TextView txtNom;
+    private TextView txtNomExpand;
     private TextView txtEmplacement;
     private TextView txtNiveau;
+    private TextView txtNiveauExpand;
     private LinearLayout expandableView;
-    private CardView cardView;
+    private LinearLayout layoutInfosInitiale;
+    private FrameLayout cardView;
     private Button modifierProfil;
 
     /**
@@ -48,17 +51,20 @@ public class VueProfil extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View vue=inflater.inflate(R.layout.fragment_profil_view,container,false);
         txtNom = vue.findViewById(R.id.nom_profil);
+        txtNomExpand = vue.findViewById(R.id.nom_profil2);
         txtEmplacement = vue.findViewById(R.id.txt_description);
         txtNiveau = vue.findViewById(R.id.niveau_profil);
+        txtNiveauExpand = vue.findViewById(R.id.niveau_profil2);
         expandableView = vue.findViewById(R.id.expandable_view);
+        layoutInfosInitiale = vue.findViewById(R.id.Infos_version_court);
         cardView= vue.findViewById(R.id.profil_cardview);
         modifierProfil = vue.findViewById(R.id.aller_modif_profil);
 
         modifierProfil.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                VueProfilModif vueProfilModif = new VueProfilModif(_presenteur);
-                vueProfilModif.chargerInfosActuel(_presenteur.getUtilisateur());
+                VueProfilModif vueProfilModif = new VueProfilModif();
+                vueProfilModif.setPresenteur(_presenteur);
                 FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                 fragmentTransaction.replace(((ViewGroup)getView().getParent()).getId(),vueProfilModif);
@@ -67,8 +73,13 @@ public class VueProfil extends Fragment {
 
             }
         });
-
         return vue;
+    }
+
+    @Override
+    public void onResume() {
+        afficherUtilisateur(_presenteur.getUtilisateur());
+        super.onResume();
     }
 
     /**
@@ -80,6 +91,8 @@ public class VueProfil extends Fragment {
         txtNom.setText(utilisateur.getNom());
         txtEmplacement.setText(utilisateur.getLocation());
         txtNiveau.setText(utilisateur.getNiveau().toString());
+        txtNomExpand.setText(utilisateur.getNom());
+        txtNiveauExpand.setText(utilisateur.getNiveau().toString());
     }
 
     /**
@@ -92,9 +105,11 @@ public class VueProfil extends Fragment {
         if (expandableView.getVisibility() == View.INVISIBLE) {
             TransitionManager.beginDelayedTransition(cardView, new AutoTransition());
             expandableView.setVisibility(View.VISIBLE);
+            layoutInfosInitiale.setVisibility(View.INVISIBLE);
         } else if (expandableView.getVisibility() == View.VISIBLE) {
             TransitionManager.beginDelayedTransition(cardView, new AutoTransition());
             expandableView.setVisibility(View.INVISIBLE);
+            layoutInfosInitiale.setVisibility(View.VISIBLE);
         }
     }
 }
