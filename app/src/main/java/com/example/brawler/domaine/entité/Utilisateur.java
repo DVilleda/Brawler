@@ -4,6 +4,7 @@ import java.io.File;
 
 public class Utilisateur {
     private String nom;
+    private String mdp;
     private Niveau niveau;
     private String location;
     private Statistique statistique;
@@ -16,6 +17,14 @@ public class Utilisateur {
         this.statistique = new Statistique(nombreVictoire, nombrePerdu);
     }
 
+    public Utilisateur(String nom, Niveau niveau, String location, int nombreVictoire, int nombrePerdu, String leMdp) {
+        this.nom = nom;
+        this.niveau = niveau;
+        this.location = location;
+        this.statistique = new Statistique(nombreVictoire, nombrePerdu);
+        this.mdp = leMdp;
+    }
+
     public String getNom() {
         return nom;
     }
@@ -23,6 +32,10 @@ public class Utilisateur {
     public void setNom(String nom) {
         this.nom = nom;
     }
+
+    public String getMdp(){return mdp;}
+
+    public void setMdp(String leMdp){ this.mdp = leMdp;}
 
     public Niveau getNiveau() {
         return niveau;

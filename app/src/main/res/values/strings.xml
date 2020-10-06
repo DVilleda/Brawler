@@ -11,4 +11,12 @@
     <string name="annuler">Annuler</string>
     <string name="ex_100">Ex:100</string>
     <string name="mofidier">Mofidier</string>
+    <!--Login Page-->
+    <string name="utilisateurHint">Nom d\'utilisateur</string>
+    <string name="mdpHint">Mot de passe</string>
+    <string name="btnMemoire">Se souvenir de moi</string>
+    <string name="btnEnter">Entrer</string>
+    <string name="logoDesc">Logo Rumbler</string>
+    <string name="erreurConnexion">Erreur de connexion</string>
+    <string name="erreurInfoErronées">vérifiez les informations et réessayez à nouveau</string>
 </resources>
