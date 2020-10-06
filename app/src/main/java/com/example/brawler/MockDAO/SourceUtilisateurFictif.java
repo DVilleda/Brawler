@@ -12,6 +12,7 @@ public class SourceUtilisateurFictif implements SourceUtilisateurs {
     private ArrayList<Utilisateur> utilisateurs;
     private String[] noms ={"Robert", "Jaques", "Bob", "Guillaume", "Angel", "Danny", "Jean"};
     private String[] locations ={"Saint-Constant", "Montréal", "Drummondville"};
+    private String[] motsDePasses= {"5d41402abc4b2a76b9719d911017c592","202cb962ac59075b964b07152d234b70", "e99a18c428cb38d5f260853678922e03"};
     private Niveau[] niveaux = {Niveau.DÉBUTANT, Niveau.INTERMÉDIAIRE, Niveau.EXPERT, Niveau.LÉGENDAIRE};
 
     private void nouveauUtilisateur() {
@@ -21,7 +22,12 @@ public class SourceUtilisateurFictif implements SourceUtilisateurs {
             nombreUtilisateur = new Random().nextInt(10);
         }
         for(int i=0; i < nombreUtilisateur; i++){
-            utilisateurs.add(new Utilisateur (noms[new Random().nextInt(noms.length - 1)], niveaux[new Random().nextInt(niveaux.length - 1)], locations[new Random().nextInt(locations.length - 1)], new Random().nextInt(50), new Random().nextInt(50)));
+            utilisateurs.add(new Utilisateur (
+                    noms[new Random().nextInt(noms.length - 1)],
+                    niveaux[new Random().nextInt(niveaux.length - 1)],
+                    locations[new Random().nextInt(locations.length - 1)], new Random().nextInt(50), new Random().nextInt(50),
+                    motsDePasses[new Random().nextInt(locations.length - 1)]
+            ));
         }
     }
 
