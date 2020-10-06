@@ -13,6 +13,9 @@
     <string name="distance">Distance maximale des joueurs...</string>
     <string name="ex_100">Ex:100</string>
     <string name="mofidier">Mofidier</string>
+    <string name="modif_description">Modifier Description</string>
+    <string name="modif_description_image">Modifier Image</string>
+
     <!--Login Page-->
     <string name="utilisateurHint">Nom d\'utilisateur</string>
     <string name="mdpHint">Mot de passe</string>
