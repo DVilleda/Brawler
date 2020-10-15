@@ -8,6 +8,5 @@ import java.util.List;
 public interface SourceUtilisateurs {
 
     public List<Utilisateur> getNouvelleUtilisateurParNiveau(String location, Niveau niveau);
-    public List<Utilisateur> getUtilisateur(String location);
-
+    public List<Utilisateur> getUtilisateur() throws UtilisateursException;
 }
