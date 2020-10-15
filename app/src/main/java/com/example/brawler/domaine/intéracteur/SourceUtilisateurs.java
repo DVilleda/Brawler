@@ -3,11 +3,11 @@ package com.example.brawler.domaine.intéracteur;
 import com.example.brawler.domaine.entité.Niveau;
 import com.example.brawler.domaine.entité.Utilisateur;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public interface SourceUtilisateurs {
 
-    public ArrayList<Utilisateur> getNouvelleUtilisateurParNiveau(String location, Niveau niveau);
-    public ArrayList<Utilisateur> getUtilisateur(String location);
+    public List<Utilisateur> getNouvelleUtilisateurParNiveau(String location, Niveau niveau);
+    public List<Utilisateur> getUtilisateur(String location);
 
 }

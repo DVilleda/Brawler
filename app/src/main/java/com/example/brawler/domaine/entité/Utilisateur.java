@@ -3,12 +3,20 @@ package com.example.brawler.domaine.entité;
 import java.io.File;
 
 public class Utilisateur {
+    private int id;
     private String nom;
     private String mdp;
     private Niveau niveau;
     private String location;
     private Statistique statistique;
     private byte[] photo;
+
+    public Utilisateur(int id, String nom, Niveau niveau, String location) {
+        this.id = id;
+        this.nom = nom;
+        this.niveau = niveau;
+        this.location = location;
+    }
 
     public Utilisateur(String nom, Niveau niveau, String location, int nombreVictoire, int nombrePerdu) {
         this.nom = nom;
@@ -59,6 +67,14 @@ public class Utilisateur {
 
     public void setPhoto(byte[] photo) {
         this.photo = photo;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public Statistique getStatistique() {

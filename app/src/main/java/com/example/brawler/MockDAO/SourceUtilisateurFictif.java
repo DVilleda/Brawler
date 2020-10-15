@@ -5,6 +5,7 @@ import com.example.brawler.domaine.entité.Utilisateur;
 import com.example.brawler.domaine.intéracteur.SourceUtilisateurs;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 public class SourceUtilisateurFictif implements SourceUtilisateurs {
@@ -32,7 +33,7 @@ public class SourceUtilisateurFictif implements SourceUtilisateurs {
     }
 
     @Override
-    public ArrayList<Utilisateur> getNouvelleUtilisateurParNiveau(String location, Niveau niveau){
+    public List<Utilisateur> getNouvelleUtilisateurParNiveau(String location, Niveau niveau){
         nouveauUtilisateur();
 
         ArrayList<Utilisateur> utilisateursSelectionné = new ArrayList<>();
