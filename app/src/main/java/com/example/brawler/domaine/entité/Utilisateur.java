@@ -16,6 +16,8 @@ public class Utilisateur {
         this.nom = nom;
         this.niveau = niveau;
         this.location = location;
+        //statistique par défault
+        statistique = new Statistique(0,0);
     }
 
     public Utilisateur(String nom, Niveau niveau, String location, int nombreVictoire, int nombrePerdu) {

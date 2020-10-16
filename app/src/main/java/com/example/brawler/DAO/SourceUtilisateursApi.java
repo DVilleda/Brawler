@@ -1,18 +1,18 @@
 package com.example.brawler.DAO;
 
+import android.os.Debug;
 import android.util.JsonReader;
+import android.util.Log;
 
 import com.example.brawler.domaine.entité.Niveau;
 import com.example.brawler.domaine.entité.Utilisateur;
+import com.example.brawler.domaine.intéracteur.CréerUtilsateur;
 import com.example.brawler.domaine.intéracteur.SourceUtilisateurs;
 import com.example.brawler.domaine.intéracteur.UtilisateursException;
-
-import org.json.JSONArray;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -26,19 +26,20 @@ public class SourceUtilisateursApi implements SourceUtilisateurs {
     }
 
     private URL url;
-    private String urlUtilisateur = "52.3.68.3/utilisateur/";
+    private URL urlUnUtilisateur;
+    private String urlUtilisateur = "http://52.3.68.3/utilisateur/";
     private  String clé;
 
     public SourceUtilisateursApi(String clé){
-        this.clé = clé;
+        this.clé = "Bearer " + clé;
     }
 
     @Override
-    public List<Utilisateur> getNouvelleUtilisateurParNiveau(String location, Niveau niveau) throws UtilisateursException {
+    public List<Utilisateur> getNouvelleUtilisateurParNiveau(Niveau niveau) throws UtilisateursException {
         List<Utilisateur> utilisateursRecue = null;
 
         try {
-            url = new URL(urlUtilisateur + "location");
+            url = new URL(urlUtilisateur + niveau.toString());
         } catch (MalformedURLException e) {
             e.printStackTrace();
         }
@@ -65,9 +66,10 @@ public class SourceUtilisateursApi implements SourceUtilisateurs {
         List<Utilisateur> utilisateursRecue = null;
 
         try{
+            Log.d("URL", String.valueOf(url));
             HttpURLConnection connexion =
                     (HttpURLConnection)url.openConnection();
-
+            connexion.setRequestProperty("Authorization", clé);
             if(connexion.getResponseCode()==200){
                 utilisateursRecue = décoderUtilisateurs(connexion.getInputStream());
             }
@@ -85,36 +87,58 @@ public class SourceUtilisateursApi implements SourceUtilisateurs {
     private List<Utilisateur> décoderUtilisateurs ( InputStream utilisateursEncoder) throws IOException, UtilisateursException {
         InputStreamReader responseBodyReader =
                 new InputStreamReader(utilisateursEncoder, "UTF-8");
-
-        List<Utilisateur> utilisateursArrayList= new ArrayList<Utilisateur>();
-        int id = 0;
+        Log.d("passe:" , "DÉcoderUtilsaiteur");
+        List<Utilisateur> utilisateursArrayList= null;
 
         JsonReader jsonReader = new JsonReader(responseBodyReader);
         jsonReader.beginObject();
 
         while(jsonReader.hasNext()) {
             String key = jsonReader.nextName();
-            if(key.equals("id")){
-                id = jsonReader.nextInt();
-                utilisateursArrayList.add(getUtilisateur(id));
+            Log.d("clé:", key);
+            if(key.equals("utilisateurs")){
+                utilisateursArrayList = commencerDécoderutilsaiteur(jsonReader);
+                Log.d("id: ", key);
+            } else if(key.equals("réponse")) {
+                Log.d("problème", jsonReader.nextString());
+            } else {
+                jsonReader.skipValue();
             }
 
         }
         return utilisateursArrayList;
     }
 
+    private List<Utilisateur> commencerDécoderutilsaiteur(JsonReader jsonReader) throws IOException, UtilisateursException {
+        List<Utilisateur> utilisateurs = new ArrayList<Utilisateur>();
+        int id = -1;
+        jsonReader.beginArray();
+        jsonReader.beginObject();
+        while(jsonReader.hasNext()) {
+            String key = jsonReader.nextName();
+            Log.d("id", key );
+            if(key.equals("id")){
+                id = jsonReader.nextInt();
+                utilisateurs.add(getUtilisateur(id));
+            } else {
+                jsonReader.skipValue();
+            }
+        }
+        return  utilisateurs;
+
+    }
     private Utilisateur getUtilisateur ( int id) throws UtilisateursException {
         Utilisateur utilisateur = null;
         try {
-            URL urlUnUtilisateur = new URL(urlUtilisateur + String.valueOf(id));
+            urlUnUtilisateur = new URL(urlUtilisateur + String.valueOf(id));
         } catch (MalformedURLException e) {
             //try/catch obligatoire pour satisfaire le compilateur.
         }
 
         try{
             HttpURLConnection connexion =
-                    (HttpURLConnection)url.openConnection();
-
+                    (HttpURLConnection)urlUnUtilisateur.openConnection();
+            connexion.setRequestProperty("Authorization", clé);
             if(connexion.getResponseCode()==200){
                 utilisateur = décoderUtilisateur(connexion.getInputStream());
             }
@@ -142,6 +166,8 @@ public class SourceUtilisateursApi implements SourceUtilisateurs {
             String key = jsonReader.nextName();
             if(key.equals("data")){
                 utilisateur =  lireUtilisateur(jsonReader);
+            } else {
+                jsonReader.skipValue();
             }
         }
         return utilisateur;
@@ -173,7 +199,7 @@ public class SourceUtilisateursApi implements SourceUtilisateurs {
             }
         }
 
-        return utilisateur;
+        return new Utilisateur(id, nom, niveau, location);
     }
 
     private Niveau stringVersNiveau(String niveau) {

@@ -3,6 +3,7 @@ package com.example.brawler.MockDAO;
 import com.example.brawler.domaine.entité.Niveau;
 import com.example.brawler.domaine.entité.Utilisateur;
 import com.example.brawler.domaine.intéracteur.SourceUtilisateurs;
+import com.example.brawler.domaine.intéracteur.UtilisateursException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,7 +33,6 @@ public class SourceUtilisateurFictif implements SourceUtilisateurs {
         }
     }
 
-    @Override
     public List<Utilisateur> getNouvelleUtilisateurParNiveau(String location, Niveau niveau){
         nouveauUtilisateur();
 
@@ -48,7 +48,6 @@ public class SourceUtilisateurFictif implements SourceUtilisateurs {
         return utilisateursSelectionné;
     }
 
-    @Override
     public ArrayList<Utilisateur> getUtilisateur(String location) {
         nouveauUtilisateur();
 
@@ -62,5 +61,15 @@ public class SourceUtilisateurFictif implements SourceUtilisateurs {
             }
         }
         return utilisateursSelectionné;
+    }
+
+    @Override
+    public List<Utilisateur> getNouvelleUtilisateurParNiveau(Niveau niveau) throws UtilisateursException {
+        return null;
+    }
+
+    @Override
+    public List<Utilisateur> getUtilisateur() throws UtilisateursException {
+        return null;
     }
 }

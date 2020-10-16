@@ -11,8 +11,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.example.brawler.DAO.SourceUtilisateursApi;
 import com.example.brawler.MockDAO.SourceUtilisateurFictif;
 import com.example.brawler.R;
+import com.example.brawler.domaine.intéracteur.UtilisateursException;
 import com.example.brawler.présentation.modèle.Modèle;
 import com.example.brawler.présentation.présenteur.PrésenteurRechercheMatch;
 import com.example.brawler.présentation.vue.VueRechercheMatch;
@@ -20,11 +22,15 @@ import com.example.brawler.présentation.vue.VueRechercheMatch;
 public class RecherchMatchActivité extends AppCompatActivity {
 
     private PrésenteurRechercheMatch présenteur;
+    private String clé;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        //TODO remplacer la clé temporaire par la clé donner par l'Activité connexion
+        clé = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2MDQ1ODg5NzUsImlhdCI6MTYwMjc3NDU3NSwic3ViIjoxfQ.orQR0Y5ge7tAjcJTEQ33MGvSZc2yMlhSg7lX_Yh3Lsc";
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.navigation_app);
         setSupportActionBar(toolbar);
@@ -35,7 +41,7 @@ public class RecherchMatchActivité extends AppCompatActivity {
         Modèle modèle = new Modèle();
         VueRechercheMatch vue = new VueRechercheMatch();
         présenteur = new PrésenteurRechercheMatch(vue, modèle);
-        présenteur.setSource(new SourceUtilisateurFictif());
+        présenteur.setSource(new SourceUtilisateursApi(clé));
         vue.setPrésenteur(présenteur);
 
         FragmentTransaction ft=getSupportFragmentManager().beginTransaction();

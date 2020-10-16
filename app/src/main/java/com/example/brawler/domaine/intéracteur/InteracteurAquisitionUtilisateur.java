@@ -3,8 +3,7 @@ package com.example.brawler.domaine.intéracteur;
 import com.example.brawler.domaine.entité.Niveau;
 import com.example.brawler.domaine.entité.Utilisateur;
 
-import java.util.ArrayList;
-
+import java.util.List;
 
 
 public class InteracteurAquisitionUtilisateur {
@@ -24,12 +23,12 @@ public class InteracteurAquisitionUtilisateur {
         this.source = source;
     }
 
-    public ArrayList<Utilisateur> getNouvelleUtilisateur(String location){
-        return source.getUtilisateur(location);
+    public List<Utilisateur> getNouvelleUtilisateur() throws UtilisateursException {
+        return source.getUtilisateur();
     }
 
-    public ArrayList<Utilisateur> getNouvelUtilsaiteurParNiveau(String location, Niveau niveau){
-        return source.getNouvelleUtilisateurParNiveau(location, niveau);
+    public List<Utilisateur> getNouvelUtilsaiteurParNiveau(Niveau niveau) throws UtilisateursException {
+        return source.getNouvelleUtilisateurParNiveau(niveau);
     }
 
 }
