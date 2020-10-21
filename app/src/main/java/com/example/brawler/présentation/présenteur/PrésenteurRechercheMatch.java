@@ -5,33 +5,41 @@ import android.os.Message;
 import android.util.Log;
 
 import com.example.brawler.domaine.entité.Niveau;
-import com.example.brawler.domaine.intéracteur.InteracteurAquisitionUtilisateur;
+import com.example.brawler.domaine.intéracteur.InteracteurAquisitionUtilisateurs;
+import com.example.brawler.domaine.intéracteur.InteracteurLikeUtilisateur;
+import com.example.brawler.domaine.intéracteur.InterfaceUtiliasteur;
+import com.example.brawler.domaine.intéracteur.SourceLike;
 import com.example.brawler.domaine.intéracteur.SourceUtilisateurs;
 import com.example.brawler.domaine.intéracteur.UtilisateursException;
 import com.example.brawler.présentation.modèle.Modèle;
 import com.example.brawler.présentation.vue.VueRechercheMatch;
 
+import java.io.IOException;
+
 public class PrésenteurRechercheMatch {
 
     private VueRechercheMatch vue;
     private Modèle modèle;
-    private SourceUtilisateurs source;
+    private SourceUtilisateurs sourceUtilisateurs;
+    private SourceLike sourceLike;
     private Boolean parNiveau;
 
-    private final Handler handlerRéponse;
+    private final Handler handlerRéponseApi;
 
     private Thread filEsclave = null;
 
     private final int MSG_NOUVEAU_UTILISATEUR = 0;
-    private final int MSG_ERREUR = 1;
-    private final int MSG_ANNULER = 2;
+    private final int MSG_NOUVEAU_LIKE=1;
+    private final int MSG_ERREUR = 2;
+    private final int MSG_ANNULER = 3;
+
 
     public PrésenteurRechercheMatch(VueRechercheMatch nouvelleVue, Modèle nouveauModèle) {
         this.vue = nouvelleVue;
         this.modèle = nouveauModèle;
         this.parNiveau = false;
 
-        this.handlerRéponse = new Handler(){
+        this.handlerRéponseApi = new Handler(){
 
             @Override
             public void handleMessage(Message msg){
@@ -41,28 +49,46 @@ public class PrésenteurRechercheMatch {
 
                 if ( msg.what == MSG_NOUVEAU_UTILISATEUR ) {
                     vue.afficherUtilisateur(modèle.getUtilisateurActuel());
+                    vue.toggleÉtatBouton();
                 }
                 else if ( msg.what == MSG_ERREUR ) {
-                    Log.e("Brawler", "Erreur d'accès à l'API", (Throwable) msg.obj);
+                    Log.d("Brawler", "Erreur d'accès à l'API", (Throwable) msg.obj);
+                    vue.toggleÉtatBouton();
                 }
+                else if (msg.what == MSG_NOUVEAU_LIKE) {
+                    prochainUtilsateur();
+                    vue.toggleÉtatBouton();
+                }
+
             }
         };
     }
 
-    public void setSource(SourceUtilisateurs source) {
-        this.source = source;
+    public void setSourceUtilisateurs(SourceUtilisateurs source) {
+        this.sourceUtilisateurs = source;
+    }
+
+    public void setSourceLike(SourceLike sourceLike) {
+        this.sourceLike = sourceLike;
+    }
+
+    public void jugerUtilisateur(boolean liker){
+        if(liker){
+            vue.toggleÉtatBouton();
+            Log.d("id: ", String.valueOf(modèle.getUtilisateurActuel().getId()));
+            lancerFileEsclaveLikerUtilisateur(modèle.getUtilisateurActuel().getId());
+        } else {
+            prochainUtilsateur();
+        }
     }
 
     public void prochainUtilsateur() {
-
-        if (modèle.getListUtilisateurs().size() < 1 || modèle.getListUtilisateurs().size() > modèle.getUtilisateurEnRevue()) {
-                chargerNouvelleUtilisateur();
-        } else {
-            modèle.prochainUtilisateur();
+        modèle.prochainUtilisateur();
+        if (modèle.getListUtilisateurs().size() < 1 || modèle.getListUtilisateurs().size() <= modèle.getUtilisateurEnRevue()) {
+            chargerNouvelleUtilisateur();
+        } else if(modèle.getListUtilisateurs().size() > modèle.getUtilisateurEnRevue()){
             vue.afficherUtilisateur(modèle.getUtilisateurActuel());
         }
-
-
     }
 
     public void changerRecherche(Boolean bool) {
@@ -74,7 +100,13 @@ public class PrésenteurRechercheMatch {
     }
 
     private void chargerNouvelleUtilisateur() {
-        modèle.viderListe();
+        vue.toggleÉtatBouton();
+        lancerFileEsclaveChargerUtilisateur();
+
+    }
+
+    private void lancerFileEsclaveChargerUtilisateur(){
+        Log.d("passe:", "file esclave utilisateurs");
         filEsclave = new Thread(
                 new Runnable() {
                     @Override
@@ -83,23 +115,53 @@ public class PrésenteurRechercheMatch {
                         try {
                             Thread.sleep(0);
 
+                            modèle.viderListe();
+
                             if (parNiveau) {
-                                modèle.setListeUtilisateurs(InteracteurAquisitionUtilisateur.getInstance(source).getNouvelUtilsaiteurParNiveau(Niveau.DÉBUTANT));
+                                modèle.setListeUtilisateurs(InteracteurAquisitionUtilisateurs.getInstance(sourceUtilisateurs).getNouvelUtilsaiteurParNiveau(Niveau.DÉBUTANT));
                             } else {
-                                modèle.setListeUtilisateurs(InteracteurAquisitionUtilisateur.getInstance(source).getNouvelleUtilisateur());
+                                modèle.setListeUtilisateurs(InteracteurAquisitionUtilisateurs.getInstance(sourceUtilisateurs).getNouvelleUtilisateur());
                             }
-                            msg = handlerRéponse.obtainMessage( MSG_NOUVEAU_UTILISATEUR );
+
+                            msg = handlerRéponseApi.obtainMessage( MSG_NOUVEAU_UTILISATEUR );
                         } catch (UtilisateursException e) {
-                            msg = handlerRéponse.obtainMessage( MSG_ERREUR, e );
+                            msg = handlerRéponseApi.obtainMessage( MSG_ERREUR, e );
                         } catch (InterruptedException e) {
-                            msg = handlerRéponse.obtainMessage( MSG_ANNULER );
+                            msg = handlerRéponseApi.obtainMessage( MSG_ANNULER );
                         }
 
-                        handlerRéponse.sendMessage( msg );
+                        handlerRéponseApi.sendMessage( msg );
                     }
                 });
         filEsclave.start();
-
     }
+
+    private void lancerFileEsclaveLikerUtilisateur(final int utilisateurLiker){
+        Log.d("passe:", "file esclave");
+        filEsclave = new Thread(
+                new Runnable() {
+                    @Override
+                    public void run() {
+                        Message msg = null;
+                        try {
+                            Thread.sleep(0);
+
+                            modèle.viderListe();
+                            InteracteurLikeUtilisateur.getInstance(sourceLike).likerUtilisateur(utilisateurLiker);
+
+                            msg = handlerRéponseApi.obtainMessage( MSG_NOUVEAU_UTILISATEUR );
+                        } catch (UtilisateursException e) {
+                            msg = handlerRéponseApi.obtainMessage( MSG_ERREUR, e );
+                        } catch (InterruptedException e) {
+                            msg = handlerRéponseApi.obtainMessage( MSG_ANNULER );
+                        }
+
+                        handlerRéponseApi.sendMessage( msg );
+                    }
+                });
+        filEsclave.start();
+    }
+
+
 
 }

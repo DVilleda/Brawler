@@ -6,19 +6,19 @@ import com.example.brawler.domaine.entité.Utilisateur;
 import java.util.List;
 
 
-public class InteracteurAquisitionUtilisateur {
+public class InteracteurAquisitionUtilisateurs {
 
     private SourceUtilisateurs source;
-    private static InteracteurAquisitionUtilisateur instance;
+    private static InteracteurAquisitionUtilisateurs instance;
 
-    public static InteracteurAquisitionUtilisateur getInstance(SourceUtilisateurs source) {
+    public static InteracteurAquisitionUtilisateurs getInstance(SourceUtilisateurs source) {
         if (instance == null)
-            instance =  new InteracteurAquisitionUtilisateur(source);
+            instance =  new InteracteurAquisitionUtilisateurs(source);
 
         return  instance;
     }
 
-    private InteracteurAquisitionUtilisateur(SourceUtilisateurs source) {
+    private InteracteurAquisitionUtilisateurs(SourceUtilisateurs source) {
 
         this.source = source;
     }

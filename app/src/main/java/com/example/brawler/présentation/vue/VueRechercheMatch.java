@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
@@ -23,6 +24,8 @@ public class VueRechercheMatch extends Fragment {
     private Button btnPasser;
     private Button btnParLocation;
     private Button btnParNiveau;
+    private boolean btnMatchClickable;
+    private ImageView imgUtilisateur;
 
     public void setPrésenteur(PrésenteurRechercheMatch présenteur) {
         this.présenteur = présenteur;
@@ -34,7 +37,7 @@ public class VueRechercheMatch extends Fragment {
                               Bundle savedInstanceState) {
 
         View vue = inflater.inflate(R.layout.fragement_recherche_match, container, false);
-
+        btnMatchClickable = true;
         txtNom = vue.findViewById(R.id.txt_nom);
         txtLocation = vue.findViewById(R.id.txt_location);
         txtVictoire = vue.findViewById(R.id.txt_nombre_victoire);
@@ -42,16 +45,17 @@ public class VueRechercheMatch extends Fragment {
         btnPasser = vue.findViewById(R.id.btn_passer);
         btnParLocation = vue.findViewById(R.id.btn_parLocation);
         btnParNiveau = vue.findViewById(R.id.btn_ParNiveau);
+        imgUtilisateur = vue.findViewById(R.id.img_utilisateur);
 
         btnAccepter.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v){
-                présenteur.prochainUtilsateur();
+                présenteur.jugerUtilisateur(true);
             }
         });
 
         btnPasser.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v){
-                présenteur.prochainUtilsateur();
+                présenteur.jugerUtilisateur(false);
             }
         });
 
@@ -76,5 +80,9 @@ public class VueRechercheMatch extends Fragment {
         txtVictoire.setText(String.valueOf(utilisateur.getStatistique().getNombreVictoire()));
     }
 
-
+    public void  toggleÉtatBouton() {
+        btnMatchClickable = !btnMatchClickable;
+        btnAccepter.setClickable(btnMatchClickable);
+        btnPasser.setClickable(btnMatchClickable);
+    }
 }
