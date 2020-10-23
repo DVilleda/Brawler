@@ -5,6 +5,6 @@ import com.example.brawler.domaine.entité.Message;
 import java.util.List;
 
 public interface SourceMessage {
-    public List<Message> getMessagesparUtilisateurs() throws MessageException;
+    public List<Message> getMessagesparUtilisateurs() throws MessageException, UtilisateursException;
     public void envoyerMessage(int idUtilisateur, String message) throws MessageException;
 }

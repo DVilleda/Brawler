@@ -1,5 +1,6 @@
 package com.example.brawler.DAO;
 
+import android.os.strictmode.CredentialProtectedWhileLockedViolation;
 import android.util.JsonReader;
 import android.util.Log;
 
@@ -18,6 +19,8 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Date;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class SourceMessageApi implements SourceMessage {
 
@@ -38,7 +41,7 @@ public class SourceMessageApi implements SourceMessage {
     }
 
     @Override
-    public List<Message> getMessagesparUtilisateurs() throws MessageException {
+    public List<Message> getMessagesparUtilisateurs() throws MessageException, UtilisateursException {
         try {
             url = new URL(urlMessage);
         } catch (MalformedURLException e) {
@@ -53,7 +56,7 @@ public class SourceMessageApi implements SourceMessage {
 
     }
 
-    private List<Message> lancerConnexionMessage() throws MessageException {
+    private List<Message> lancerConnexionMessage() throws MessageException, UtilisateursException {
         List<Message> messages = null;
 
         try{
@@ -75,7 +78,7 @@ public class SourceMessageApi implements SourceMessage {
         return messages;
     }
 
-    private List<Message> décoderJSON(InputStream messagesEncoder) throws MessageException, IOException {
+    private List<Message> décoderJSON(InputStream messagesEncoder) throws MessageException, IOException, UtilisateursException {
         List<Message> messages = null;
         InputStreamReader responseBodyReader =
                 new InputStreamReader(messagesEncoder, "UTF-8");
@@ -85,7 +88,6 @@ public class SourceMessageApi implements SourceMessage {
 
         while(jsonReader.hasNext()) {
             String key = jsonReader.nextName();
-            Log.d("clé:", key);
 
             if(key.equals("message")){
                 jsonReader.beginArray();
@@ -101,17 +103,57 @@ public class SourceMessageApi implements SourceMessage {
         return messages;
     }
 
-    private  Message décoderMessage(JsonReader jsonReader) throws IOException {
+    private  Message décoderMessage(JsonReader jsonReader) throws IOException, UtilisateursException {
         Message messages = null;
-        Utilisateur utilisateur;
-        String texte;
-        Date temps;
+        Utilisateur utilisateur = null;
+        String texte = "";
+        Date temps = null;
 
         jsonReader.beginObject();
         while (jsonReader.hasNext()){
-
+            String key = jsonReader.nextName();
+            if(key.equals("idEnvoyeur")){
+                SourceUtilisateurApi sourceUtilisateur = new SourceUtilisateurApi(clé);
+                utilisateur = sourceUtilisateur.getUtilisateurParId(jsonReader.nextInt());
+            } else if (key.equals("message")){
+                texte = jsonReader.nextString();
+            } else if (key.equals("temps")) {
+                temps = décoderTemps(jsonReader.nextString());
+            } else {
+                jsonReader.skipValue();
+            }
         }
 
+        messages = new Message(texte, utilisateur, temps);
+
         return messages;
+    }
+
+    //exemple: 2020-10-06 00:41:08
+    private Date décoderTemps(String temps){
+        Date date = null;
+        Pattern pattern = Pattern.compile("\\d{4}-\\d{2}-\\d{4} \\d{2}:\\d{2}");
+        Matcher matcher = pattern.matcher(temps);
+
+        String[] dateATraiter = null;
+        String[] tempsATraiter = null;
+        if (matcher.find()){
+            String string = matcher.toString();
+            String[] partie = string.split(" ");
+            dateATraiter = partie[0].split("-");
+            tempsATraiter = partie[1].split(":");
+        }
+
+
+        if(dateATraiter != null && tempsATraiter != null) {
+            int année = Integer.parseInt(dateATraiter[0]);
+            int mois = Integer.parseInt(dateATraiter[1]);
+            int journée = Integer.parseInt(dateATraiter[2]);
+            int heure = Integer.parseInt(tempsATraiter[0]);
+            int minute = Integer.parseInt(tempsATraiter[1]);
+            date = new Date(année, mois, journée, heure, minute);
+        }
+
+        return  date;
     }
 }
