@@ -1,0 +1,152 @@
+package com.example.brawler.DAO;
+
+import android.util.JsonReader;
+
+import com.example.brawler.domaine.entité.Niveau;
+import com.example.brawler.domaine.entité.Utilisateur;
+import com.example.brawler.domaine.intéracteur.SourceUtilisateur;
+import com.example.brawler.domaine.intéracteur.UtilisateursException;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
+
+public class SourceProfilApi implements SourceUtilisateur{
+
+    public class SourceProfilApiException extends UtilisateursException{
+        public SourceProfilApiException (int numErreur){super("Erreur num: "+numErreur);}
+    }
+    //Parametres
+    private int id=3;
+    private URL url;
+    private String urlBaseUtilisateur = "http://52.3.68.3/utilisateur/";
+    private String urlBaseModifier = "http://52.3.68.3/envoyerMessages/3";
+    private String token;
+
+    public SourceProfilApi(String token){
+        this.token = token;
+    }
+
+    @Override
+    public Utilisateur getUtilisateur() throws UtilisateursException {
+        Utilisateur utilisateur = null;
+        try {
+            url = new URL(urlBaseUtilisateur + String.valueOf(id));
+        } catch (MalformedURLException e) {
+            //try/catch obligatoire pour satisfaire le compilateur.
+        }
+
+        try{
+            HttpURLConnection connexion =
+                    (HttpURLConnection)url.openConnection();
+            connexion.setRequestProperty("Authorization","Bearer "+token);
+            if(connexion.getResponseCode()==200){
+                utilisateur = décoderUtilisateur(connexion.getInputStream());
+            }
+            else{
+                throw new SourceProfilApi.SourceProfilApiException(connexion.getResponseCode());
+            }
+        }
+        catch(IOException e) {
+            throw new UtilisateursException(e);
+        }
+
+        return utilisateur;
+    }
+
+    @Override
+    public void setUtilisateur(Utilisateur utilisateur) throws UtilisateursException {
+        try {
+            url = new URL(urlBaseModifier);
+        } catch (MalformedURLException e) {
+            //try/catch obligatoire pour satisfaire le compilateur.
+        }
+
+        try{
+            HttpURLConnection connexion =
+                    (HttpURLConnection)url.openConnection();
+            connexion.setRequestProperty("Authorization","Bearer "+token);
+            connexion.setRequestMethod("POST");
+            connexion.setDoOutput(true);
+            connexion.setRequestProperty("email","danny@crosemont.qc.ca");
+            connexion.setRequestProperty("prenom","Danny1");
+            connexion.setRequestProperty("description","TEST AVEC JAVA");
+            connexion.setRequestProperty("niveau","EXPERT");
+            if(connexion.getResponseCode()==200){
+                //utilisateur = décoderUtilisateur(connexion.getInputStream());
+            }
+            else{
+                throw new SourceProfilApi.SourceProfilApiException(connexion.getResponseCode());
+            }
+        }
+        catch(IOException e) {
+            throw new UtilisateursException(e);
+        }
+    }
+
+    private Utilisateur décoderUtilisateur (InputStream utilisateurEncoder) throws IOException {
+        InputStreamReader responseBodyReader =
+                new InputStreamReader(utilisateurEncoder, "UTF-8");
+        Utilisateur utilisateur = null;
+
+        JsonReader jsonReader = new JsonReader(responseBodyReader);
+        jsonReader.beginObject();
+
+        while(jsonReader.hasNext()) {
+            String key = jsonReader.nextName();
+            if(key.equals("data")){
+                utilisateur =  lireUtilisateur(jsonReader);
+            } else {
+                jsonReader.skipValue();
+            }
+        }
+        return utilisateur;
+    }
+
+    private Utilisateur lireUtilisateur (JsonReader jsonReader) throws IOException {
+        Utilisateur utilisateur = null;
+
+        int id = -1;
+        String nom = "";
+        Niveau niveau = null;
+        String location = "";
+
+        jsonReader.beginObject();
+
+        while (jsonReader.hasNext()) {
+            String key = jsonReader.nextName();
+
+            if (key.equals("prénom")) {
+                nom = jsonReader.nextString();
+            } else if (key.equals("niveau")) {
+                niveau = stringVersNiveau(jsonReader.nextString());
+            } else if (key.equals("location")) {
+                location = jsonReader.nextString();
+            } else if (key.equals("id")) {
+                id = jsonReader.nextInt();
+            } else {
+                jsonReader.skipValue();
+            }
+        }
+        return new Utilisateur(id, nom, niveau, location);
+    }
+
+    private Niveau stringVersNiveau(String niveau) {
+        Niveau unNiveau = null;
+
+        if(niveau.equals("DÉBUTANT")){
+            unNiveau = Niveau.DÉBUTANT;
+        } else if (niveau.equals("INTERMÉDIAIRE")){
+            unNiveau = Niveau.INTERMÉDIAIRE;
+        } else if (niveau.equals("EXPERT")){
+            unNiveau = Niveau.EXPERT;
+        } else if (niveau.equals("LÉGENDAIRE")){
+            unNiveau = Niveau.LÉGENDAIRE;
+        }
+
+        return  unNiveau;
+    }
+}

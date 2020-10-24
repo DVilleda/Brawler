@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -19,6 +20,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.example.brawler.R;
+import com.example.brawler.domaine.entité.Niveau;
 import com.example.brawler.domaine.entité.Utilisateur;
 import com.example.brawler.présentation.présenteur.PrésenteurProfil;
 
@@ -78,7 +80,7 @@ public class VueProfil extends Fragment {
 
     @Override
     public void onResume() {
-        afficherUtilisateur(_presenteur.getUtilisateur());
+        _presenteur.rafraichirPage();
         super.onResume();
     }
 
@@ -88,6 +90,7 @@ public class VueProfil extends Fragment {
      * @param utilisateur
      */
     public void afficherUtilisateur(Utilisateur utilisateur){
+        if(utilisateur != null)
         txtNom.setText(utilisateur.getNom());
         txtEmplacement.setText(utilisateur.getLocation());
         txtNiveau.setText(utilisateur.getNiveau().toString());
@@ -111,5 +114,10 @@ public class VueProfil extends Fragment {
             expandableView.setVisibility(View.INVISIBLE);
             layoutInfosInitiale.setVisibility(View.VISIBLE);
         }
+    }
+
+    public void afficherErreur( String msgErr ){
+        txtNom.setText( "Oups!\n" + msgErr );
+        txtNomExpand.setText( "Oups!\n" + msgErr );
     }
 }

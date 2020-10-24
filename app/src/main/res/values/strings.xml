@@ -24,4 +24,8 @@
     <string name="logoDesc">Logo Rumbler</string>
     <string name="erreurConnexion">Erreur de connexion</string>
     <string name="erreurInfoErronées">vérifiez les informations et réessayez à nouveau</string>
+    <string name="aller_profil">Aller Profil</string>
+    <string name="aller_discuter">Aller Discuter</string>
+    <string name="aller_matcher">Aller Matcher</string>
+    <string name="liste_de_contacts">"Liste de Contacts : "</string>
 </resources>

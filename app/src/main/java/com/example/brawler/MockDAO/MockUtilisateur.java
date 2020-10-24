@@ -6,11 +6,17 @@ import com.example.brawler.domaine.entité.Utilisateur;
 import com.example.brawler.domaine.intéracteur.SourceUtilisateur;
 
 public class MockUtilisateur implements SourceUtilisateur {
+    Utilisateur utilisateur = new Utilisateur("DVilleda", Niveau.INTERMÉDIAIRE,"Montréal", 0,0);
     /**
      * @return Retourne un mock Utilisateur sans photo de profil.
      */
     @Override
     public Utilisateur getUtilisateur() {
-        return new Utilisateur("DVilleda", Niveau.INTERMÉDIAIRE,"Montréal", 0,0);
+        return utilisateur;
+    }
+
+    @Override
+    public void setUtilisateur(Utilisateur utilisateur) {
+
     }
 }
