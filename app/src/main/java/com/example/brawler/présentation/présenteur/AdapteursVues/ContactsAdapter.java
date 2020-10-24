@@ -4,7 +4,9 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -46,11 +48,31 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ViewHo
     }
 
     //CLasse pour la carte du RecyclerView
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private TextView nomContact;
+        private ImageButton suppContact;
+        private ImageButton chatContact;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             nomContact = itemView.findViewById(R.id.nom_contact);
+            suppContact = itemView.findViewById(R.id.boutton_supprimer);
+            chatContact = itemView.findViewById(R.id.boutton_chat);
+            suppContact.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    removeContact(getAdapterPosition());
+                }
+            });
+        }
+
+        @Override
+        public void onClick(View v) {
+
+        }
+        public void removeContact(int position){
+            listUtilisateurs.remove(position);
+            notifyItemRemoved(position);
+            notifyItemRangeChanged(position,listUtilisateurs.size());
         }
     }
 }

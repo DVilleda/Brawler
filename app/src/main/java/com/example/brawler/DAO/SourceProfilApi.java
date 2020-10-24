@@ -1,18 +1,26 @@
 package com.example.brawler.DAO;
 
+import android.net.Uri;
 import android.util.JsonReader;
+import android.util.Pair;
 
 import com.example.brawler.domaine.entité.Niveau;
 import com.example.brawler.domaine.entité.Utilisateur;
 import com.example.brawler.domaine.intéracteur.SourceUtilisateur;
 import com.example.brawler.domaine.intéracteur.UtilisateursException;
 
+import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.List;
 
 public class SourceProfilApi implements SourceUtilisateur{
 
@@ -71,10 +79,49 @@ public class SourceProfilApi implements SourceUtilisateur{
             connexion.setRequestProperty("Authorization","Bearer "+token);
             connexion.setRequestMethod("POST");
             connexion.setDoOutput(true);
+            connexion.setDoInput(true);
+
+            //Params de la requetes
+            List<Pair<String,String>> params = new ArrayList<>();
+            params.add(new Pair<>("email", "danny@crosemont.qc.ca"));
+            params.add(new Pair<>("prenom","Danny1"));
+            params.add(new Pair<>("description","TEST AVEC JAVA"));
+            params.add(new Pair<>("niveau","EXPERT"));
+
+            OutputStream os = connexion.getOutputStream();
+            BufferedWriter writer = new BufferedWriter(
+                    new OutputStreamWriter(os, StandardCharsets.UTF_8));
+            writer.write(String.valueOf(params));
+            writer.flush();
+            writer.close();
+            os.close();
+
+            connexion.connect();
+
+            /**
+            Uri.Builder builder = new Uri.Builder()
+                    .appendQueryParameter("email", "danny@crosemont.qc.ca")
+                    .appendQueryParameter("prenom","Danny1")
+                    .appendQueryParameter("description","TEST AVEC JAVA")
+                    .appendQueryParameter("niveau","EXPERT");
+            String query = builder.build().getEncodedQuery();
+
+            OutputStream os = connexion.getOutputStream();
+            BufferedWriter writer = new BufferedWriter(
+                    new OutputStreamWriter(os, "UTF-8"));
+            writer.write(query);
+            writer.flush();
+            writer.close();
+            os.close();
+            **/
+
+            /**
             connexion.setRequestProperty("email","danny@crosemont.qc.ca");
             connexion.setRequestProperty("prenom","Danny1");
             connexion.setRequestProperty("description","TEST AVEC JAVA");
             connexion.setRequestProperty("niveau","EXPERT");
+             **/
+
             if(connexion.getResponseCode()==200){
                 //utilisateur = décoderUtilisateur(connexion.getInputStream());
             }

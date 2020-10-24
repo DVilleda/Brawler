@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -46,5 +47,6 @@ public class VueContacts extends Fragment {
     public void rafraichirVue(){
         if(contactsAdapter!=null)
             contactsAdapter.notifyDataSetChanged();
+        Toast.makeText(this.getContext(),String.valueOf(contactsAdapter.getItemCount()),Toast.LENGTH_SHORT).show();
     }
 }
