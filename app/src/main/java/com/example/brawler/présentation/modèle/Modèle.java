@@ -1,5 +1,6 @@
 package com.example.brawler.présentation.modèle;
 
+import com.example.brawler.domaine.entité.Message;
 import com.example.brawler.domaine.entité.Utilisateur;
 
 import java.util.ArrayList;
@@ -10,6 +11,7 @@ public class Modèle {
     private List<Utilisateur> listeUtilisateurs;
     private int utilisateurEnRevue;
     private Utilisateur utilisateur;
+    private List<Message> messages;
 
     public Modèle(){
         listeUtilisateurs = new ArrayList<>();
@@ -24,6 +26,15 @@ public class Modèle {
         this.listeUtilisateurs = listUtilisateurs;
     }
 
+
+    public void setListeMessage(List<Message> messages) {
+        this.messages = messages;
+    }
+
+    public List<Message> getMessages(){
+        return messages;
+    }
+
     public Utilisateur getUtilisateurActuel() {
         return listeUtilisateurs.get(utilisateurEnRevue);
     }
@@ -34,7 +45,7 @@ public class Modèle {
 
     public void prochainUtilisateur(){utilisateurEnRevue +=1;}
 
-    public void viderListe() {
+    public void viderListeUtilisateurs() {
         if (listeUtilisateurs.size() == 0) {
             listeUtilisateurs.removeAll(listeUtilisateurs);
             utilisateurEnRevue = 0;
@@ -48,4 +59,5 @@ public class Modèle {
     public void setUtilisateur(Utilisateur utilisateur) {
         this.utilisateur = utilisateur;
     }
+
   }

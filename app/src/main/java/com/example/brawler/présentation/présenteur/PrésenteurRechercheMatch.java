@@ -68,13 +68,13 @@ public class PrésenteurRechercheMatch {
     public void changerRecherche(Boolean bool) {
         if(bool != parNiveau){
             parNiveau = bool;
-            modèle.viderListe();
+            modèle.viderListeUtilisateurs();
             prochainUtilsateur();
         }
     }
 
     private void chargerNouvelleUtilisateur() {
-        modèle.viderListe();
+        modèle.viderListeUtilisateurs();
         filEsclave = new Thread(
                 new Runnable() {
                     @Override
@@ -83,6 +83,8 @@ public class PrésenteurRechercheMatch {
                         try {
                             Thread.sleep(0);
 
+
+                            //TODO mettre le niveau de l'utilisteur actuel
                             if (parNiveau) {
                                 modèle.setListeUtilisateurs(InteracteurAquisitionUtilisateur.getInstance(source).getNouvelUtilsaiteurParNiveau(Niveau.DÉBUTANT));
                             } else {
