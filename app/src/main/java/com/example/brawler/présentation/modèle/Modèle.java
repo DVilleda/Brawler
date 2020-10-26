@@ -60,4 +60,7 @@ public class Modèle {
         this.utilisateur = utilisateur;
     }
 
-  }
+    public void setUtilisateurEnRevue(int i) {
+        utilisateurEnRevue = i;
+    }
+}

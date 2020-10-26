@@ -21,8 +21,8 @@ public class InteracteurMessage {
         this.source = source;
     }
 
-    public List<Message> getMessages() throws MessageException, UtilisateursException {
-        return source.getMessagesparUtilisateurs();
+    public List<Message> getMessages(int idUtilisateur) throws MessageException, UtilisateursException {
+        return source.getMessagesparUtilisateurs(idUtilisateur);
     }
 
     public void envoyerMessage(int idUtilisateur, String message) throws MessageException {

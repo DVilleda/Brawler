@@ -1,36 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_gravity="fill_vertical"
+    android:layout_weight="2"
     android:orientation="vertical">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvMessages"
         android:layout_width="match_parent"
-        android:layout_height="667dp">
-
-    </androidx.recyclerview.widget.RecyclerView>
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:scrollbars="vertical"
+        app:reverseLayout="true"
+        app:stackFromEnd="true" />
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="629dp"
+        android:layout_height="wrap_content"
         android:orientation="horizontal">
 
         <EditText
             android:id="@+id/txtMessage"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:layout_weight="2"
             android:ems="10"
-            android:inputType="textPersonName"
-            android:text="@string/entererMessage" />
+            android:gravity="start|top"
+            android:hint="@string/entererMessage"
+            android:inputType="textMultiLine" />
 
         <Button
             android:id="@+id/btnEnvoyerMessage"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="56dp"
+            android:layout_height="match_parent"
             android:layout_weight="1"
             android:text="@string/envoyerMessage" />
-
     </LinearLayout>
 </LinearLayout>

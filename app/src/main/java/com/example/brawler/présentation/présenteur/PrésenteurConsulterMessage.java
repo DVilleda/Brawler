@@ -4,23 +4,21 @@ import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 
-import com.example.brawler.domaine.entité.Niveau;
-import com.example.brawler.domaine.intéracteur.InteracteurAquisitionUtilisateur;
 import com.example.brawler.domaine.intéracteur.InteracteurMessage;
 import com.example.brawler.domaine.intéracteur.MessageException;
 import com.example.brawler.domaine.intéracteur.SourceMessage;
-import com.example.brawler.domaine.intéracteur.SourceUtilisateurs;
 import com.example.brawler.domaine.intéracteur.UtilisateursException;
 import com.example.brawler.présentation.modèle.Modèle;
-import com.example.brawler.présentation.vue.VueRechercheMatch;
+import com.example.brawler.présentation.vue.VueConsulterMessage;
 
 public class PrésenteurConsulterMessage {
 
-    private VueRechercheMatch vue;
+    private VueConsulterMessage vue;
     private Modèle modèle;
     private SourceMessage source;
 
     private final Handler handlerRéponse;
+    private Handler handlerRafraîchir;
 
     private Thread filEsclaveEnvoyerMessage = null;
 
@@ -29,7 +27,10 @@ public class PrésenteurConsulterMessage {
     private final int MSG_ERREUR = 2;
     private final int MSG_ANNULER = 3;
 
-    public PrésenteurConsulterMessage() {
+    public PrésenteurConsulterMessage(VueConsulterMessage nouvelleVue, final Modèle modèle) {
+        this.vue = nouvelleVue;
+        this.modèle = modèle;
+
         this.handlerRéponse = new Handler(){
 
             @Override
@@ -39,13 +40,17 @@ public class PrésenteurConsulterMessage {
                 filEsclaveEnvoyerMessage = null;
 
                 if (msg.what == MSG_CHARGER_MESSAGES) {
+                    vue.rafraîchir();
+                    rafraichir();
                 } else if (msg.what == MSG_NOUVEAU_MESSAGE){
-
+                    vue.viderTxtMessage();
+                    getMessages(modèle.getUtilisateurEnRevue());
                 } else if ( msg.what == MSG_ERREUR ) {
                     Log.e("Brawler", "Erreur d'accès à l'API", (Throwable) msg.obj);
                 }
             }
         };
+
     }
 
     public void setSource(SourceMessage source) {
@@ -54,6 +59,7 @@ public class PrésenteurConsulterMessage {
 
 
     public void envoyerMessage(final String texte){
+        vue.changerBtnEnvoyer(false);
         filEsclaveEnvoyerMessage = new Thread(
                 new Runnable() {
                     @Override
@@ -76,7 +82,7 @@ public class PrésenteurConsulterMessage {
         filEsclaveEnvoyerMessage.start();
     }
 
-    public void getMessages(){
+    public void getMessages(final int idUtilisateur){
         filEsclaveEnvoyerMessage = new Thread(
                 new Runnable() {
                     @Override
@@ -84,9 +90,9 @@ public class PrésenteurConsulterMessage {
                         Message msg = null;
                         try {
                             Thread.sleep(0);
-                            modèle.setListeMessage(InteracteurMessage.getInstance(source).getMessages());
+                            modèle.setListeMessage(InteracteurMessage.getInstance(source).getMessages(idUtilisateur));
 
-                            msg = handlerRéponse.obtainMessage( MSG_NOUVEAU_MESSAGE );
+                            msg = handlerRéponse.obtainMessage( MSG_CHARGER_MESSAGES );
                         } catch (InterruptedException e) {
                             msg = handlerRéponse.obtainMessage( MSG_ANNULER );
                         } catch (MessageException e) {
@@ -105,5 +111,29 @@ public class PrésenteurConsulterMessage {
         if(modèle.getMessages() != null)
             return modèle.getMessages().size();
         return 0;
+    }
+
+    public com.example.brawler.domaine.entité.Message getMessageParPos(int id){
+        return modèle.getMessages().get(id);
+    }
+
+    public int getIdUtilisateur() {
+        return modèle.getUtilisateurEnRevue();
+    }
+
+    private void rafraîchirMessage(){}
+
+    private void rafraichir() {
+
+        this.handlerRafraîchir = new Handler();
+
+        final Runnable runnable = new Runnable() {
+            @Override
+            public void run() {
+                getMessages(modèle.getUtilisateurEnRevue());
+            }
+        };
+
+        handlerRafraîchir.postDelayed(runnable, 1000);
     }
 }

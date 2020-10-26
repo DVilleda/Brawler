@@ -1,6 +1,6 @@
 package com.example.brawler.DAO;
 
-import android.os.strictmode.CredentialProtectedWhileLockedViolation;
+import android.net.Uri;
 import android.util.JsonReader;
 import android.util.Log;
 
@@ -10,13 +10,16 @@ import com.example.brawler.domaine.intéracteur.MessageException;
 import com.example.brawler.domaine.intéracteur.SourceMessage;
 import com.example.brawler.domaine.intéracteur.UtilisateursException;
 
+import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -42,39 +45,40 @@ public class SourceMessageApi implements SourceMessage {
     }
 
     @Override
-    public List<Message> getMessagesparUtilisateurs(int idUtiliasteur) throws MessageException, UtilisateursException {
+    public List<Message> getMessagesparUtilisateurs(int idUtilisateur) throws MessageException, UtilisateursException {
         try {
-            url = new URL(urlMessage);
+            url = new URL(urlMessage + idUtilisateur);
         } catch (MalformedURLException e) {
             e.printStackTrace();
         }
-
+        Log.d("passe:", "obtenir message");
         return lancerConnexionRecevoirMessage();
     }
 
     @Override
     public void envoyerMessage(int idUtilisateur, String message) throws MessageException {
         try {
-            url = new URL(urlEnvoyerMessage);
+            url = new URL(urlEnvoyerMessage + idUtilisateur);
         } catch (MalformedURLException e) {
             e.printStackTrace();
         }
 
-        lancerConnexionEnvoyerMessage();
+        lancerConnexionEnvoyerMessage(message);
     }
 
     private List<Message> lancerConnexionRecevoirMessage() throws MessageException, UtilisateursException {
         List<Message> messages = null;
 
         try{
-            Log.d("URL", String.valueOf(url));
             HttpURLConnection connexion =
                     (HttpURLConnection)url.openConnection();
             connexion.setRequestProperty("Authorization", cléBearer);
             if(connexion.getResponseCode()==200){
                 messages = décoderJSON(connexion.getInputStream());
+                Log.d("passe:", "connexion réeussi");
             }
             else{
+                Log.d("problème:", String.valueOf(connexion.getResponseCode()));
                 throw new SourceMessageApi.SourceMessageApiException( connexion.getResponseCode() );
             }
         }
@@ -86,16 +90,38 @@ public class SourceMessageApi implements SourceMessage {
         return messages;
     }
 
-    private void lancerConnexionEnvoyerMessage() throws MessageException {
+    private void lancerConnexionEnvoyerMessage(String message) throws MessageException {
         try{
             Log.d("URL", String.valueOf(url));
             HttpURLConnection connexion =
                     (HttpURLConnection)url.openConnection();
             connexion.setRequestProperty("Authorization", cléBearer);
-            if(connexion.getResponseCode()==200){
+            connexion.setReadTimeout(10000);
+            connexion.setConnectTimeout(15000);
+            connexion.setRequestMethod("POST");
+            connexion.setDoInput(true);
+            connexion.setDoOutput(true);
 
+            Uri.Builder builder = new Uri.Builder()
+                    .appendQueryParameter("message", message);
+            String query = builder.build().getEncodedQuery();
+
+            OutputStream os = connexion.getOutputStream();
+            BufferedWriter writer = new BufferedWriter(
+                    new OutputStreamWriter(os, "UTF-8"));
+            writer.write(query);
+            writer.flush();
+            writer.close();
+            os.close();
+
+            connexion.connect();
+
+
+            if(connexion.getResponseCode()==200){
+                Log.d("fonc", "tionne");
             }
             else{
+                Log.d("problème:", String.valueOf(connexion.getResponseCode()));
                 throw new SourceMessageApi.SourceMessageApiException( connexion.getResponseCode() );
             }
         }
@@ -106,7 +132,7 @@ public class SourceMessageApi implements SourceMessage {
     }
 
     private List<Message> décoderJSON(InputStream messagesEncoder) throws MessageException, IOException, UtilisateursException {
-        List<Message> messages = null;
+        List<Message> messages = new ArrayList<>();
         InputStreamReader responseBodyReader =
                 new InputStreamReader(messagesEncoder, "UTF-8");
 
@@ -115,7 +141,7 @@ public class SourceMessageApi implements SourceMessage {
 
         while(jsonReader.hasNext()) {
             String key = jsonReader.nextName();
-
+            Log.d("key: ", key);
             if(key.equals("message")){
                 jsonReader.beginArray();
                 while (jsonReader.hasNext()){
@@ -131,7 +157,7 @@ public class SourceMessageApi implements SourceMessage {
     }
 
     private  Message décoderMessage(JsonReader jsonReader) throws IOException, UtilisateursException {
-        Message messages = null;
+        Message message = null;
         Utilisateur utilisateur = null;
         String texte = "";
         Date temps = null;
@@ -150,26 +176,24 @@ public class SourceMessageApi implements SourceMessage {
                 jsonReader.skipValue();
             }
         }
+        jsonReader.endObject();
 
-        messages = new Message(texte, utilisateur, temps);
-
-        return messages;
+        message = new Message(texte, utilisateur, temps);
+        Log.d("message", message.getTexte());
+        return message;
     }
 
-    //exemple de date: 2020-10-06 00:41:08
+    //exemple de date: 2020-10-26 05:53:35
     private Date décoderTemps(String temps){
+        Log.d("temps", temps);
         Date date = null;
-        Pattern pattern = Pattern.compile("\\d{4}-\\d{2}-\\d{4} \\d{2}:\\d{2}");
-        Matcher matcher = pattern.matcher(temps);
 
         String[] dateATraiter = null;
         String[] tempsATraiter = null;
-        if (matcher.find()){
-            String string = matcher.toString();
-            String[] partie = string.split(" ");
-            dateATraiter = partie[0].split("-");
-            tempsATraiter = partie[1].split(":");
-        }
+
+        String[] partie = temps.split(" ");
+        dateATraiter = partie[0].split("-");
+        tempsATraiter = partie[1].split(":");
 
 
         if(dateATraiter != null && tempsATraiter != null) {
