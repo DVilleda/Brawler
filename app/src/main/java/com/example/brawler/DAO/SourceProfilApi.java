@@ -91,7 +91,7 @@ public class SourceProfilApi implements SourceUtilisateur{
             byte[] array = new byte[5]; // length is bounded by 5
             new Random().nextBytes(array);
             String generatedString = new String(array, Charset.forName("UTF-8"));
-            params.add(new Pair<>("email", "Danny@crosemont.qc.ca"+generatedString));
+            params.add(new Pair<>("email", utilisateur.getEmail()+generatedString));
             params.add(new Pair<>("prénom",utilisateur.getNom()));
             params.add(new Pair<>("description",utilisateur.getDescription()));
             params.add(new Pair<>("niveau",utilisateur.getNiveau().toString()));
