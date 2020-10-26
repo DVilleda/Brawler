@@ -38,7 +38,6 @@ public class VueProfil extends Fragment {
     private LinearLayout expandableView;
     private LinearLayout layoutInfosInitiale;
     private FrameLayout cardView;
-    private Button modifierProfil;
 
     /**
      * Méthode pour changer le présenteur du fragment
@@ -60,7 +59,7 @@ public class VueProfil extends Fragment {
         expandableView = vue.findViewById(R.id.expandable_view);
         layoutInfosInitiale = vue.findViewById(R.id.Infos_version_court);
         cardView= vue.findViewById(R.id.profil_cardview);
-        modifierProfil = vue.findViewById(R.id.aller_modif_profil);
+        Button modifierProfil = vue.findViewById(R.id.aller_modif_profil);
 
         modifierProfil.setOnClickListener(new View.OnClickListener() {
             @Override

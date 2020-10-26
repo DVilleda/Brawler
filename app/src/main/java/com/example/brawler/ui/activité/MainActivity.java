@@ -25,6 +25,7 @@ public class MainActivity extends AppCompatActivity {
      */
     private PrésenteurProfil présenteurProfil;
     private String token;
+    private String token2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +34,7 @@ public class MainActivity extends AppCompatActivity {
 
         //TODO remplacer la clé temporaire par la clé donner par l'Activité connexion
         token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2MDQ1ODg5NzUsImlhdCI6MTYwMjc3NDU3NSwic3ViIjoxfQ.orQR0Y5ge7tAjcJTEQ33MGvSZc2yMlhSg7lX_Yh3Lsc";
+        token2 ="eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2MDU1NjA1NzksImlhdCI6MTYwMzc0NjE3OSwic3ViIjozfQ.aGbjViOdrCr4l8ANTZQ9ehaEvAbEeE6n586dIw_v_AQ";
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.navigation_app);
         setSupportActionBar(toolbar);
@@ -44,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
 
         VueProfil vueProfil = new VueProfil();
         présenteurProfil = new PrésenteurProfil(vueProfil,modèle);
-        présenteurProfil.setSourceUtilisateur(new SourceProfilApi(token));
+        présenteurProfil.setSourceUtilisateur(new SourceProfilApi(token2));
         vueProfil.setPresenteur(présenteurProfil);
 
         //Transaction pour changer au fragement

@@ -65,6 +65,7 @@ public class VueProfilModif extends Fragment {
                 utilisateurActuel.setNom(nomProfil.getText().toString());
                 utilisateurActuel.setLocation(locationProfil.getText().toString());
                 utilisateurActuel.setNiveau(Niveau.valueOf(niveauAdversaire.getText().toString().toUpperCase()));
+                utilisateurActuel.setDescription(descriptionProfil.getText().toString());
                 _presenteur.modifierUtilisateur(utilisateurActuel);
                 Toast.makeText(getContext(),"Modifications apportées",Toast.LENGTH_SHORT).show();
                 getActivity().getSupportFragmentManager().popBackStack();
@@ -111,6 +112,7 @@ public class VueProfilModif extends Fragment {
             nomProfil.setText(utilisateur.getNom());
             locationProfil.setText(utilisateur.getLocation());
             niveauAdversaire.setText(utilisateur.getNiveau().toString().toLowerCase());
+            descriptionProfil.setText(utilisateur.getDescription());
         }else{
             Toast.makeText(getContext(),"Erreur de chargement du profil...",Toast.LENGTH_SHORT).show();
         }

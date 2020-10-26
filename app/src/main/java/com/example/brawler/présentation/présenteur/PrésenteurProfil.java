@@ -3,11 +3,9 @@ package com.example.brawler.présentation.présenteur;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
-import android.widget.Toast;
 
-import com.example.brawler.domaine.entité.Niveau;
 import com.example.brawler.domaine.entité.Utilisateur;
-import com.example.brawler.domaine.intéracteur.InteracteurChargementUtilisateur;
+import com.example.brawler.domaine.intéracteur.InteracteurChargementProfil;
 import com.example.brawler.domaine.intéracteur.SourceUtilisateur;
 import com.example.brawler.domaine.intéracteur.UtilisateursException;
 import com.example.brawler.présentation.modèle.Modèle;
@@ -84,7 +82,7 @@ public class PrésenteurProfil {
                         {
                             Thread.sleep(0);
                             if(_modèle.getUtilisateur() == null) {
-                                _modèle.setUtilisateur(InteracteurChargementUtilisateur.getInstance(_source).getUtilisateur());
+                                _modèle.setUtilisateur(InteracteurChargementProfil.getInstance(_source).getUtilisateur());
                                 msg = handlerRéponse.obtainMessage(MSG_CHARGER_UTILISATEUR);
                             }
                         } catch (UtilisateursException e) {
@@ -100,7 +98,13 @@ public class PrésenteurProfil {
     }
 
     public Utilisateur getUtilisateur(){
-        return _modèle.getUtilisateur();
+        Utilisateur utilisateur=null;
+        try {
+            utilisateur= InteracteurChargementProfil.getInstance(_source).chargerUtilisateurActuel();
+        } catch (UtilisateursException e) {
+            e.printStackTrace();
+        }
+        return utilisateur;
     }
 
     public void rafraichirPage(){
@@ -126,7 +130,7 @@ public class PrésenteurProfil {
                     public void run() {
                         Message msg = null;
                         try {
-                            InteracteurChargementUtilisateur.getInstance(_source).setUtilisateur(utilisateur);
+                            InteracteurChargementProfil.getInstance(_source).setUtilisateur(utilisateur);
                             _modèle.setUtilisateur(utilisateur);
                             msg = handlerRéponse.obtainMessage(MSG_CHARGER_UTILISATEUR);
                         } catch (UtilisateursException e) {

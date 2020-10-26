@@ -1,23 +1,22 @@
 package com.example.brawler.domaine.intéracteur;
 
-import com.example.brawler.domaine.entité.Niveau;
 import com.example.brawler.domaine.entité.Utilisateur;
 
 /**
  * Cette classe à pour but de faire la gestion des interactions entre la source de données et le UI
  * de l'application.
  */
-public class InteracteurChargementUtilisateur{
+public class InteracteurChargementProfil {
     SourceUtilisateur _sourceUtilisateur;
     Utilisateur _utilisateur;
-    static InteracteurChargementUtilisateur instance;
+    static InteracteurChargementProfil instance;
 
     /**
      * L'accesseur du singleton qui crée une nouvelle instance dans le cas où elle n'existe pas.
      */
-    public static InteracteurChargementUtilisateur getInstance(SourceUtilisateur sourceUtilisateur){
+    public static InteracteurChargementProfil getInstance(SourceUtilisateur sourceUtilisateur){
         if(instance == null)
-            instance = new InteracteurChargementUtilisateur(sourceUtilisateur);
+            instance = new InteracteurChargementProfil(sourceUtilisateur);
 
         return instance;
     }
@@ -26,7 +25,7 @@ public class InteracteurChargementUtilisateur{
      * Constructeur de la classe
      * @param source
      */
-    private InteracteurChargementUtilisateur(SourceUtilisateur source) {
+    private InteracteurChargementProfil(SourceUtilisateur source) {
         this._sourceUtilisateur = source;
     }
 

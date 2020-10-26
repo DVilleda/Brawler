@@ -20,9 +20,12 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
+import java.util.UUID;
 
 public class SourceProfilApi implements SourceUtilisateur{
 
@@ -85,11 +88,14 @@ public class SourceProfilApi implements SourceUtilisateur{
 
             //Params de la requetes
             List<Pair<String,String>> params = new ArrayList<>();
-            params.add(new Pair<>("email", "danny@crosemont.qc.ca"));
-            params.add(new Pair<>("prénom","Danny1"));
-            params.add(new Pair<>("description","TEST AVEC JAVA"));
-            params.add(new Pair<>("niveau","EXPERT"));
-            params.add(new Pair<>("location","Montréal"));
+            byte[] array = new byte[5]; // length is bounded by 5
+            new Random().nextBytes(array);
+            String generatedString = new String(array, Charset.forName("UTF-8"));
+            params.add(new Pair<>("email", "Danny@crosemont.qc.ca"+generatedString));
+            params.add(new Pair<>("prénom",utilisateur.getNom()));
+            params.add(new Pair<>("description",utilisateur.getDescription()));
+            params.add(new Pair<>("niveau",utilisateur.getNiveau().toString()));
+            params.add(new Pair<>("location",utilisateur.getLocation()));
 
             OutputStream os = connexion.getOutputStream();
             BufferedWriter writer = new BufferedWriter(
@@ -100,31 +106,6 @@ public class SourceProfilApi implements SourceUtilisateur{
             os.close();
 
             connexion.connect();
-
-            /**
-            Uri.Builder builder = new Uri.Builder()
-                    .appendQueryParameter("email", "danny@crosemont.qc.ca")
-                    .appendQueryParameter("prenom","Danny1")
-                    .appendQueryParameter("description","TEST AVEC JAVA")
-                    .appendQueryParameter("niveau","EXPERT");
-            String query = builder.build().getEncodedQuery();
-
-            OutputStream os = connexion.getOutputStream();
-            BufferedWriter writer = new BufferedWriter(
-                    new OutputStreamWriter(os, "UTF-8"));
-            writer.write(query);
-            writer.flush();
-            writer.close();
-            os.close();
-            **/
-
-            /**
-            connexion.setRequestProperty("email","danny@crosemont.qc.ca");
-            connexion.setRequestProperty("prenom","Danny1");
-            connexion.setRequestProperty("description","TEST AVEC JAVA");
-            connexion.setRequestProperty("niveau","EXPERT");
-             **/
-
             if(connexion.getResponseCode()==200){
                 //utilisateur = décoderUtilisateur(connexion.getInputStream());
             }
@@ -163,6 +144,8 @@ public class SourceProfilApi implements SourceUtilisateur{
         String nom = "";
         Niveau niveau = null;
         String location = "";
+        String email="";
+        String description="";
 
         jsonReader.beginObject();
 
@@ -177,11 +160,17 @@ public class SourceProfilApi implements SourceUtilisateur{
                 location = jsonReader.nextString();
             } else if (key.equals("id")) {
                 id = jsonReader.nextInt();
-            } else {
+            } else if(key.equals("email")){
+                email = jsonReader.nextString();
+            }else if(key.equals("description")){
+                description = jsonReader.nextString();
+            }
+            else
+                {
                 jsonReader.skipValue();
             }
         }
-        return new Utilisateur(id, nom, niveau, location);
+        return new Utilisateur(id, nom, niveau, location,email,description);
     }
 
     private Niveau stringVersNiveau(String niveau) {
