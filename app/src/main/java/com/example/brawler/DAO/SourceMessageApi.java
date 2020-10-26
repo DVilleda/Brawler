@@ -32,6 +32,7 @@ public class SourceMessageApi implements SourceMessage {
 
     private URL url;
     private String urlMessage = "http://52.3.68.3/messageContact/";
+    private String urlEnvoyerMessage = "http://52.3.68.3/envoyerMessages/";
     private String clé;
     private String cléBearer;
 
@@ -41,7 +42,7 @@ public class SourceMessageApi implements SourceMessage {
     }
 
     @Override
-    public List<Message> getMessagesparUtilisateurs() throws MessageException, UtilisateursException {
+    public List<Message> getMessagesparUtilisateurs(int idUtiliasteur) throws MessageException, UtilisateursException {
         try {
             url = new URL(urlMessage);
         } catch (MalformedURLException e) {
