@@ -1,12 +1,16 @@
 package com.example.brawler.présentation.vue.adapter;
 
 import android.graphics.Color;
+import android.text.Layout;
+import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.brawler.R;
@@ -31,17 +35,33 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     }
 
     @Override
-    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull final RecyclerView.ViewHolder holder, int position) {
         Message message = présenteur.getMessageParPos(position);
-        String date = message.getTemps().getYear() + "-"+ message.getTemps().getMonth() + "-"+message.getTemps().getDay() + " " + message.getTemps().getHours() + ":" + message.getTemps().getHours();
+        String date = message.getTemps().getYear() + "-"+ message.getTemps().getMonth() + "-"+message.getTemps().getDay() + " " + message.getTemps().getHours() + ":" + message.getTemps().getMinutes();
         ((TextView) holder.itemView.findViewById(R.id.txtMessage)).setText(message.getTexte());
         ((TextView) holder.itemView.findViewById(R.id.txtNom)).setText(message.getUtilisateur().getNom());
         ((TextView) holder.itemView.findViewById(R.id.txtTemps)).setText(date);
         if(message.getUtilisateur().getId() == présenteur.getIdUtilisateur()) {
-            ((TextView) holder.itemView.findViewById(R.id.txtMessage)).setBackgroundColor(Color.parseColor("#a8a2a8"));
+            ((LinearLayout) holder.itemView.findViewById(R.id.layoutMessage)).setGravity(Gravity.LEFT);
+            ((TextView) holder.itemView.findViewById(R.id.txtMessage)).setBackgroundResource(R.drawable.autre_utilsateur_message);
         } else {
-            ((TextView) holder.itemView.findViewById(R.id.txtMessage)).setBackgroundColor(Color.parseColor("#e80c3f"));
+            ((LinearLayout) holder.itemView.findViewById(R.id.layoutMessage)).setGravity(Gravity.RIGHT);
+            ((TextView) holder.itemView.findViewById(R.id.txtMessage)).setBackgroundResource(R.drawable.utilisateur_messsage);
         }
+
+
+        ((TextView) holder.itemView.findViewById(R.id.txtMessage)).setOnClickListener(new View.OnClickListener() {
+                                                                                          @Override
+                                                                                          public void onClick(View view) {
+                                                                                              int estVisible = ((TextView) holder.itemView.findViewById(R.id.txtTemps)).getVisibility();
+                                                                                              if(estVisible == View.GONE) {
+                                                                                                  ((TextView) holder.itemView.findViewById(R.id.txtTemps)).setVisibility(View.VISIBLE);
+                                                                                              } else {
+                                                                                                  ((TextView) holder.itemView.findViewById(R.id.txtTemps)).setVisibility(View.GONE);
+                                                                                              }
+                                                                                          }
+                                                                                      }
+        );
     }
 
     @Override

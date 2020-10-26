@@ -16,6 +16,7 @@ public class PrésenteurConsulterMessage {
     private VueConsulterMessage vue;
     private Modèle modèle;
     private SourceMessage source;
+    private int nbMessageActuel;
 
     private final Handler handlerRéponse;
     private Handler handlerRafraîchir;
@@ -30,6 +31,7 @@ public class PrésenteurConsulterMessage {
     public PrésenteurConsulterMessage(VueConsulterMessage nouvelleVue, final Modèle modèle) {
         this.vue = nouvelleVue;
         this.modèle = modèle;
+        nbMessageActuel = 0;
 
         this.handlerRéponse = new Handler(){
 
@@ -40,8 +42,11 @@ public class PrésenteurConsulterMessage {
                 filEsclaveEnvoyerMessage = null;
 
                 if (msg.what == MSG_CHARGER_MESSAGES) {
-                    vue.rafraîchir();
-                    rafraichir();
+                    if(nbMessageActuel != getNbMessages()) {
+                        nbMessageActuel = getNbMessages();
+                        vue.rafraîchir();
+                        rafraichir();
+                    }
                 } else if (msg.what == MSG_NOUVEAU_MESSAGE){
                     vue.viderTxtMessage();
                     getMessages(modèle.getUtilisateurEnRevue());
@@ -68,7 +73,6 @@ public class PrésenteurConsulterMessage {
                         try {
                             Thread.sleep(0);
                             InteracteurMessage.getInstance(source).envoyerMessage(modèle.getUtilisateurEnRevue(), texte);
-
                             msg = handlerRéponse.obtainMessage( MSG_NOUVEAU_MESSAGE );
                         } catch (InterruptedException e) {
                             msg = handlerRéponse.obtainMessage( MSG_ANNULER );
@@ -80,6 +84,20 @@ public class PrésenteurConsulterMessage {
                     }
                 });
         filEsclaveEnvoyerMessage.start();
+    }
+
+    private void rafraichir() {
+
+        this.handlerRafraîchir = new Handler();
+
+        final Runnable runnable = new Runnable() {
+            @Override
+            public void run() {
+                getMessages(modèle.getUtilisateurEnRevue());
+            }
+        };
+
+        handlerRafraîchir.postDelayed(runnable, 1000);
     }
 
     public void getMessages(final int idUtilisateur){
@@ -123,17 +141,5 @@ public class PrésenteurConsulterMessage {
 
     private void rafraîchirMessage(){}
 
-    private void rafraichir() {
 
-        this.handlerRafraîchir = new Handler();
-
-        final Runnable runnable = new Runnable() {
-            @Override
-            public void run() {
-                getMessages(modèle.getUtilisateurEnRevue());
-            }
-        };
-
-        handlerRafraîchir.postDelayed(runnable, 1000);
-    }
 }

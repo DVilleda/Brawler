@@ -26,6 +26,7 @@ public class VueConsulterMessage extends Fragment {
     private Button  btnEnvoyerMessage;
     private RecyclerView rvMessages;
     private MessageAdapter messageAdapter;
+    private boolean mettreRvAuDébut;
 
     public void setPrésenteur(PrésenteurConsulterMessage présenteur) {
         this.présenteur = présenteur;
@@ -37,13 +38,12 @@ public class VueConsulterMessage extends Fragment {
                               Bundle savedInstanceState) {
 
         View vue = inflater.inflate(R.layout.fragment_consulter_message, container, false);
-
+        mettreRvAuDébut = true;
         txtMessage = vue.findViewById(R.id.txtMessage);
         btnEnvoyerMessage = vue.findViewById(R.id.btnEnvoyerMessage);
         rvMessages = vue.findViewById(R.id.rvMessages);
         btnEnvoyerMessage.setEnabled(false);
         txtMessage.addTextChangedListener(envoyerMessageTextWatcher);
-
         messageAdapter = new MessageAdapter(présenteur);
         rvMessages.setAdapter(messageAdapter);
         rvMessages.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -58,10 +58,15 @@ public class VueConsulterMessage extends Fragment {
         return vue;
     }
 
+
+
     public void rafraîchir(){
         if(messageAdapter!=null){
             messageAdapter.notifyDataSetChanged();
-            rvMessages.smoothScrollToPosition(présenteur.getNbMessages()-1);
+            if(mettreRvAuDébut) {
+                rvMessages.smoothScrollToPosition(présenteur.getNbMessages() - 1);
+                mettreRvAuDébut = false;
+            }
         }
     }
 
