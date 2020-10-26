@@ -15,9 +15,11 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
+import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
@@ -31,7 +33,7 @@ public class SourceProfilApi implements SourceUtilisateur{
     private int id=3;
     private URL url;
     private String urlBaseUtilisateur = "http://52.3.68.3/utilisateur/";
-    private String urlBaseModifier = "http://52.3.68.3/envoyerMessages/3";
+    private String urlBaseModifier = "http://52.3.68.3/modifierInfo";
     private String token;
 
     public SourceProfilApi(String token){
@@ -84,14 +86,15 @@ public class SourceProfilApi implements SourceUtilisateur{
             //Params de la requetes
             List<Pair<String,String>> params = new ArrayList<>();
             params.add(new Pair<>("email", "danny@crosemont.qc.ca"));
-            params.add(new Pair<>("prenom","Danny1"));
+            params.add(new Pair<>("prénom","Danny1"));
             params.add(new Pair<>("description","TEST AVEC JAVA"));
             params.add(new Pair<>("niveau","EXPERT"));
+            params.add(new Pair<>("location","Montréal"));
 
             OutputStream os = connexion.getOutputStream();
             BufferedWriter writer = new BufferedWriter(
                     new OutputStreamWriter(os, StandardCharsets.UTF_8));
-            writer.write(String.valueOf(params));
+            writer.write(String.valueOf(construireQueryPOST(params)));
             writer.flush();
             writer.close();
             os.close();
@@ -195,5 +198,24 @@ public class SourceProfilApi implements SourceUtilisateur{
         }
 
         return  unNiveau;
+    }
+
+    public String construireQueryPOST(List<Pair<String,String>> pairList)throws UnsupportedEncodingException
+    {
+        StringBuilder resultat = new StringBuilder();
+        boolean first = true;
+
+        for (Pair<String,String> stringPair: pairList)
+        {
+            if(first)
+                first = false;
+            else
+                resultat.append("&");
+
+            resultat.append(URLEncoder.encode(stringPair.first,"UTF-8"));
+            resultat.append("=");
+            resultat.append(URLEncoder.encode(stringPair.second,"UTF-8"));
+        }
+        return resultat.toString();
     }
 }
