@@ -37,8 +37,8 @@ public class SourceMessageApi implements SourceMessage {
     private String cléBearer;
 
     public  SourceMessageApi (String clé){
-        clé = clé;
-        cléBearer = "Bearer " + clé;
+        this.clé = clé;
+        this.cléBearer = "Bearer " + clé;
     }
 
     @Override
@@ -49,15 +49,21 @@ public class SourceMessageApi implements SourceMessage {
             e.printStackTrace();
         }
 
-        return lancerConnexionMessage();
+        return lancerConnexionRecevoirMessage();
     }
 
     @Override
     public void envoyerMessage(int idUtilisateur, String message) throws MessageException {
+        try {
+            url = new URL(urlEnvoyerMessage);
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
 
+        lancerConnexionEnvoyerMessage();
     }
 
-    private List<Message> lancerConnexionMessage() throws MessageException, UtilisateursException {
+    private List<Message> lancerConnexionRecevoirMessage() throws MessageException, UtilisateursException {
         List<Message> messages = null;
 
         try{
@@ -72,11 +78,31 @@ public class SourceMessageApi implements SourceMessage {
                 throw new SourceMessageApi.SourceMessageApiException( connexion.getResponseCode() );
             }
         }
+
         catch(IOException e){
             throw new MessageException( e );
         }
 
         return messages;
+    }
+
+    private void lancerConnexionEnvoyerMessage() throws MessageException {
+        try{
+            Log.d("URL", String.valueOf(url));
+            HttpURLConnection connexion =
+                    (HttpURLConnection)url.openConnection();
+            connexion.setRequestProperty("Authorization", cléBearer);
+            if(connexion.getResponseCode()==200){
+
+            }
+            else{
+                throw new SourceMessageApi.SourceMessageApiException( connexion.getResponseCode() );
+            }
+        }
+
+        catch(IOException e){
+            throw new MessageException( e );
+        }
     }
 
     private List<Message> décoderJSON(InputStream messagesEncoder) throws MessageException, IOException, UtilisateursException {
@@ -130,7 +156,7 @@ public class SourceMessageApi implements SourceMessage {
         return messages;
     }
 
-    //exemple: 2020-10-06 00:41:08
+    //exemple de date: 2020-10-06 00:41:08
     private Date décoderTemps(String temps){
         Date date = null;
         Pattern pattern = Pattern.compile("\\d{4}-\\d{2}-\\d{4} \\d{2}:\\d{2}");

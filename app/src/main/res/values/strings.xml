@@ -24,4 +24,8 @@
     <string name="logoDesc">Logo Rumbler</string>
     <string name="erreurConnexion">Erreur de connexion</string>
     <string name="erreurInfoErronées">vérifiez les informations et réessayez à nouveau</string>
+
+    <!--Page Voir Message-->
+    <string name="envoyerMessage">Envoyer Message</string>
+    <string name="entererMessage">Entrer votre message</string>
 </resources>
