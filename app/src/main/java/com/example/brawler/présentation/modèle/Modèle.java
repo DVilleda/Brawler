@@ -3,10 +3,11 @@ package com.example.brawler.présentation.modèle;
 import com.example.brawler.domaine.entité.Utilisateur;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class Modèle {
 
-    private ArrayList<Utilisateur> listeUtilisateurs;
+    private List<Utilisateur> listeUtilisateurs;
     private int utilisateurEnRevue;
     private Utilisateur utilisateur;
 
@@ -15,11 +16,11 @@ public class Modèle {
         utilisateurEnRevue = 0;
     }
 
-    public ArrayList<Utilisateur> getListUtilisateurs() {
+    public List<Utilisateur> getListUtilisateurs() {
         return listeUtilisateurs;
     }
 
-    public void setListeUtilisateurs(ArrayList<Utilisateur> listUtilisateurs) {
+    public void setListeUtilisateurs(List<Utilisateur> listUtilisateurs) {
         this.listeUtilisateurs = listUtilisateurs;
     }
 
@@ -34,7 +35,7 @@ public class Modèle {
     public void prochainUtilisateur(){utilisateurEnRevue +=1;}
 
     public void viderListe() {
-        if (listeUtilisateurs.size() == 0) {
+        if (listeUtilisateurs.size() != 0) {
             listeUtilisateurs.removeAll(listeUtilisateurs);
             utilisateurEnRevue = 0;
         }

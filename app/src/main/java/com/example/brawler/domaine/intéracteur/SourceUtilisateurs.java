@@ -1,13 +1,13 @@
 package com.example.brawler.domaine.intéracteur;
 
+import com.example.brawler.DAO.SourceUtilisateursApi;
 import com.example.brawler.domaine.entité.Niveau;
 import com.example.brawler.domaine.entité.Utilisateur;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public interface SourceUtilisateurs {
 
-    public ArrayList<Utilisateur> getNouvelleUtilisateurParNiveau(String location, Niveau niveau);
-    public ArrayList<Utilisateur> getUtilisateur(String location);
-
+    public List<Utilisateur> getNouvelleUtilisateurParNiveau(Niveau niveau) throws UtilisateursException;
+    public List<Utilisateur> getUtilisateur() throws UtilisateursException;
 }
