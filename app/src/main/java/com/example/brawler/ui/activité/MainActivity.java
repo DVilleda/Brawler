@@ -30,7 +30,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_profil);
 
         //TODO remplacer la clé temporaire par la clé donner par l'Activité connexion
         token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2MDQ1ODg5NzUsImlhdCI6MTYwMjc3NDU3NSwic3ViIjoxfQ.orQR0Y5ge7tAjcJTEQ33MGvSZc2yMlhSg7lX_Yh3Lsc";
@@ -51,7 +51,7 @@ public class MainActivity extends AppCompatActivity {
 
         //Transaction pour changer au fragement
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-        fragmentTransaction.add(R.id.layoutMain,vueProfil);
+        fragmentTransaction.add(R.id.layoutPrincipal,vueProfil);
         fragmentTransaction.commit();
     }
     @Override

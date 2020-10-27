@@ -94,7 +94,7 @@ public class PrésenteurRechercheMatch {
     public void changerRecherche(Boolean bool) {
         if(bool != parNiveau){
             parNiveau = bool;
-            modèle.viderListeUtilisateurs();
+            //modèle.viderListe();
             prochainUtilsateur();
         }
     }
@@ -107,7 +107,7 @@ public class PrésenteurRechercheMatch {
 
     private void lancerFileEsclaveChargerUtilisateur(){
         Log.d("passe:", "file esclave utilisateurs");
-        modèle.viderListeUtilisateurs();
+        //modèle.viderListeUtilisateurs();
         filEsclave = new Thread(
                 new Runnable() {
                     @Override

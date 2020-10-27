@@ -12,8 +12,6 @@ public class Utilisateur {
     private String location;
     private Statistique statistique;
     private byte[] photo;
-    private String email;
-    private String description;
 
     public Utilisateur(){
 
@@ -126,19 +124,4 @@ public class Utilisateur {
         this.statistique = statistique;
     }
 
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
 }

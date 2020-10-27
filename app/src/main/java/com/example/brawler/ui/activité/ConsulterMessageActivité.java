@@ -73,6 +73,12 @@ public class ConsulterMessageActivité extends AppCompatActivity {
                 startActivity(profil);
                 break;
             case R.id.menu_match:
+                Intent matcher = new Intent(this,RecherchMatchActivité.class);
+                startActivity(matcher);
+                break;
+            case R.id.menu_contact:
+                Intent contact = new Intent(this,CommunicationUtilisateurs.class);
+                startActivity(contact);
                 break;
         }
         return super.onOptionsItemSelected(item);
