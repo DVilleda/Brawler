@@ -56,6 +56,7 @@ public class PrésenteurRechercheMatch {
                     vue.toggleÉtatBouton();
                 }
                 else if (msg.what == MSG_NOUVEAU_LIKE) {
+                    Log.d("passe", "MSG_NOUVEAU_LIKE" );
                     prochainUtilsateur();
                     vue.toggleÉtatBouton();
                 }
@@ -65,6 +66,7 @@ public class PrésenteurRechercheMatch {
     }
 
     public void setSourceUtilisateurs(SourceUtilisateurs source) {
+        Log.d("set:", "source");
         this.sourceUtilisateurs = source;
     }
 
@@ -75,7 +77,6 @@ public class PrésenteurRechercheMatch {
     public void jugerUtilisateur(boolean liker){
         if(liker){
             vue.toggleÉtatBouton();
-            Log.d("id: ", String.valueOf(modèle.getUtilisateurActuel().getId()));
             lancerFileEsclaveLikerUtilisateur(modèle.getUtilisateurActuel().getId());
         } else {
             prochainUtilsateur();
@@ -88,6 +89,7 @@ public class PrésenteurRechercheMatch {
             chargerNouvelleUtilisateur();
         } else if(modèle.getListUtilisateurs().size() > modèle.getUtilisateurEnRevue()){
             vue.afficherUtilisateur(modèle.getUtilisateurActuel());
+            Log.d("id uti:", String.valueOf(modèle.getUtilisateurActuel().getId()));
         }
     }
 
@@ -106,7 +108,6 @@ public class PrésenteurRechercheMatch {
     }
 
     private void lancerFileEsclaveChargerUtilisateur(){
-        Log.d("passe:", "file esclave utilisateurs");
         modèle.viderListeUtilisateurs();
         filEsclave = new Thread(
                 new Runnable() {
@@ -115,7 +116,7 @@ public class PrésenteurRechercheMatch {
                         Message msg = null;
                         try {
                             Thread.sleep(0);
-                            modèle.viderListe();
+                            modèle.viderListeUtilisateurs();
 
                             //TODO mettre le niveau de l'utilisteur actuel
                             if (parNiveau) {
@@ -147,10 +148,9 @@ public class PrésenteurRechercheMatch {
                         try {
                             Thread.sleep(0);
 
-                            modèle.viderListe();
                             InteracteurLikeUtilisateur.getInstance(sourceLike).likerUtilisateur(utilisateurLiker);
 
-                            msg = handlerRéponseApi.obtainMessage( MSG_NOUVEAU_UTILISATEUR );
+                            msg = handlerRéponseApi.obtainMessage( MSG_NOUVEAU_LIKE );
                         } catch (UtilisateursException e) {
                             msg = handlerRéponseApi.obtainMessage( MSG_ERREUR, e );
                         } catch (InterruptedException e) {

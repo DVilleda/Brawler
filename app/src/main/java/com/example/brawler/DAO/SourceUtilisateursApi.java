@@ -76,6 +76,7 @@ public class SourceUtilisateursApi implements SourceUtilisateurs {
 
     private List<Utilisateur> lancerConnexion() throws UtilisateursException {
         List<Utilisateur> utilisateursRecue = null;
+        Log.d("clé:", cléBearer);
 
         try{
             HttpURLConnection connexion =

@@ -26,7 +26,7 @@ public class CréationCompteActivité extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        String cléTemp = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2MDQ1ODg5NzUsImlhdCI6MTYwMjc3NDU3NSwic3ViIjoxfQ.orQR0Y5ge7tAjcJTEQ33MGvSZc2yMlhSg7lX_Yh3Lsc";
+        String cléTemp = "";
         SharedPreferences sharedPref = getPreferences(MODE_PRIVATE);
         String token = sharedPref.getString("token", cléTemp);
 

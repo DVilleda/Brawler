@@ -25,23 +25,18 @@ import com.example.brawler.présentation.vue.VueRechercheMatch;
 public class ConnexionActivité extends AppCompatActivity {
 
     private PrésenteurConnexion présenteur;
-    private String clé;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        String cléTemp = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2MDQ1ODg5NzUsImlhdCI6MTYwMjc3NDU3NSwic3ViIjoxfQ.orQR0Y5ge7tAjcJTEQ33MGvSZc2yMlhSg7lX_Yh3Lsc";
-        SharedPreferences sharedPref = getPreferences(MODE_PRIVATE);
-        String token = sharedPref.getString("token", cléTemp);
-
-        clé = token;
+        String cléTemp = "";
 
         Modèle modèle = new Modèle();
         VueConnexion vue = new VueConnexion();
         présenteur = new PrésenteurConnexion(vue, modèle);
-        présenteur.setSource(new SourceUtilisateursApi(clé));
+        présenteur.setSource(new SourceUtilisateursApi(cléTemp));
         vue.setPrésenteur(présenteur);
 
         FragmentTransaction ft=getSupportFragmentManager().beginTransaction();

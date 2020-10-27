@@ -86,7 +86,7 @@ public class PrésenteurConsulterMessage {
         filEsclaveEnvoyerMessage.start();
     }
 
-    private void rafraichir() {
+    public void rafraichir() {
 
         this.handlerRafraîchir = new Handler();
 

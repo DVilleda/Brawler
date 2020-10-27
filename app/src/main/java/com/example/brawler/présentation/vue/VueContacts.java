@@ -14,7 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.brawler.R;
 import com.example.brawler.domaine.entité.Utilisateur;
-import com.example.brawler.présentation.présenteur.AdapteursVues.ContactsAdapter;
+import com.example.brawler.présentation.vue.adapter.ContactsAdapter;
 import com.example.brawler.présentation.présenteur.PrésenteurContacts;
 
 import java.util.List;
@@ -32,6 +32,7 @@ public class VueContacts extends Fragment {
         View view = inflater.inflate(R.layout.fragment_voir_contact,container,false);
         rvContacts = (RecyclerView)view.findViewById(R.id.listeContacts);
         contactsAdapter = new ContactsAdapter(this.getContext());
+        contactsAdapter.setPrésenteur(_presenteur);
         rvContacts.setAdapter(contactsAdapter);
         rvContacts.setLayoutManager(new LinearLayoutManager(this.getContext()));
 

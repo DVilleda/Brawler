@@ -21,6 +21,7 @@ import com.example.brawler.présentation.vue.adapter.MessageAdapter;
 
 public class VueConsulterMessage extends Fragment {
 
+
     private PrésenteurConsulterMessage présenteur;
     private TextView txtMessage;
     private Button  btnEnvoyerMessage;

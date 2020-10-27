@@ -12,14 +12,11 @@ public class InteracteurAquisitionUtilisateurs {
     private static InteracteurAquisitionUtilisateurs instance;
 
     public static InteracteurAquisitionUtilisateurs getInstance(SourceUtilisateurs source) {
-        if (instance == null)
-            instance =  new InteracteurAquisitionUtilisateurs(source);
-
+        instance =  new InteracteurAquisitionUtilisateurs(source);
         return  instance;
     }
 
     private InteracteurAquisitionUtilisateurs(SourceUtilisateurs source) {
-
         this.source = source;
     }
 

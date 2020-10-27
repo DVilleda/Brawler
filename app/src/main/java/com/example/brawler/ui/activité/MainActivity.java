@@ -5,7 +5,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -25,16 +27,19 @@ public class MainActivity extends AppCompatActivity {
      */
     private PrésenteurProfil présenteurProfil;
     private String token;
-    private String token2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        //TODO remplacer la clé temporaire par la clé donner par l'Activité connexion
-        token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2MDQ1ODg5NzUsImlhdCI6MTYwMjc3NDU3NSwic3ViIjoxfQ.orQR0Y5ge7tAjcJTEQ33MGvSZc2yMlhSg7lX_Yh3Lsc";
-        token2 ="eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2MDU1NjA1NzksImlhdCI6MTYwMzc0NjE3OSwic3ViIjozfQ.aGbjViOdrCr4l8ANTZQ9ehaEvAbEeE6n586dIw_v_AQ";
+
+        SharedPreferences sharedPref = getSharedPreferences("infoLogin", Context.MODE_PRIVATE);
+        token = sharedPref.getString("token", "");
+        if(token.trim().isEmpty()){
+            startActivity(new Intent(this, ConnexionActivité.class));
+        }
+
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.navigation_app);
         setSupportActionBar(toolbar);
@@ -46,7 +51,7 @@ public class MainActivity extends AppCompatActivity {
 
         VueProfil vueProfil = new VueProfil();
         présenteurProfil = new PrésenteurProfil(vueProfil,modèle);
-        présenteurProfil.setSourceUtilisateur(new SourceProfilApi(token2));
+        présenteurProfil.setSourceUtilisateur(new SourceProfilApi(token));
         vueProfil.setPresenteur(présenteurProfil);
 
         //Transaction pour changer au fragement

@@ -1,4 +1,4 @@
-package com.example.brawler.présentation.présenteur.AdapteursVues;
+package com.example.brawler.présentation.vue.adapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -6,20 +6,20 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.brawler.R;
 import com.example.brawler.domaine.entité.Utilisateur;
+import com.example.brawler.présentation.présenteur.PrésenteurContacts;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ViewHolder> {
     private LayoutInflater layoutInflater;
     private List<Utilisateur> listUtilisateurs;
+    private PrésenteurContacts présenteur;
 
     public ContactsAdapter(Context context){
         this.layoutInflater = LayoutInflater.from(context);
@@ -27,6 +27,7 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ViewHo
 
     public void setListUtilisateurs(List<Utilisateur> list){this.listUtilisateurs=list;}
 
+    public void setPrésenteur(PrésenteurContacts présenteur){this.présenteur = présenteur;}
     @NonNull
     @Override
     public ContactsAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -61,6 +62,12 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ViewHo
                 @Override
                 public void onClick(View v) {
                     removeContact(getAdapterPosition());
+                }
+            });
+            chatContact.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    présenteur.chargerConversationUtilisateur(listUtilisateurs.get(getAdapterPosition()).getId());
                 }
             });
         }

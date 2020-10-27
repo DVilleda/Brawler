@@ -35,7 +35,7 @@ public class CommunicationUtilisateurs extends AppCompatActivity {
 
         VueContacts vueContacts= new VueContacts();
         Modèle modèle = new Modèle();
-        présenteurContacts = new PrésenteurContacts(vueContacts,modèle);
+        présenteurContacts = new PrésenteurContacts(vueContacts,modèle, this);
         présenteurContacts.setSource(new SourceUtilisateurFictif());
         vueContacts.setPresenteur(présenteurContacts);
 

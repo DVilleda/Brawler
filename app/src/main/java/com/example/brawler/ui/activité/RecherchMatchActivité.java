@@ -1,8 +1,12 @@
 package com.example.brawler.ui.activité;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
+import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -31,8 +35,13 @@ public class RecherchMatchActivité extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        //TODO remplacer la clé temporaire par la clé donner par l'Activité connexion
-        clé = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2MDUxMDIxNzksImlhdCI6MTYwMzI4Nzc3OSwic3ViIjoxfQ.fEXBoF_nGZX64l-ftPbuw7ec2Wnd7qOZD41cA-J83hU";
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        clé = sharedPref.getString("token", "");
+        Log.d("clé", clé);
+        if(clé.trim().isEmpty()){
+            startActivity(new Intent(this, ConnexionActivité.class));
+        }
+
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.navigation_app);
         setSupportActionBar(toolbar);
@@ -55,6 +64,18 @@ public class RecherchMatchActivité extends AppCompatActivity {
     @Override
     public void onStart() {
         super.onStart();
+        présenteur.prochainUtilsateur();
+    }
+
+    @Override
+    public void onResume(){
+        super.onResume();
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        clé = sharedPref.getString("token", "");
+        Log.d("clé", clé);
+        Log.d("passe", "onResume");
+        présenteur.setSourceUtilisateurs(new SourceUtilisateursApi(clé));
+        présenteur.setSourceLike(new SourceLikeApi(clé));
         présenteur.prochainUtilsateur();
     }
 

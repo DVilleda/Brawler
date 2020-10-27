@@ -63,17 +63,15 @@ public class SourceLikeApi implements SourceLike {
     }
 
     private boolean décoderJson(InputStream requêteEncoder) throws IOException {
+        Boolean utilisateurAjoutéContact = null;
         InputStreamReader responseBodyReader =
                 new InputStreamReader(requêteEncoder, "UTF-8");
-        Boolean utilisateurAjoutéContact = null;
 
         JsonReader jsonReader = new JsonReader(responseBodyReader);
         jsonReader.beginObject();
-        Log.d("json", String.valueOf(jsonReader));
         while (jsonReader.hasNext()) {
             String key = jsonReader.nextName();
-
-            if(key == "Réponse") {
+            if(key .equals("Réponse")) {
                 utilisateurAjoutéContact = jsonReader.nextBoolean();
             } else {
                 jsonReader.skipValue();

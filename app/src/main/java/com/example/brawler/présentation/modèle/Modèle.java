@@ -45,7 +45,7 @@ public class Modèle {
 
     public void prochainUtilisateur(){utilisateurEnRevue +=1;}
 
-    public void viderListe() {
+    public void viderListeUtilisateurs() {
         if (listeUtilisateurs.size() != 0) {
             listeUtilisateurs.removeAll(listeUtilisateurs);
             utilisateurEnRevue = 0;

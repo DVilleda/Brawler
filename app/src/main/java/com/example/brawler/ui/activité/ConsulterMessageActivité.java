@@ -1,6 +1,8 @@
 package com.example.brawler.ui.activité;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -21,31 +23,33 @@ import com.example.brawler.présentation.vue.VueConsulterMessage;
 import com.example.brawler.présentation.vue.VueRechercheMatch;
 
 public class ConsulterMessageActivité extends AppCompatActivity {
+    private static final String EXTRA_ID_UTILSAITEUR = "com.brawler.idUtilisateur";
 
     private PrésenteurConsulterMessage présenteur;
     private String clé;
+    Modèle modèle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        //TODO remplacer la clé temporaire par la clé donner par l'Activité connexion
-        clé = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2MDU0OTQzMTcsImlhdCI6MTYwMzY3OTkxNywic3ViIjoxfQ.Y2j0GjsT_CkvIbz1mGotuhjP-e9YwNxBbXLdMbJk9DY";
 
+        SharedPreferences sharedPref = getSharedPreferences("infoLogin", Context.MODE_PRIVATE);
+        clé = sharedPref.getString("token", "");
+        if(clé.trim().isEmpty()){
+            startActivity(new Intent(this, ConnexionActivité.class));
+        }
         Toolbar toolbar = (Toolbar) findViewById(R.id.navigation_app);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         toolbar.setTitle("");
         toolbar.setSubtitle("");
 
-        Modèle modèle = new Modèle();
-        modèle.setUtilisateurEnRevue(2);
+        modèle = new Modèle();
         VueConsulterMessage vue = new VueConsulterMessage();
         présenteur = new PrésenteurConsulterMessage(vue, modèle);
         présenteur.setSource(new SourceMessageApi(clé));
-        //TODO remplacr par l'id de l'utilisateur actuel
-        présenteur.getMessages(2);
         vue.setPrésenteur(présenteur);
 
         FragmentTransaction ft=getSupportFragmentManager().beginTransaction();
@@ -56,6 +60,10 @@ public class ConsulterMessageActivité extends AppCompatActivity {
     @Override
     public void onStart() {
         super.onStart();
+
+        int idUtilisateurConversation = getIntent().getIntExtra(EXTRA_ID_UTILSAITEUR, -1);
+        modèle.setUtilisateurEnRevue(idUtilisateurConversation);
+        présenteur.getMessages(idUtilisateurConversation);
     }
 
     @Override

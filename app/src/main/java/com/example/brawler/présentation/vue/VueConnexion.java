@@ -1,9 +1,11 @@
 package com.example.brawler.présentation.vue;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.method.LinkMovementMethod;
@@ -72,7 +74,7 @@ public class VueConnexion extends Fragment {
         lienCreerCompte.setText(ss);
         lienCreerCompte.setMovementMethod(LinkMovementMethod.getInstance());
 
-        SharedPreferences sharedPref = getActivity().getPreferences(Context.MODE_PRIVATE);
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getActivity().getApplicationContext());
         String savedUsername = sharedPref.getString("savedUsername", "");
         String savedPassword = sharedPref.getString("savedMdp", "");
 
@@ -85,36 +87,13 @@ public class VueConnexion extends Fragment {
             public void onClick(View v){
                 String reponse = "0";
 
-                reponse = présenteur.ThreadDeAuthentifer(getNomUtilisateur(), getMotDePasseUtilisateur());
-
-                if(reponse.equals("0")){
-                    Log.e("Le failure était: ", reponse);
-                    setMessageErreurMauvaisesCredentials();
-                    Toast.makeText(getContext(),reponse,Toast.LENGTH_SHORT).show();
-                }else {
-                    Log.e("Le success était: ", reponse);
-                    Toast.makeText(getContext(),reponse,Toast.LENGTH_SHORT).show();
-                    openVueRechercheMatch();
-
-                    SharedPreferences sharedPref = getActivity().getPreferences(Context.MODE_PRIVATE);
-                    SharedPreferences.Editor editor = sharedPref.edit();
-                    if(getSeSouvenir()){
-                        editor.putString("savecUsername", getNomUtilisateur());
-                        editor.putString("savedMdp", getMotDePasseUtilisateur());
-                    }
-                    editor.putString("token", reponse);
-                    editor.apply();
-                }
+                présenteur.ThreadDeAuthentifer(getNomUtilisateur(), getMotDePasseUtilisateur());
             }
         });
 
         return vue;
     }
 
-    public void openVueRechercheMatch(){
-        Intent nouvelleVue = new Intent(getActivity(), RecherchMatchActivité.class);
-        startActivity(nouvelleVue);
-    }
     public void openVueCreationCompte(){
         Intent nouvelleVue = new Intent(getActivity(), CréationCompteActivité.class);
         startActivity(nouvelleVue);
@@ -128,4 +107,24 @@ public class VueConnexion extends Fragment {
 
     public void setMessageErreurMauvaisesCredentials(){etNomUtilisateur.setError(getString(R.string.erreurConnexion) +" "+ getString(R.string.erreurInfoErronées)); }
 
+    public void notifierConnexionSuccès(String reponse) {
+        if (reponse.equals("0")) {
+            Log.e("Le failure était: ", reponse);
+            setMessageErreurMauvaisesCredentials();
+            Toast.makeText(getContext(), reponse, Toast.LENGTH_SHORT).show();
+        } else {
+            Log.e("Le success était: ", reponse);
+            Toast.makeText(getContext(), reponse, Toast.LENGTH_SHORT).show();
+            SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getActivity().getApplicationContext());
+            SharedPreferences.Editor editor = sharedPref.edit();
+            if (getSeSouvenir()) {
+                editor.putString("savedUsername", getNomUtilisateur());
+                editor.putString("savedMdp", getMotDePasseUtilisateur());
+            }
+            editor.putString("token", reponse);
+            editor.apply();
+            getActivity().setResult(Activity.RESULT_OK);
+            getActivity().finish();
+        }
+    }
 }
