@@ -46,6 +46,8 @@ public class PrésenteurConsulterMessage {
                         nbMessageActuel = getNbMessages();
                         vue.rafraîchir();
                         rafraichir();
+                    } else {
+                        rafraichir();
                     }
                 } else if (msg.what == MSG_NOUVEAU_MESSAGE){
                     vue.viderTxtMessage();
@@ -89,10 +91,10 @@ public class PrésenteurConsulterMessage {
     public void rafraichir() {
 
         this.handlerRafraîchir = new Handler();
-
         final Runnable runnable = new Runnable() {
             @Override
             public void run() {
+                Log.d("se", "rafrachit");
                 getMessages(modèle.getUtilisateurEnRevue());
             }
         };
@@ -109,7 +111,6 @@ public class PrésenteurConsulterMessage {
                         try {
                             Thread.sleep(0);
                             modèle.setListeMessage(InteracteurMessage.getInstance(source).getMessages(idUtilisateur));
-
                             msg = handlerRéponse.obtainMessage( MSG_CHARGER_MESSAGES );
                         } catch (InterruptedException e) {
                             msg = handlerRéponse.obtainMessage( MSG_ANNULER );

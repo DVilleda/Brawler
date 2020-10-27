@@ -51,7 +51,6 @@ public class SourceMessageApi implements SourceMessage {
         } catch (MalformedURLException e) {
             e.printStackTrace();
         }
-        Log.d("passe:", "obtenir message");
         return lancerConnexionRecevoirMessage();
     }
 
@@ -75,7 +74,6 @@ public class SourceMessageApi implements SourceMessage {
             connexion.setRequestProperty("Authorization", cléBearer);
             if(connexion.getResponseCode()==200){
                 messages = décoderJSON(connexion.getInputStream());
-                Log.d("passe:", "connexion réeussi");
             }
             else{
                 Log.d("problème:", String.valueOf(connexion.getResponseCode()));
@@ -92,7 +90,6 @@ public class SourceMessageApi implements SourceMessage {
 
     private void lancerConnexionEnvoyerMessage(String message) throws MessageException {
         try{
-            Log.d("URL", String.valueOf(url));
             HttpURLConnection connexion =
                     (HttpURLConnection)url.openConnection();
             connexion.setRequestProperty("Authorization", cléBearer);
@@ -118,7 +115,6 @@ public class SourceMessageApi implements SourceMessage {
 
 
             if(connexion.getResponseCode()==200){
-                Log.d("fonc", "tionne");
             }
             else{
                 Log.d("problème:", String.valueOf(connexion.getResponseCode()));
@@ -141,7 +137,6 @@ public class SourceMessageApi implements SourceMessage {
 
         while(jsonReader.hasNext()) {
             String key = jsonReader.nextName();
-            Log.d("key: ", key);
             if(key.equals("message")){
                 jsonReader.beginArray();
                 while (jsonReader.hasNext()){
@@ -179,13 +174,11 @@ public class SourceMessageApi implements SourceMessage {
         jsonReader.endObject();
 
         message = new Message(texte, utilisateur, temps);
-        Log.d("message", message.getTexte());
         return message;
     }
 
     //exemple de date: 2020-10-26 05:53:35
     private Date décoderTemps(String temps){
-        Log.d("temps", temps);
         Date date = null;
 
         String[] dateATraiter = null;
