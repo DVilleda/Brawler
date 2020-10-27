@@ -39,9 +39,8 @@ public class VueContacts extends Fragment {
         return view;
     }
 
-    public void afficherContacts(List<Utilisateur> listContact){
-        if(listContact.size()>0)
-            contactsAdapter.setListUtilisateurs(listContact);
+    public void afficherContacts(){
+        contactsAdapter.setListUtilisateurs();
         rafraichirVue();
     }
 

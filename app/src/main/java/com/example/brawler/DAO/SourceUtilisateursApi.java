@@ -38,6 +38,7 @@ public class SourceUtilisateursApi implements SourceUtilisateurs {
     private URL url;
     private URL urlUnUtilisateur;
     private String urlUtilisateur = "http://52.3.68.3/utilisateur/";
+    private String urlContact = "http://52.3.68.3/contact";
     private String clé;
     private String cléBearer;
 
@@ -65,6 +66,20 @@ public class SourceUtilisateursApi implements SourceUtilisateurs {
         List<Utilisateur> utilisateursRecue = null;
         try {
             url = new URL(urlUtilisateur + "location");
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+
+        utilisateursRecue = lancerConnexion();
+
+        return utilisateursRecue;
+    }
+
+    @Override
+    public List<Utilisateur> getContact() throws UtilisateursException {
+        List<Utilisateur> utilisateursRecue = null;
+        try {
+            url = new URL(urlContact);
         } catch (MalformedURLException e) {
             e.printStackTrace();
         }
@@ -106,6 +121,7 @@ public class SourceUtilisateursApi implements SourceUtilisateurs {
 
         while(jsonReader.hasNext()) {
             String key = jsonReader.nextName();
+            Log.d("Json", key);
             if(key.equals("utilisateurs")){
                 utilisateursArrayList = commencerDécoderUtilasteur(jsonReader);
             } else if(key.equals("réponse")) {

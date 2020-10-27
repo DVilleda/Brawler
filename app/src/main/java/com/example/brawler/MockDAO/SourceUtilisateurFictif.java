@@ -77,6 +77,11 @@ public class SourceUtilisateurFictif implements SourceUtilisateurs {
     }
 
     @Override
+    public List<Utilisateur> getContact() throws UtilisateursException {
+        return null;
+    }
+
+    @Override
     public JSONObject creerNouveauUtilisateur(String email, String mdp, String prénom, String location, String description) {
         return null;
     }

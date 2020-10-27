@@ -28,4 +28,7 @@ public class InteracteurAquisitionUtilisateurs {
         return source.getNouvelleUtilisateurParNiveau(niveau);
     }
 
+    public List<Utilisateur> getContact() throws UtilisateursException {
+        return source.getContact();
+    }
 }

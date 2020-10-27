@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -35,11 +37,13 @@ public class ConsulterMessageActivité extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
 
-        SharedPreferences sharedPref = getSharedPreferences("infoLogin", Context.MODE_PRIVATE);
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         clé = sharedPref.getString("token", "");
+        Log.d("clé", clé);
         if(clé.trim().isEmpty()){
             startActivity(new Intent(this, ConnexionActivité.class));
         }
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.navigation_app);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);

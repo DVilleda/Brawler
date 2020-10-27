@@ -25,7 +25,8 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ViewHo
         this.layoutInflater = LayoutInflater.from(context);
     }
 
-    public void setListUtilisateurs(List<Utilisateur> list){this.listUtilisateurs=list;}
+    public void setListUtilisateurs(){
+        listUtilisateurs = présenteur.getListContact();}
 
     public void setPrésenteur(PrésenteurContacts présenteur){this.présenteur = présenteur;}
     @NonNull
@@ -45,6 +46,8 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ViewHo
 
     @Override
     public int getItemCount() {
+        if (listUtilisateurs == null)
+            return 0;
         return listUtilisateurs.size();
     }
 
