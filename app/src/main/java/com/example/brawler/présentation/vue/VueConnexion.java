@@ -27,6 +27,7 @@ import com.example.brawler.R;
 import com.example.brawler.domaine.entité.Utilisateur;
 import com.example.brawler.présentation.présenteur.PrésenteurConnexion;
 import com.example.brawler.ui.activité.ConnexionActivité;
+import com.example.brawler.ui.activité.CréationCompteActivité;
 import com.example.brawler.ui.activité.RecherchMatchActivité;
 
 import org.json.JSONException;
@@ -56,19 +57,21 @@ public class VueConnexion extends Fragment {
         txtPassword = vue.findViewById(R.id.txtPassword);
         checkBoxSouvenir = vue.findViewById(R.id.checkBoxSouvenir);
         btnEnter = vue.findViewById(R.id.btnEnter);
-        /*lienCreerCompte = vue.findViewById(R.id.tvCreerCompte);
-        String lienCreerCompteText = lienCreerCompte.getText().toString();
+        lienCreerCompte = vue.findViewById(R.id.tvCreerCompte);
+        String creerCompteText = "Pas de compte? Creez-en un";
 
-        SpannableString spannableString = new SpannableString(lienCreerCompteText);
+        SpannableString ss = new SpannableString(creerCompteText);
         ClickableSpan clickableSpan = new ClickableSpan() {
             @Override
             public void onClick(@NonNull View view) {
-                Log.v("info: ","New compte creation button pressed");
+                Log.i("info: ","New compte creation button pressed");
+                openVueCreationCompte();
             }
         };
-        lienCreerCompte.setText(spannableString);
+        ss.setSpan(clickableSpan, 0, 26, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        lienCreerCompte.setText(ss);
         lienCreerCompte.setMovementMethod(LinkMovementMethod.getInstance());
-        spannableString.setSpan(clickableSpan, 0, lienCreerCompteText.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);*/
+
         SharedPreferences sharedPref = getActivity().getPreferences(Context.MODE_PRIVATE);
         String savedUsername = sharedPref.getString("savedUsername", "");
         String savedPassword = sharedPref.getString("savedMdp", "");
@@ -110,6 +113,10 @@ public class VueConnexion extends Fragment {
 
     public void openVueRechercheMatch(){
         Intent nouvelleVue = new Intent(getActivity(), RecherchMatchActivité.class);
+        startActivity(nouvelleVue);
+    }
+    public void openVueCreationCompte(){
+        Intent nouvelleVue = new Intent(getActivity(), CréationCompteActivité.class);
         startActivity(nouvelleVue);
     }
 
