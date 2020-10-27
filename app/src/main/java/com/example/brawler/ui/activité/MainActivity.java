@@ -31,7 +31,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_profil);
 
 
         SharedPreferences sharedPref = getSharedPreferences("infoLogin", Context.MODE_PRIVATE);
@@ -56,7 +56,7 @@ public class MainActivity extends AppCompatActivity {
 
         //Transaction pour changer au fragement
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-        fragmentTransaction.add(R.id.layoutMain,vueProfil);
+        fragmentTransaction.add(R.id.layoutPrincipal,vueProfil);
         fragmentTransaction.commit();
     }
     @Override
