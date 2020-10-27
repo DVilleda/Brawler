@@ -24,4 +24,12 @@
     <string name="logoDesc">Logo Rumbler</string>
     <string name="erreurConnexion">Erreur de connexion</string>
     <string name="erreurInfoErronées">vérifiez les informations et réessayez à nouveau</string>
+    <string name="createCompte">Pas de compte? Creez-en un</string>
+
+    <!--Creation de compte Page-->
+    <string name="emailHint">Entrez votre email</string>
+    <string name="nameHint">Entrez votre Prénom</string>
+    <string name="locationHint">Entrez votre ville</string>
+    <string name="descriptionHint">Decrivez vous</string>
+
 </resources>

@@ -5,6 +5,8 @@ import com.example.brawler.domaine.entité.Utilisateur;
 import com.example.brawler.domaine.intéracteur.SourceUtilisateurs;
 import com.example.brawler.domaine.intéracteur.UtilisateursException;
 
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -70,6 +72,11 @@ public class SourceUtilisateurFictif implements SourceUtilisateurs {
 
     @Override
     public List<Utilisateur> getUtilisateur() throws UtilisateursException {
+        return null;
+    }
+
+    @Override
+    public JSONObject creerNouveauUtilisateur(String email, String mdp, String prénom, String location, String description) {
         return null;
     }
 }

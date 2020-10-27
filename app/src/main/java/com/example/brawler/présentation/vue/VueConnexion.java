@@ -1,26 +1,43 @@
 package com.example.brawler.présentation.vue;
 
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.text.SpannableString;
+import android.text.Spanned;
+import android.text.method.LinkMovementMethod;
+import android.text.style.ClickableSpan;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.CheckedTextView;
+import android.widget.TextView;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-
+import androidx.fragment.app.FragmentTransaction;
 
 import com.example.brawler.R;
 import com.example.brawler.domaine.entité.Utilisateur;
 import com.example.brawler.présentation.présenteur.PrésenteurConnexion;
+import com.example.brawler.ui.activité.ConnexionActivité;
+import com.example.brawler.ui.activité.RecherchMatchActivité;
+
+import org.json.JSONException;
 
 public class VueConnexion extends Fragment {
 
     private PrésenteurConnexion présenteur;
+    private TextView lienCreerCompte;
     private EditText etNomUtilisateur;
     private EditText txtPassword;
-    private CheckedTextView checkedtvSouvenir;
+    private CheckBox checkBoxSouvenir;
     private Button btnEnter;
 
     public void setPrésenteur(PrésenteurConnexion présenteur) {
@@ -37,18 +54,53 @@ public class VueConnexion extends Fragment {
 
         etNomUtilisateur = vue.findViewById(R.id.etNomUtilisateur);
         txtPassword = vue.findViewById(R.id.txtPassword);
-        checkedtvSouvenir = vue.findViewById(R.id.checkedtvSouvenir);
+        checkBoxSouvenir = vue.findViewById(R.id.checkBoxSouvenir);
         btnEnter = vue.findViewById(R.id.btnEnter);
+        /*lienCreerCompte = vue.findViewById(R.id.tvCreerCompte);
+        String lienCreerCompteText = lienCreerCompte.getText().toString();
 
+        SpannableString spannableString = new SpannableString(lienCreerCompteText);
+        ClickableSpan clickableSpan = new ClickableSpan() {
+            @Override
+            public void onClick(@NonNull View view) {
+                Log.v("info: ","New compte creation button pressed");
+            }
+        };
+        lienCreerCompte.setText(spannableString);
+        lienCreerCompte.setMovementMethod(LinkMovementMethod.getInstance());
+        spannableString.setSpan(clickableSpan, 0, lienCreerCompteText.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);*/
+        SharedPreferences sharedPref = getActivity().getPreferences(Context.MODE_PRIVATE);
+        String savedUsername = sharedPref.getString("savedUsername", "");
+        String savedPassword = sharedPref.getString("savedMdp", "");
+
+        if(getSeSouvenir()){
+            etNomUtilisateur.setText(savedUsername);
+            txtPassword.setText(savedPassword);
+        }
         btnEnter.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
-                boolean valide = présenteur.VerifierInformations(getNomUtilisateur(), getMotDePasseUtilisateur());
-                if (valide){
-                    VueRechercheMatch VueRechercheMatch = new VueRechercheMatch();
-                }
-                else {
+                String reponse = "0";
+
+                reponse = présenteur.ThreadDeAuthentifer(getNomUtilisateur(), getMotDePasseUtilisateur());
+
+                if(reponse.equals("0")){
+                    Log.e("Le failure était: ", reponse);
                     setMessageErreurMauvaisesCredentials();
+                    Toast.makeText(getContext(),reponse,Toast.LENGTH_SHORT).show();
+                }else {
+                    Log.e("Le success était: ", reponse);
+                    Toast.makeText(getContext(),reponse,Toast.LENGTH_SHORT).show();
+                    openVueRechercheMatch();
+
+                    SharedPreferences sharedPref = getActivity().getPreferences(Context.MODE_PRIVATE);
+                    SharedPreferences.Editor editor = sharedPref.edit();
+                    if(getSeSouvenir()){
+                        editor.putString("savecUsername", getNomUtilisateur());
+                        editor.putString("savedMdp", getMotDePasseUtilisateur());
+                    }
+                    editor.putString("token", reponse);
+                    editor.apply();
                 }
             }
         });
@@ -56,11 +108,16 @@ public class VueConnexion extends Fragment {
         return vue;
     }
 
+    public void openVueRechercheMatch(){
+        Intent nouvelleVue = new Intent(getActivity(), RecherchMatchActivité.class);
+        startActivity(nouvelleVue);
+    }
+
     public String getNomUtilisateur() { return etNomUtilisateur.getText().toString(); }
 
     public String getMotDePasseUtilisateur() { return txtPassword.getText().toString(); }
 
-    public boolean getSeSouvenir() { return checkedtvSouvenir.isChecked(); }
+    public boolean getSeSouvenir() { return checkBoxSouvenir.isChecked(); }
 
     public void setMessageErreurMauvaisesCredentials(){etNomUtilisateur.setError(getString(R.string.erreurConnexion) +" "+ getString(R.string.erreurInfoErronées)); }
 

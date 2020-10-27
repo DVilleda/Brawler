@@ -5,11 +5,27 @@ import java.io.File;
 public class Utilisateur {
     private int id;
     private String nom;
+    private String email;
+    private String description;
     private String mdp;
     private Niveau niveau;
     private String location;
     private Statistique statistique;
     private byte[] photo;
+
+    public Utilisateur(){
+
+    }
+
+    public Utilisateur(String email, String mdp, String prénom, String location, String description) {
+        this.email = email;
+        this.mdp = mdp;
+        this.nom = prénom;
+        this.location = location;
+        this.description = description;
+        //statistique par défault
+        statistique = new Statistique(0,0);
+    }
 
     public Utilisateur(int id, String nom, Niveau niveau, String location) {
         this.id = id;
@@ -81,6 +97,18 @@ public class Utilisateur {
 
     public Statistique getStatistique() {
         return statistique;
+    }
+
+    public String getEmail() { return email; }
+
+    public void setEmail(String email) { this.email = email; }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public void setStatistique(Statistique statistique) {
