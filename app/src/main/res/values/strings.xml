@@ -28,4 +28,8 @@
     <!--Page Voir Message-->
     <string name="envoyerMessage">Envoyer Message</string>
     <string name="entererMessage">Entrer votre message</string>
+    <string name="aller_profil">Aller Profil</string>
+    <string name="aller_discuter">Aller Discuter</string>
+    <string name="aller_matcher">Aller Matcher</string>
+    <string name="liste_de_contacts">"Liste de Contacts : "</string>
 </resources>

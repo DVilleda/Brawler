@@ -11,30 +11,21 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
-import com.example.brawler.DAO.SourceProfilApi;
+import com.example.brawler.MockDAO.SourceUtilisateurFictif;
 import com.example.brawler.R;
-import com.example.brawler.MockDAO.MockUtilisateur;
 import com.example.brawler.présentation.modèle.Modèle;
-import com.example.brawler.présentation.présenteur.PrésenteurProfil;
-import com.example.brawler.présentation.vue.VueProfil;
+import com.example.brawler.présentation.présenteur.PrésenteurContacts;
+import com.example.brawler.présentation.vue.VueContacts;
 
-public class MainActivity extends AppCompatActivity {
-    /**
-     * Paramètres
-     */
-    private PrésenteurProfil présenteurProfil;
-    private String token;
-    private String token2;
+public class CommunicationUtilisateurs extends AppCompatActivity {
+    private PrésenteurContacts présenteurContacts;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-
-        //TODO remplacer la clé temporaire par la clé donner par l'Activité connexion
-        token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2MDQ1ODg5NzUsImlhdCI6MTYwMjc3NDU3NSwic3ViIjoxfQ.orQR0Y5ge7tAjcJTEQ33MGvSZc2yMlhSg7lX_Yh3Lsc";
-        token2 ="eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2MDU1NjA1NzksImlhdCI6MTYwMzc0NjE3OSwic3ViIjozfQ.aGbjViOdrCr4l8ANTZQ9ehaEvAbEeE6n586dIw_v_AQ";
+        setContentView(R.layout.activity_contacts);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.navigation_app);
         setSupportActionBar(toolbar);
@@ -42,22 +33,22 @@ public class MainActivity extends AppCompatActivity {
         toolbar.setTitle("");
         toolbar.setSubtitle("");
 
+        VueContacts vueContacts= new VueContacts();
         Modèle modèle = new Modèle();
-
-        VueProfil vueProfil = new VueProfil();
-        présenteurProfil = new PrésenteurProfil(vueProfil,modèle);
-        présenteurProfil.setSourceUtilisateur(new SourceProfilApi(token2));
-        vueProfil.setPresenteur(présenteurProfil);
+        présenteurContacts = new PrésenteurContacts(vueContacts,modèle);
+        présenteurContacts.setSource(new SourceUtilisateurFictif());
+        vueContacts.setPresenteur(présenteurContacts);
 
         //Transaction pour changer au fragement
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-        fragmentTransaction.add(R.id.layoutMain,vueProfil);
+        fragmentTransaction.add(R.id.layoutContacts,vueContacts);
         fragmentTransaction.commit();
     }
+
     @Override
-    public void onStart(){
+    protected void onStart() {
         super.onStart();
-        présenteurProfil.chargerUtilisateur();
+        présenteurContacts.chargerListeContacts();
     }
 
     @Override
@@ -71,23 +62,16 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()){
             case R.id.menu_profil:
+                Intent profil = new Intent(this,MainActivity.class);
+                startActivity(profil);
                 break;
             case R.id.menu_match:
                 Intent matcher = new Intent(this,RecherchMatchActivité.class);
                 startActivity(matcher);
                 break;
             case R.id.menu_contact:
-                Intent contact = new Intent(this,CommunicationUtilisateurs.class);
-                startActivity(contact);
                 break;
         }
         return super.onOptionsItemSelected(item);
-    }
-
-    /**
-     * Appel de la méthode du présenteur pour changer la visibilté des informations du profil
-     */
-    public void ShowInfoProfil(View view){
-        présenteurProfil.setVisibleInfos();
     }
 }

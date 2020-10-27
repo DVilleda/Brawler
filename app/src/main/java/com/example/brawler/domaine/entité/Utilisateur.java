@@ -10,6 +10,8 @@ public class Utilisateur {
     private String location;
     private Statistique statistique;
     private byte[] photo;
+    private String email;
+    private String description;
 
     public Utilisateur(int id, String nom, Niveau niveau, String location) {
         this.id = id;
@@ -33,6 +35,15 @@ public class Utilisateur {
         this.location = location;
         this.statistique = new Statistique(nombreVictoire, nombrePerdu);
         this.mdp = leMdp;
+    }
+
+    public Utilisateur(int id, String nom, Niveau niveau, String location, String email,String description) {
+        this.id = id;
+        this.nom = nom;
+        this.niveau = niveau;
+        this.location = location;
+        this.email = email;
+        this.description = description;
     }
 
     public String getNom() {
@@ -85,5 +96,21 @@ public class Utilisateur {
 
     public void setStatistique(Statistique statistique) {
         this.statistique = statistique;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 }

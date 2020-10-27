@@ -70,6 +70,7 @@ public class SourceUtilisateurFictif implements SourceUtilisateurs {
 
     @Override
     public List<Utilisateur> getUtilisateur() throws UtilisateursException {
-        return null;
+        nouveauUtilisateur();
+        return utilisateurs;
     }
 }

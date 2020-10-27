@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:focusable="true"
+    android:orientation="vertical"
+    android:paddingTop="55dp">
+
+    <TextView
+        android:id="@+id/lbl_contacts_liste"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/liste_de_contacts" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/listeContacts"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+</LinearLayout>
