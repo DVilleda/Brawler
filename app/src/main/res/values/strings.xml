@@ -32,4 +32,12 @@
     <string name="aller_discuter">Aller Discuter</string>
     <string name="aller_matcher">Aller Matcher</string>
     <string name="liste_de_contacts">"Liste de Contacts : "</string>
+    <string name="createCompte">Pas de compte? Creez-en un</string>
+
+    <!--Creation de compte Page-->
+    <string name="emailHint">Entrez votre email</string>
+    <string name="nameHint">Entrez votre Prénom</string>
+    <string name="locationHint">Entrez votre ville</string>
+    <string name="descriptionHint">Decrivez vous</string>
+
 </resources>

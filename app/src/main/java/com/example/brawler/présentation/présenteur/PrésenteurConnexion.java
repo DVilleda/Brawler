@@ -1,15 +1,22 @@
 package com.example.brawler.présentation.présenteur;
 
+import com.example.brawler.DAO.SourceUtilisateursApi;
 import com.example.brawler.domaine.intéracteur.SourceUtilisateurs;
 import com.example.brawler.présentation.modèle.Modèle;
 import com.example.brawler.présentation.vue.VueConnexion;
 import com.example.brawler.MockDAO.SourceUtilisateurFictif.*;
 
+import org.json.JSONException;
+
 public class PrésenteurConnexion {
 
     private VueConnexion vue;
     private Modèle modèle;
-    private SourceUtilisateurs source;
+    private SourceUtilisateursApi source;
+
+    private Thread filEsclave = null;
+
+    String resultat ="";
 
     public PrésenteurConnexion(VueConnexion vue, Modèle modèle){
         this.vue = vue;
@@ -17,16 +24,26 @@ public class PrésenteurConnexion {
 
     }
 
-    public boolean VerifierInformations(String uName, String mdp){
-        boolean estValide = false;
-        String nomDUtilisateur = modèle.getUtilisateur().getNom();
-        String motDePasseEnregistré = modèle.getUtilisateur().getMdp();
+    public void setSource(SourceUtilisateursApi source) {
+        this.source = source;
+    }
 
-        if (nomDUtilisateur.contentEquals(uName) && motDePasseEnregistré.contentEquals(motDePasseEnregistré)){
-            estValide = true;
-        }
+    public String VerifierInformations(String email, String mdp) {
+        String response;
+        response = source.Authentifier(email, mdp);
+        return response;
+    }
 
-        return estValide;
+    public String ThreadDeAuthentifer(final String email, final String mdp){
+        filEsclave = new Thread(
+                new Runnable() {
+                    @Override
+                    public void run() {
+                        resultat = VerifierInformations(email, mdp);
+                    }
+                });
+        filEsclave.start();
+        return resultat;
     }
 
 }
