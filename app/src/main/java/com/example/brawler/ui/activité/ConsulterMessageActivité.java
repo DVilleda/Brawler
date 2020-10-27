@@ -2,7 +2,6 @@ package com.example.brawler.ui.activité;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -12,17 +11,18 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.example.brawler.DAO.SourceMessageApi;
 import com.example.brawler.DAO.SourceUtilisateursApi;
-import com.example.brawler.MockDAO.SourceUtilisateurFictif;
 import com.example.brawler.R;
-import com.example.brawler.domaine.intéracteur.UtilisateursException;
 import com.example.brawler.présentation.modèle.Modèle;
+import com.example.brawler.présentation.présenteur.PrésenteurConsulterMessage;
 import com.example.brawler.présentation.présenteur.PrésenteurRechercheMatch;
+import com.example.brawler.présentation.vue.VueConsulterMessage;
 import com.example.brawler.présentation.vue.VueRechercheMatch;
 
-public class RecherchMatchActivité extends AppCompatActivity {
+public class ConsulterMessageActivité extends AppCompatActivity {
 
-    private PrésenteurRechercheMatch présenteur;
+    private PrésenteurConsulterMessage présenteur;
     private String clé;
 
     @Override
@@ -31,7 +31,7 @@ public class RecherchMatchActivité extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         //TODO remplacer la clé temporaire par la clé donner par l'Activité connexion
-        clé = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2MDQ1ODg5NzUsImlhdCI6MTYwMjc3NDU3NSwic3ViIjoxfQ.orQR0Y5ge7tAjcJTEQ33MGvSZc2yMlhSg7lX_Yh3Lsc";
+        clé = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2MDU0OTQzMTcsImlhdCI6MTYwMzY3OTkxNywic3ViIjoxfQ.Y2j0GjsT_CkvIbz1mGotuhjP-e9YwNxBbXLdMbJk9DY";
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.navigation_app);
         setSupportActionBar(toolbar);
@@ -40,20 +40,22 @@ public class RecherchMatchActivité extends AppCompatActivity {
         toolbar.setSubtitle("");
 
         Modèle modèle = new Modèle();
-        VueRechercheMatch vue = new VueRechercheMatch();
-        présenteur = new PrésenteurRechercheMatch(vue, modèle);
-        présenteur.setSource(new SourceUtilisateursApi(clé));
+        modèle.setUtilisateurEnRevue(2);
+        VueConsulterMessage vue = new VueConsulterMessage();
+        présenteur = new PrésenteurConsulterMessage(vue, modèle);
+        présenteur.setSource(new SourceMessageApi(clé));
+        //TODO remplacr par l'id de l'utilisateur actuel
+        présenteur.getMessages(2);
         vue.setPrésenteur(présenteur);
 
         FragmentTransaction ft=getSupportFragmentManager().beginTransaction();
-        ft.add(R.id.layoutPrincipal, vue);
+        ft.add(R.id.layoutMain, vue);
         ft.commit();
     }
 
     @Override
     public void onStart() {
         super.onStart();
-        présenteur.prochainUtilsateur();
     }
 
     @Override

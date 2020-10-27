@@ -87,7 +87,6 @@ public class SourceUtilisateursApi implements SourceUtilisateurs {
     private List<Utilisateur> décoderUtilisateurs ( InputStream utilisateursEncoder) throws IOException, UtilisateursException {
         InputStreamReader responseBodyReader =
                 new InputStreamReader(utilisateursEncoder, "UTF-8");
-        Log.d("passe:" , "DÉcoderUtilsaiteur");
         List<Utilisateur> utilisateursArrayList= null;
 
         JsonReader jsonReader = new JsonReader(responseBodyReader);

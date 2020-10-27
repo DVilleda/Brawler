@@ -44,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
 
         //Transaction pour changer au fragement
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-        fragmentTransaction.add(R.id.layoutPrincipal,vueProfil);
+        fragmentTransaction.add(R.id.layoutMain,vueProfil);
         fragmentTransaction.commit();
     }
     @Override
