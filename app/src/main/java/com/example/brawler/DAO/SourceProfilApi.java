@@ -33,9 +33,8 @@ public class SourceProfilApi implements SourceUtilisateur{
         public SourceProfilApiException (int numErreur){super("Erreur num: "+numErreur);}
     }
     //Parametres
-    private int id=3;
     private URL url;
-    private String urlBaseUtilisateur = "http://52.3.68.3/utilisateur/";
+    private String urlBaseUtilisateur = "http://52.3.68.3/utilisateur";
     private String urlBaseModifier = "http://52.3.68.3/modifierInfo";
     private String token;
 
@@ -47,7 +46,7 @@ public class SourceProfilApi implements SourceUtilisateur{
     public Utilisateur getUtilisateur() throws UtilisateursException {
         Utilisateur utilisateur = null;
         try {
-            url = new URL(urlBaseUtilisateur + String.valueOf(id));
+            url = new URL(urlBaseUtilisateur);
         } catch (MalformedURLException e) {
             //try/catch obligatoire pour satisfaire le compilateur.
         }

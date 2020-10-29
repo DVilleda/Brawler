@@ -47,6 +47,5 @@ public class VueContacts extends Fragment {
     public void rafraichirVue(){
         if(contactsAdapter!=null)
             contactsAdapter.notifyDataSetChanged();
-        Toast.makeText(this.getContext(),String.valueOf(contactsAdapter.getItemCount()),Toast.LENGTH_SHORT).show();
     }
 }

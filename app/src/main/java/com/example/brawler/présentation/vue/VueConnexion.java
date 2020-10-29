@@ -114,7 +114,6 @@ public class VueConnexion extends Fragment {
             Toast.makeText(getContext(), reponse, Toast.LENGTH_SHORT).show();
         } else {
             Log.e("Le success était: ", reponse);
-            Toast.makeText(getContext(), reponse, Toast.LENGTH_SHORT).show();
             SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getActivity().getApplicationContext());
             SharedPreferences.Editor editor = sharedPref.edit();
             if (getSeSouvenir()) {
