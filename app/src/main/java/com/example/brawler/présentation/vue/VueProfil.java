@@ -33,6 +33,7 @@ public class VueProfil extends Fragment {
     private TextView txtNom;
     private TextView txtNomExpand;
     private TextView txtEmplacement;
+    private TextView txtDescription;
     private TextView txtNiveau;
     private TextView txtNiveauExpand;
     private LinearLayout expandableView;
@@ -53,7 +54,8 @@ public class VueProfil extends Fragment {
         View vue=inflater.inflate(R.layout.fragment_profil_view,container,false);
         txtNom = vue.findViewById(R.id.nom_profil);
         txtNomExpand = vue.findViewById(R.id.nom_profil2);
-        txtEmplacement = vue.findViewById(R.id.txt_description);
+        txtDescription = vue.findViewById(R.id.txt_description);
+        txtEmplacement = vue.findViewById(R.id.txt_emplacement);
         txtNiveau = vue.findViewById(R.id.niveau_profil);
         txtNiveauExpand = vue.findViewById(R.id.niveau_profil2);
         expandableView = vue.findViewById(R.id.expandable_view);
@@ -91,6 +93,7 @@ public class VueProfil extends Fragment {
     public void afficherUtilisateur(Utilisateur utilisateur){
         if(utilisateur != null)
         txtNom.setText(utilisateur.getNom());
+        txtDescription.setText(utilisateur.getDescription());
         txtEmplacement.setText(utilisateur.getLocation());
         txtNiveau.setText(utilisateur.getNiveau().toString());
         txtNomExpand.setText(utilisateur.getNom());
