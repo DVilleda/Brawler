@@ -62,10 +62,11 @@ public class VueConsulterMessage extends Fragment {
 
 
     public void rafraîchir(){
+
         if(messageAdapter!=null){
             messageAdapter.notifyDataSetChanged();
+            rvMessages.smoothScrollToPosition(présenteur.getNbMessages() - 1);
             if(mettreRvAuDébut) {
-                rvMessages.smoothScrollToPosition(présenteur.getNbMessages() - 1);
                 mettreRvAuDébut = false;
             }
         }

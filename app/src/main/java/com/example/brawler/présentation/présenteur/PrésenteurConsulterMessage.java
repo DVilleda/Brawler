@@ -115,9 +115,9 @@ public class PrésenteurConsulterMessage {
                         } catch (InterruptedException e) {
                             msg = handlerRéponse.obtainMessage( MSG_ANNULER );
                         } catch (MessageException e) {
-                            msg = handlerRéponse.obtainMessage( MSG_ANNULER );
+                            msg = handlerRéponse.obtainMessage( MSG_ERREUR );
                         } catch (UtilisateursException e) {
-                            msg = handlerRéponse.obtainMessage( MSG_ANNULER );
+                            msg = handlerRéponse.obtainMessage( MSG_ERREUR );
                         }
 
                         handlerRéponse.sendMessage( msg );
