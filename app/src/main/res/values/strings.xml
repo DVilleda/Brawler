@@ -16,7 +16,7 @@
     <string name="modif_description">Modifier Description</string>
     <string name="modif_description_image">Modifier Image</string>
 
-    <!--Login Page-->
+    <!--Page Login-->
     <string name="utilisateurHint">Nom d\'utilisateur</string>
     <string name="mdpHint">Mot de passe</string>
     <string name="btnMemoire">Se souvenir de moi</string>
@@ -39,5 +39,8 @@
     <string name="nameHint">Entrez votre Prénom</string>
     <string name="locationHint">Entrez votre ville</string>
     <string name="descriptionHint">Decrivez vous</string>
+
+    <!--Page Recherce de Match-->
+    <string name="aboutPhoto">Photo de profil de l\'utilisateur</string>
 
 </resources>
