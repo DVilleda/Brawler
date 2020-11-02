@@ -1,5 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<shape xmlns:android="http://schemas.android.com/apk/res/android" android:shape="oval">
-    <solid android:color="#f73333" />
-    <stroke android:width="0.5px" android:color="#000000" />
-</shape>
+<selector
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:constantSize="true" >
+    <item android:state_pressed="false">
+        <shape android:shape="oval">
+            <solid android:color="#f73333" />
+        </shape>
+    </item><item android:state_pressed="true">
+    <shape android:shape="oval">
+        <solid android:color="#951F1F" />
+    </shape>
+</item>
+</selector>
