@@ -6,12 +6,6 @@
     android:orientation="vertical"
     android:paddingTop="55dp">
 
-    <TextView
-        android:id="@+id/lbl_contacts_liste"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/liste_de_contacts" />
-
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/listeContacts"
         android:layout_width="match_parent"
