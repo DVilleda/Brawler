@@ -24,7 +24,7 @@ public class CréationCompteActivité extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_vide);
 
         String cléTemp = "";
         SharedPreferences sharedPref = getPreferences(MODE_PRIVATE);
@@ -43,7 +43,7 @@ public class CréationCompteActivité extends AppCompatActivity {
         vue.setPrésenteur(présenteur);
 
         FragmentTransaction ft=getSupportFragmentManager().beginTransaction();
-        ft.add(R.id.layoutPrincipal, vue);
+        ft.add(R.id.layoutVide, vue);
         ft.commit();
     }
 

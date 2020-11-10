@@ -2,7 +2,6 @@ package com.example.brawler.présentation.vue;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -51,11 +50,11 @@ public class VueCréationCompte extends Fragment {
                 String description = getDescriptionText();
 
                 String reponse = présenteur.ThreadDeCreationDeCompte(email, mdp, prénom, location, description);
-                Log.i("La reponse était : ", reponse);
                 if (reponse.equals("succès")){
                     Toast.makeText(getContext(),reponse,Toast.LENGTH_SHORT).show();
                     Intent nouvelleVue = new Intent(getActivity(), ConnexionActivité.class);
                     startActivity(nouvelleVue);
+                    getActivity().finish();
                 }else {
                     Toast.makeText(getContext(),reponse,Toast.LENGTH_SHORT).show();
                 }
