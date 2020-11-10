@@ -31,6 +31,7 @@ public class VueProfilModif extends Fragment {
     private EditText locationProfil;
     private EditText ageProfil;
     private EditText distanceProfil;
+    private EditText emailProfil;
     private TextView niveauAdversaire;
     private EditText descriptionProfil;
     private Button confirmerModif;
@@ -47,6 +48,7 @@ public class VueProfilModif extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View vue = inflater.inflate(R.layout.fragment_profil_modif,container,false);
         nomProfil = vue.findViewById(R.id.Nom);
+        emailProfil = vue.findViewById(R.id.email_edit);
         locationProfil = vue.findViewById(R.id.Location);
         ageProfil = vue.findViewById(R.id.Age);
         distanceProfil = vue.findViewById(R.id.Distance);
@@ -63,6 +65,7 @@ public class VueProfilModif extends Fragment {
             @Override
             public void onClick(View v) {
                 utilisateurActuel.setNom(nomProfil.getText().toString());
+                utilisateurActuel.setEmail(emailProfil.getText().toString());
                 utilisateurActuel.setLocation(locationProfil.getText().toString());
                 utilisateurActuel.setNiveau(Niveau.valueOf(niveauAdversaire.getText().toString().toUpperCase()));
                 utilisateurActuel.setDescription(descriptionProfil.getText().toString());
@@ -110,6 +113,7 @@ public class VueProfilModif extends Fragment {
     public void chargerInfosActuel(Utilisateur utilisateur){
         if(utilisateur != null) {
             nomProfil.setText(utilisateur.getNom());
+            emailProfil.setText(utilisateur.getEmail());
             locationProfil.setText(utilisateur.getLocation());
             niveauAdversaire.setText(utilisateur.getNiveau().toString().toLowerCase());
             descriptionProfil.setText(utilisateur.getDescription());

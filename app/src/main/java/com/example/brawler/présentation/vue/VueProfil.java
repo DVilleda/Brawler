@@ -7,20 +7,17 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.cardview.widget.CardView;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.example.brawler.R;
-import com.example.brawler.domaine.entité.Niveau;
 import com.example.brawler.domaine.entité.Utilisateur;
 import com.example.brawler.présentation.présenteur.PrésenteurProfil;
 
@@ -38,7 +35,7 @@ public class VueProfil extends Fragment {
     private TextView txtNiveauExpand;
     private LinearLayout expandableView;
     private LinearLayout layoutInfosInitiale;
-    private FrameLayout cardView;
+    private ConstraintLayout LayoutView;
 
     /**
      * Méthode pour changer le présenteur du fragment
@@ -60,7 +57,7 @@ public class VueProfil extends Fragment {
         txtNiveauExpand = vue.findViewById(R.id.niveau_profil2);
         expandableView = vue.findViewById(R.id.expandable_view);
         layoutInfosInitiale = vue.findViewById(R.id.Infos_version_court);
-        cardView= vue.findViewById(R.id.profil_cardview);
+        LayoutView = vue.findViewById(R.id.frameLayout);
         Button modifierProfil = vue.findViewById(R.id.aller_modif_profil);
 
         modifierProfil.setOnClickListener(new View.OnClickListener() {
@@ -108,11 +105,11 @@ public class VueProfil extends Fragment {
      */
     public void expandInfosProfil() {
         if (expandableView.getVisibility() == View.INVISIBLE) {
-            TransitionManager.beginDelayedTransition(cardView, new AutoTransition());
+            TransitionManager.beginDelayedTransition(LayoutView, new AutoTransition());
             expandableView.setVisibility(View.VISIBLE);
             layoutInfosInitiale.setVisibility(View.INVISIBLE);
         } else if (expandableView.getVisibility() == View.VISIBLE) {
-            TransitionManager.beginDelayedTransition(cardView, new AutoTransition());
+            TransitionManager.beginDelayedTransition(LayoutView, new AutoTransition());
             expandableView.setVisibility(View.INVISIBLE);
             layoutInfosInitiale.setVisibility(View.VISIBLE);
         }
