@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -20,8 +21,8 @@ public class VueRechercheMatch extends Fragment {
     private TextView txtNom;
     private TextView txtLocation;
     private TextView txtVictoire;
-    private Button btnAccepter;
-    private Button btnPasser;
+    private ImageButton btnAccepter;
+    private ImageButton btnPasser;
     private Button btnParLocation;
     private Button btnParNiveau;
     private boolean btnMatchClickable;
