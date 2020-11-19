@@ -2,6 +2,7 @@ package com.example.brawler.DAO;
 
 import android.net.Uri;
 import android.util.JsonReader;
+import android.util.Log;
 
 import com.example.brawler.domaine.entité.Message;
 import com.example.brawler.domaine.entité.Utilisateur;

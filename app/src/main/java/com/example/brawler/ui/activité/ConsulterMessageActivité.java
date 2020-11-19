@@ -40,7 +40,6 @@ public class ConsulterMessageActivité extends AppCompatActivity {
 
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         clé = sharedPref.getString("token", "");
-        Log.d("clé", clé);
         if(clé.trim().isEmpty()){
             startActivity(new Intent(this, ConnexionActivité.class));
         }

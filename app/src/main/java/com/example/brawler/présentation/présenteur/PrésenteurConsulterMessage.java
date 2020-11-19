@@ -1,5 +1,6 @@
 package com.example.brawler.présentation.présenteur;
 
+import android.os.Debug;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
@@ -120,8 +121,10 @@ public class PrésenteurConsulterMessage {
                         } catch (InterruptedException e) {
                             msg = handlerRéponse.obtainMessage( MSG_ANNULER );
                         } catch (MessageException e) {
+                            Log.d("bug", String.valueOf(e));
                             msg = handlerRéponse.obtainMessage( MSG_ERREUR );
                         } catch (UtilisateursException e) {
+                            Log.d("bug", String.valueOf(e));
                             msg = handlerRéponse.obtainMessage( MSG_ERREUR );
                         }
 
