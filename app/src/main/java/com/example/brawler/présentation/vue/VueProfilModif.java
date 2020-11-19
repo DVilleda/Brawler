@@ -3,10 +3,15 @@ package com.example.brawler.présentation.vue;
 import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.ContentResolver;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.Matrix;
+import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -144,11 +149,33 @@ public class VueProfilModif extends Fragment {
             if(requestCode==REQUEST_IMAGE_CAPTURE){
                 File fichierPhoto = new File(_PhotoCurrentPath);
                 try {
-                    Bitmap bitmapPhoto = MediaStore.Images.Media.getBitmap(
+                    //On verifie l'orientation de la photo
+                    ExifInterface exifInterface = new ExifInterface(_PhotoCurrentPath);
+                    int orientation = exifInterface.getAttributeInt(ExifInterface.TAG_ORIENTATION,ExifInterface.ORIENTATION_UNDEFINED);
+                    Bitmap bitmap = MediaStore.Images.Media.getBitmap(
                             this.getContext().getContentResolver(),Uri.fromFile(fichierPhoto));
+                    Bitmap bitmapPhoto = null;
+                    //Le switch case va verifier le parametre d'orientation de la photo et ajuster l'angle selon le cas
+                    switch (orientation) {
+                        case ExifInterface.ORIENTATION_ROTATE_90:
+                            bitmapPhoto = changerOrientationImage(bitmap, 90);
+                            break;
+
+                        case ExifInterface.ORIENTATION_ROTATE_180:
+                            bitmapPhoto = changerOrientationImage(bitmap, 180);
+                            break;
+
+                        case ExifInterface.ORIENTATION_ROTATE_270:
+                            bitmapPhoto = changerOrientationImage(bitmap, 270);
+                            break;
+
+                        case ExifInterface.ORIENTATION_NORMAL:
+                        default:
+                            bitmapPhoto = bitmap;
+                    }
                     if(bitmapPhoto != null)
                     {
-                        //Conversion de la photo pris par la caméra en byte[] et ajouter au profil
+                        //Conversion de la photo prise par la caméra en byte[] et ajouter au profil
                         ByteArrayOutputStream stream = new ByteArrayOutputStream();
                         bitmapPhoto.compress(Bitmap.CompressFormat.PNG, 100, stream);
                         byte[] photoProfil = stream.toByteArray();
@@ -199,6 +226,19 @@ public class VueProfilModif extends Fragment {
                         Toast.LENGTH_LONG).show();
             }
         }
+    }
+
+    /**
+     * Cette ce charge de verifier l'orientation de la photo puis changer cette orientation selon un angle
+     * @param bitmap la photo
+     * @param angle l'angle de rotation
+     * @return la photo avec une nouvelle rotation
+     */
+    public static Bitmap changerOrientationImage(Bitmap bitmap, float angle) {
+        Matrix matrix = new Matrix();
+        matrix.postRotate(angle);
+        return Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(),
+                matrix, true);
     }
 
     public void chargerInfosActuel(Utilisateur utilisateur){
