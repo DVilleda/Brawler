@@ -110,7 +110,7 @@ public class PrésenteurConsulterMessage {
                         Message msg = null;
                         try {
                             Thread.sleep(0);
-                            modèle.setListeMessage(InteracteurMessage.getInstance(source).getMessages(idUtilisateur));
+                            modèle.setListeMessage(InteracteurMessage.getInstance(source).getMessagesparUtilisateurs(idUtilisateur));
                             msg = handlerRéponse.obtainMessage( MSG_CHARGER_MESSAGES );
                         } catch (InterruptedException e) {
                             msg = handlerRéponse.obtainMessage( MSG_ANNULER );

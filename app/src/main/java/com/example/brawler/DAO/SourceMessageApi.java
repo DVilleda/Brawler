@@ -55,6 +55,36 @@ public class SourceMessageApi implements SourceMessage {
     }
 
     @Override
+    public List<Message> getMessages() throws MessageException, UtilisateursException {
+        try {
+            url = new URL(urlMessage);
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+        return lancerConnexionRecevoirMessage();
+    }
+
+    @Override
+    public List<Message> getMessageÀNotifier() throws MessageException, UtilisateursException {
+        try {
+            url = new URL(urlMessage + "/ANotifier");
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+        return lancerConnexionRecevoirMessage();
+    }
+
+    @Override
+    public void marquerNotifier(int idMessage) throws MessageException, UtilisateursException {
+        try {
+            url = new URL(urlMessage + "/marquerNotifier/" + idMessage);
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+        lancerConnexionMarquerNotifier();
+    }
+
+    @Override
     public void envoyerMessage(int idUtilisateur, String message) throws MessageException {
         try {
             url = new URL(urlEnvoyerMessage + idUtilisateur);
@@ -127,6 +157,22 @@ public class SourceMessageApi implements SourceMessage {
         }
     }
 
+    private boolean lancerConnexionMarquerNotifier() throws MessageException {
+        try {
+            HttpURLConnection connexion =
+                    (HttpURLConnection) url.openConnection();
+            connexion.setRequestProperty("Authorization", cléBearer);
+            if (connexion.getResponseCode() == 200) {
+                return true;
+            } else {
+                Log.d("problème:", String.valueOf(connexion.getResponseCode()));
+                throw new SourceMessageApi.SourceMessageApiException(connexion.getResponseCode());
+            }
+        }catch(IOException e){
+                throw new MessageException( e );
+        }
+    }
+
     private List<Message> décoderJSON(InputStream messagesEncoder) throws MessageException, IOException, UtilisateursException {
         List<Message> messages = new ArrayList<>();
         InputStreamReader responseBodyReader =
@@ -156,6 +202,7 @@ public class SourceMessageApi implements SourceMessage {
         Utilisateur utilisateur = null;
         String texte = "";
         Date temps = null;
+        Boolean lue = false;
 
         jsonReader.beginObject();
         while (jsonReader.hasNext()){
@@ -167,13 +214,15 @@ public class SourceMessageApi implements SourceMessage {
                 texte = jsonReader.nextString();
             } else if (key.equals("temps")) {
                 temps = décoderTemps(jsonReader.nextString());
+            } else if (key.equals("lue")) {
+                lue = jsonReader.nextBoolean();
             } else {
                 jsonReader.skipValue();
             }
         }
         jsonReader.endObject();
 
-        message = new Message(texte, utilisateur, temps);
+        message = new Message(texte, utilisateur, temps, lue);
         return message;
     }
 

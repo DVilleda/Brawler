@@ -33,6 +33,7 @@
     <string name="aller_matcher">Aller Matcher</string>
     <string name="liste_de_contacts">"Liste de Contacts : "</string>
     <string name="createCompte">Pas de compte? Creez-en un</string>
+    <string name="reply_name">Répondre</string>
 
     <!--Creation de compte Page-->
     <string name="emailHint">Entrez votre email</string>

@@ -1,6 +1,7 @@
 package com.example.brawler.présentation.modèle;
 
 import com.example.brawler.domaine.entité.Message;
+import com.example.brawler.domaine.entité.Notification;
 import com.example.brawler.domaine.entité.Utilisateur;
 
 import java.util.ArrayList;
@@ -12,6 +13,7 @@ public class Modèle {
     private int utilisateurEnRevue;
     private Utilisateur utilisateur;
     private List<Message> messages;
+    private List<Notification> notification;
 
     public Modèle(){
         listeUtilisateurs = new ArrayList<>();
@@ -62,5 +64,20 @@ public class Modèle {
 
     public void setUtilisateurEnRevue(int i) {
         utilisateurEnRevue = i;
+    }
+
+    public List<Utilisateur> getListeUtilisateurs() {
+        return listeUtilisateurs;
+    }
+
+
+    //Notification
+
+    public List<Notification> getNotification() {
+        return notification;
+    }
+
+    public void setNotification(List<Notification> notification) {
+        this.notification = notification;
     }
 }
