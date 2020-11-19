@@ -72,6 +72,10 @@ public class PrésenteurNoficationMessage {
         filEsclaveEnvoyerMessage.start();
     }
 
+    public void setSource(SourceMessage source) {
+        this.source = source;
+    }
+
     public void notifierMessage(){
         if(modèle.getMessages().size() > 0) {
             créerNotificationParMessage();

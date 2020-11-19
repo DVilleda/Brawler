@@ -14,6 +14,7 @@ import androidx.fragment.app.Fragment;
 import com.example.brawler.R;
 import com.example.brawler.domaine.entité.Utilisateur;
 import com.example.brawler.présentation.présenteur.PrésenteurRechercheMatch;
+import com.example.brawler.ui.activité.Services.ServiceNotificationMessage;
 
 public class VueRechercheMatch extends Fragment {
 
@@ -47,6 +48,8 @@ public class VueRechercheMatch extends Fragment {
         btnParLocation = vue.findViewById(R.id.btn_parLocation);
         btnParNiveau = vue.findViewById(R.id.btn_ParNiveau);
         imgUtilisateur = vue.findViewById(R.id.img_utilisateur);
+
+        ServiceNotificationMessage.démarerJob(getContext());
 
         btnAccepter.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v){

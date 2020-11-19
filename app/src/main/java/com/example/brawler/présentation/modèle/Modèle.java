@@ -18,6 +18,7 @@ public class Modèle {
     public Modèle(){
         listeUtilisateurs = new ArrayList<>();
         utilisateurEnRevue = 0;
+        messages = new ArrayList<>();
     }
 
     public List<Utilisateur> getListUtilisateurs() {

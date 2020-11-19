@@ -11,11 +11,11 @@ public class Message {
     Boolean lue;
 
 
-    public Message(int id, String texte, Utilisateur utilisateur, Date temps) {
+    public Message(int id, String texte, Utilisateur utilisateur, Date temps, Boolean lue) {
         this.texte = texte;
         this.utilisateur = utilisateur;
         this.temps = temps;
-        this.id = id;
+        this.lue = lue;
     }
 
     public String getTexte() {

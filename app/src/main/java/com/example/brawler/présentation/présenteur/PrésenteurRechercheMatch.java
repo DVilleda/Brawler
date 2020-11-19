@@ -84,7 +84,8 @@ public class PrésenteurRechercheMatch {
     }
 
     public void prochainUtilsateur() {
-        modèle.prochainUtilisateur();
+        if(modèle.getUtilisateurEnRevue() != 0)
+            modèle.prochainUtilisateur();
         if (modèle.getListUtilisateurs().size() < 1 || modèle.getListUtilisateurs().size() <= modèle.getUtilisateurEnRevue()) {
             chargerNouvelleUtilisateur();
         } else if(modèle.getListUtilisateurs().size() > modèle.getUtilisateurEnRevue()){
@@ -96,7 +97,6 @@ public class PrésenteurRechercheMatch {
     public void changerRecherche(Boolean bool) {
         if(bool != parNiveau){
             parNiveau = bool;
-            //modèle.viderListe();
             prochainUtilsateur();
         }
     }

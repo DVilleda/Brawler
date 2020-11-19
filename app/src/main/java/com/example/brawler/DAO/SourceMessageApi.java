@@ -2,7 +2,6 @@ package com.example.brawler.DAO;
 
 import android.net.Uri;
 import android.util.JsonReader;
-import android.util.Log;
 
 import com.example.brawler.domaine.entité.Message;
 import com.example.brawler.domaine.entité.Utilisateur;
@@ -106,7 +105,6 @@ public class SourceMessageApi implements SourceMessage {
                 messages = décoderJSON(connexion.getInputStream());
             }
             else{
-                Log.d("problème:", String.valueOf(connexion.getResponseCode()));
                 throw new SourceMessageApi.SourceMessageApiException( connexion.getResponseCode() );
             }
         }
@@ -147,7 +145,6 @@ public class SourceMessageApi implements SourceMessage {
             if(connexion.getResponseCode()==200){
             }
             else{
-                Log.d("problème:", String.valueOf(connexion.getResponseCode()));
                 throw new SourceMessageApi.SourceMessageApiException( connexion.getResponseCode() );
             }
         }
@@ -165,7 +162,6 @@ public class SourceMessageApi implements SourceMessage {
             if (connexion.getResponseCode() == 200) {
                 return true;
             } else {
-                Log.d("problème:", String.valueOf(connexion.getResponseCode()));
                 throw new SourceMessageApi.SourceMessageApiException(connexion.getResponseCode());
             }
         }catch(IOException e){
@@ -199,6 +195,7 @@ public class SourceMessageApi implements SourceMessage {
 
     private  Message décoderMessage(JsonReader jsonReader) throws IOException, UtilisateursException {
         Message message = null;
+        int id = -1;
         Utilisateur utilisateur = null;
         String texte = "";
         Date temps = null;
@@ -215,24 +212,29 @@ public class SourceMessageApi implements SourceMessage {
             } else if (key.equals("temps")) {
                 temps = décoderTemps(jsonReader.nextString());
             } else if (key.equals("lue")) {
-                lue = jsonReader.nextBoolean();
+                int i = jsonReader.nextInt();
+                if(i == 0)
+                    lue = false;
+                else
+                    lue =true;
+            } else if (key.equals("id")) {
+                id = jsonReader.nextInt();
             } else {
                 jsonReader.skipValue();
             }
         }
         jsonReader.endObject();
 
-        message = new Message(texte, utilisateur, temps, lue);
+        message = new Message(id, texte, utilisateur, temps, lue);
         return message;
     }
 
-    //exemple de date: 2020-10-26 05:53:35
+    //exemple de date: Thu, 19 Nov 2020 03:49:50
     private Date décoderTemps(String temps){
         Date date = null;
 
         String[] dateATraiter = null;
         String[] tempsATraiter = null;
-
         String[] partie = temps.split(" ");
         dateATraiter = partie[0].split("-");
         tempsATraiter = partie[1].split(":");

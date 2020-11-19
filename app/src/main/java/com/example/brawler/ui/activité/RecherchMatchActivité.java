@@ -1,10 +1,8 @@
 package com.example.brawler.ui.activité;
 
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.Menu;
@@ -18,9 +16,7 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.example.brawler.DAO.SourceLikeApi;
 import com.example.brawler.DAO.SourceUtilisateursApi;
-import com.example.brawler.MockDAO.SourceUtilisateurFictif;
 import com.example.brawler.R;
-import com.example.brawler.domaine.intéracteur.UtilisateursException;
 import com.example.brawler.présentation.modèle.Modèle;
 import com.example.brawler.présentation.présenteur.PrésenteurRechercheMatch;
 import com.example.brawler.présentation.vue.VueRechercheMatch;
