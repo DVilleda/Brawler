@@ -226,6 +226,7 @@ public class SourceMessageApi implements SourceMessage {
         }
         jsonReader.endObject();
 
+        Log.d("id", String.valueOf(id));
         message = new Message(id, texte, utilisateur, temps, lue);
         return message;
     }
@@ -239,7 +240,6 @@ public class SourceMessageApi implements SourceMessage {
         String[] partie = temps.split(" ");
         dateATraiter = partie[0].split("-");
         tempsATraiter = partie[1].split(":");
-
 
         if(dateATraiter != null && tempsATraiter != null) {
             int année = Integer.parseInt(dateATraiter[0]);

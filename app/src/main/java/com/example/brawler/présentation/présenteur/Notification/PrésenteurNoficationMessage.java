@@ -1,8 +1,10 @@
 package com.example.brawler.présentation.présenteur.Notification;
 
 import android.content.SharedPreferences;
+import android.os.Debug;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 
 import com.example.brawler.domaine.entité.Notification;
 import com.example.brawler.domaine.intéracteur.InteracteurMessage;
@@ -49,6 +51,7 @@ public class PrésenteurNoficationMessage {
     }
 
     public void getMessagesÀNotifier(){
+
         filEsclaveEnvoyerMessage = new Thread(
                 new Runnable() {
                     @Override
@@ -91,12 +94,11 @@ public class PrésenteurNoficationMessage {
         modèle.setNotification(new ArrayList<Notification>());
         for (com.example.brawler.domaine.entité.Message message : modèle.getMessages()) {
             utilisateurDéjàEnNotification = false;
-
-            if(modèle.getNotification().size() > 0) {
+            if(modèle.getNotification().size() != 0) {
                 for (Notification notification : modèle.getNotification()) {
-                    if (message.getUtilisateur() == notification.getUtilisateur()) {
+                    if (message.getUtilisateur().getId() == notification.getUtilisateur().getId()) {
                         notification.addMessage(message);
-                        utilisateurDéjàEnNotification = true;
+                        modèle.getNotification().add(notification);
                     }
                 }
             }
