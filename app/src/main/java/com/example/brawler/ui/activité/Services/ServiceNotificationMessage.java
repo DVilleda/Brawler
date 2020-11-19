@@ -19,7 +19,7 @@ public class ServiceNotificationMessage {
         ComponentName serviceComponent = new ComponentName(context, MessageJobService.class);
         JobInfo.Builder builder = new JobInfo.Builder(55, serviceComponent);
         builder.setMinimumLatency(1 * 1000);
-        builder.setOverrideDeadline(3 * 1000);
+        builder.setOverrideDeadline(3 * 3000);
         builder.setRequiredNetworkType(JobInfo.NETWORK_TYPE_ANY);
 
         Log.i(TAG, "Job starting: " + 55);
@@ -27,5 +27,10 @@ public class ServiceNotificationMessage {
         JobScheduler jobScheduler = null;
         jobScheduler = context.getSystemService(JobScheduler.class);
         jobScheduler.schedule(builder.build());
+    }
+
+    public static void arrêterJob(Context context) {
+        JobScheduler tm = (JobScheduler) context.getSystemService(JobScheduler.class);
+        tm.cancelAll();
     }
 }

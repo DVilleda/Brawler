@@ -17,6 +17,7 @@ public class PrésenteurConsulterMessage {
     private Modèle modèle;
     private SourceMessage source;
     private int nbMessageActuel;
+    private boolean doitRafrahcir;
 
     private final Handler handlerRéponse;
     private Handler handlerRafraîchir;
@@ -32,6 +33,8 @@ public class PrésenteurConsulterMessage {
         this.vue = nouvelleVue;
         this.modèle = modèle;
         nbMessageActuel = 0;
+        doitRafrahcir = true;
+
 
         this.handlerRéponse = new Handler(){
 
@@ -45,9 +48,11 @@ public class PrésenteurConsulterMessage {
                     if(nbMessageActuel != getNbMessages()) {
                         nbMessageActuel = getNbMessages();
                         vue.rafraîchir();
-                        rafraichir();
+                        if(doitRafrahcir)
+                            rafraichir();
                     } else {
-                        rafraichir();
+                        if(doitRafrahcir)
+                            rafraichir();
                     }
                 } else if (msg.what == MSG_NOUVEAU_MESSAGE){
                     vue.viderTxtMessage();
@@ -140,7 +145,11 @@ public class PrésenteurConsulterMessage {
         return modèle.getUtilisateurEnRevue();
     }
 
-    private void rafraîchirMessage(){}
+    public void arrêterRafraichir(){
+        doitRafrahcir = false;
+    }
 
-
+    public void commencerRafraichir(){
+        doitRafrahcir = true;
+    }
 }
