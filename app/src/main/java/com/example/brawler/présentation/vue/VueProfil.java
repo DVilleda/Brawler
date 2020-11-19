@@ -1,17 +1,31 @@
 package com.example.brawler.présentation.vue;
 
+import android.app.Activity;
+import android.content.ActivityNotFoundException;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.transition.AutoTransition;
 import android.transition.TransitionManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -20,6 +34,10 @@ import androidx.fragment.app.FragmentTransaction;
 import com.example.brawler.R;
 import com.example.brawler.domaine.entité.Utilisateur;
 import com.example.brawler.présentation.présenteur.PrésenteurProfil;
+import com.example.brawler.ui.activité.MainActivity;
+
+import java.io.FileNotFoundException;
+import java.io.IOException;
 
 public class VueProfil extends Fragment {
 
@@ -27,6 +45,7 @@ public class VueProfil extends Fragment {
      * Paramètres
      */
     private PrésenteurProfil _presenteur;
+    private ImageView photoProfil;
     private TextView txtNom;
     private TextView txtNomExpand;
     private TextView txtEmplacement;
@@ -49,6 +68,7 @@ public class VueProfil extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View vue=inflater.inflate(R.layout.fragment_profil_view,container,false);
+        photoProfil = vue.findViewById(R.id.image_profil);
         txtNom = vue.findViewById(R.id.nom_profil);
         txtNomExpand = vue.findViewById(R.id.nom_profil2);
         txtDescription = vue.findViewById(R.id.txt_description);
@@ -95,6 +115,11 @@ public class VueProfil extends Fragment {
         txtNiveau.setText(utilisateur.getNiveau().toString());
         txtNomExpand.setText(utilisateur.getNom());
         txtNiveauExpand.setText(utilisateur.getNiveau().toString());
+
+        if(utilisateur.getPhoto() != null) {
+            Bitmap bitmap = BitmapFactory.decodeByteArray(utilisateur.getPhoto(), 0, utilisateur.getPhoto().length);
+            photoProfil.setImageBitmap(bitmap);
+        }
     }
 
     /**

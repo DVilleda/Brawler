@@ -1,7 +1,11 @@
 package com.example.brawler.présentation.présenteur;
 
+import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Handler;
 import android.os.Message;
+import android.preference.PreferenceManager;
 import android.util.Log;
 
 import com.example.brawler.domaine.entité.Utilisateur;
@@ -54,12 +58,6 @@ public class PrésenteurProfil {
             }
         };
     }
-    /**
-    public PrésenteurProfil(VueProfilModif vue, Modèle modèle){
-        vueProfilModif = vue;
-        _modèle = modèle;
-    }
-    **/
 
     /**
      * Méthode qui permet de définir la source de données pour le profil
@@ -81,10 +79,13 @@ public class PrésenteurProfil {
                         try
                         {
                             Thread.sleep(0);
-                            if(_modèle.getUtilisateur() == null) {
+                            if(InteracteurChargementProfil.getInstance(_source).chargerUtilisateurActuel() != null)
+                            {
+                                _modèle.setUtilisateur(InteracteurChargementProfil.getInstance(_source).chargerUtilisateurActuel());
+                            }else {
                                 _modèle.setUtilisateur(InteracteurChargementProfil.getInstance(_source).getUtilisateur());
-                                msg = handlerRéponse.obtainMessage(MSG_CHARGER_UTILISATEUR);
                             }
+                            msg = handlerRéponse.obtainMessage(MSG_CHARGER_UTILISATEUR);
                         } catch (UtilisateursException e) {
                             msg = handlerRéponse.obtainMessage( MSG_ERREUR, e );
                         } catch ( InterruptedException e){
@@ -141,5 +142,14 @@ public class PrésenteurProfil {
                 }
         );
         filEsclave.start();
+    }
+
+    public void DeconnecterUtilisateur()
+    {
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(vueProfil.getActivity().getApplicationContext());
+        SharedPreferences.Editor editor = sharedPref.edit();
+
+        editor.putString("token", "");
+        editor.apply();
     }
 }

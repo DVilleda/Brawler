@@ -60,6 +60,16 @@ public class Utilisateur {
         this.description = description;
     }
 
+    public Utilisateur(int id, String nom, Niveau niveau, String location, String email, String description, byte[] photoProfil) {
+        this.id = id;
+        this.nom = nom;
+        this.niveau = niveau;
+        this.location = location;
+        this.email = email;
+        this.description = description;
+        this.photo = photoProfil;
+    }
+
     public String getNom() {
         return nom;
     }
