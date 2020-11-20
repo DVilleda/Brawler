@@ -29,7 +29,6 @@ public class MessageJobService extends JobService {
         présenteur.setSource(new SourceMessageApi(clé));
         présenteur.startNotifier();
 
-
         ServiceNotificationMessage.démarerJob(getApplicationContext());
         return true;
     }

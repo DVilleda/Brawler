@@ -19,6 +19,7 @@ import com.example.brawler.R;
 import com.example.brawler.présentation.modèle.Modèle;
 import com.example.brawler.présentation.présenteur.PrésenteurRechercheMatch;
 import com.example.brawler.présentation.vue.VueRechercheMatch;
+import com.example.brawler.ui.activité.Services.ServiceNotificationMessage;
 
 public class RecherchMatchActivité extends AppCompatActivity {
 
@@ -29,6 +30,8 @@ public class RecherchMatchActivité extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        ServiceNotificationMessage.démarerJob(getApplicationContext());
 
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         clé = sharedPref.getString("token", "");
