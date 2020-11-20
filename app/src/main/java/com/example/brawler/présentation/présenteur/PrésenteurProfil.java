@@ -2,7 +2,9 @@ package com.example.brawler.présentation.présenteur;
 
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
+import android.graphics.Matrix;
 import android.net.Uri;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.preference.PreferenceManager;
@@ -15,6 +17,11 @@ import com.example.brawler.domaine.intéracteur.UtilisateursException;
 import com.example.brawler.présentation.modèle.Modèle;
 import com.example.brawler.présentation.vue.VueProfil;
 import com.example.brawler.présentation.vue.VueProfilModif;
+
+import java.io.File;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class PrésenteurProfil {
 
@@ -148,8 +155,20 @@ public class PrésenteurProfil {
     {
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(vueProfil.getActivity().getApplicationContext());
         SharedPreferences.Editor editor = sharedPref.edit();
-
         editor.putString("token", "");
         editor.apply();
+    }
+
+    /**
+     * Cette ce charge de verifier l'orientation de la photo puis changer cette orientation selon un angle
+     * @param bitmap la photo
+     * @param angle l'angle de rotation
+     * @return la photo avec une nouvelle rotation
+     */
+    public static Bitmap changerOrientationImage(Bitmap bitmap, float angle) {
+        Matrix matrix = new Matrix();
+        matrix.postRotate(angle);
+        return Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(),
+                matrix, true);
     }
 }

@@ -3,14 +3,10 @@ package com.example.brawler.présentation.vue;
 import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.ContentResolver;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.database.Cursor;
 import android.graphics.Bitmap;
-import android.graphics.Matrix;
 import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Bundle;
@@ -45,6 +41,8 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import static com.example.brawler.présentation.présenteur.PrésenteurProfil.changerOrientationImage;
+
 public class VueProfilModif extends Fragment {
 
     private PrésenteurProfil _presenteur;
@@ -54,7 +52,7 @@ public class VueProfilModif extends Fragment {
     private static final int STORAGE_PERMISSION_WRITE_CODE = 102;
     private static final int CAMERA_PERMISSION_CODE = 100;
     private static final int STORAGE_PERMISSION_CODE = 101;
-    private String _PhotoCurrentPath;
+    public String _PhotoCurrentPath;
 
     private EditText nomProfil;
     private EditText locationProfil;
@@ -228,19 +226,6 @@ public class VueProfilModif extends Fragment {
         }
     }
 
-    /**
-     * Cette ce charge de verifier l'orientation de la photo puis changer cette orientation selon un angle
-     * @param bitmap la photo
-     * @param angle l'angle de rotation
-     * @return la photo avec une nouvelle rotation
-     */
-    public static Bitmap changerOrientationImage(Bitmap bitmap, float angle) {
-        Matrix matrix = new Matrix();
-        matrix.postRotate(angle);
-        return Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(),
-                matrix, true);
-    }
-
     public void chargerInfosActuel(Utilisateur utilisateur){
         if(utilisateur != null) {
             nomProfil.setText(utilisateur.getNom());
@@ -260,14 +245,18 @@ public class VueProfilModif extends Fragment {
         }
     }
 
-    private File SauvegarderPhotoCamera() throws IOException{
+
+    public File SauvegarderPhotoCamera() throws IOException {
+        //Générer un String qui sera le nom du fichier basé sur la date de création du fichier
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
         String imageFileName = "PNG_" + timeStamp + "_";
+        //Générer l'endroit où le fichier va être sauvegardé
         File storageDir = getContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        //Générer le fichier avec le nom, type et directoire pour la sauvegarde
         File image = File.createTempFile(
-                imageFileName,  /* prefix */
-                ".png",         /* suffix */
-                storageDir      /* directory */
+                imageFileName,  /* préfix du fichier */
+                ".png",         /* suffix du fichier */
+                storageDir      /* directoire sur le téléphone */
         );
         _PhotoCurrentPath = image.getAbsolutePath();
         return image;
