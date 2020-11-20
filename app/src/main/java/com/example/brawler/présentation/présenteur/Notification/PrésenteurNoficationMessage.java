@@ -165,13 +165,14 @@ public class PrésenteurNoficationMessage {
                 for (Notification notification : modèle.getNotification()) {
                     if (message.getUtilisateur().getId() == notification.getUtilisateur().getId()) {
                         notification.addMessage(message);
-                        modèle.getNotification().add(notification);
+                        utilisateurDéjàEnNotification = true;
                     }
                 }
             }
 
             if(!utilisateurDéjàEnNotification){
                 modèle.getNotification().add(new Notification(message.getUtilisateur(), message));
+                utilisateurDéjàEnNotification = false;
             }
         }
     }
