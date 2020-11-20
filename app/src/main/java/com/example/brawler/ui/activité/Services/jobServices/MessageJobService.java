@@ -13,9 +13,8 @@ import com.example.brawler.ui.activité.Services.ServiceNotificationMessage;
 
 
 public class MessageJobService extends JobService {
-    private static final String TAG = "SyncService";
-    private String clé;
 
+    private String clé;
     private  VueNotificationMessage vue;
     private PrésenteurNoficationMessage présenteur;
 

@@ -29,7 +29,7 @@ public class PrésenteurNoficationMessage {
     private final int MSG_MARQUER_NOTIFIER = 4;
     private final int MSG_NOUVEAU_MESSAGE = 5;
 
-    public PrésenteurNoficationMessage(Modèle modèle, VueNotificationMessage vue) {
+    public PrésenteurNoficationMessage(final Modèle modèle, VueNotificationMessage vue) {
 
         this.modèle = modèle;
         this.vue = vue;
@@ -45,16 +45,27 @@ public class PrésenteurNoficationMessage {
                 if (msg.what == MSG_CHARGER_MESSAGES) {
                     notifierMessage();
                 } else if ( msg.what == MSG_ERREUR ) {
+
+                } else if (msg.what == MSG_NOUVEAU_MESSAGE) {
+                    afficherRépondreMessage();
                 }
             }
         };
+    }
+
+    public void setSource(SourceMessage source) {
+        this.source = source;
     }
 
     public void startNotifier() {
         getMessagesÀNotifier();
     }
 
-    public void getMessagesÀNotifier(){
+    public void startRépondre(){
+        envoyerMessage(modèle.getTexteRéponse(), modèle.getUtilisateurEnRevue());
+    }
+
+    private void getMessagesÀNotifier(){
 
         filEsclaveEnvoyerMessage = new Thread(
                 new Runnable() {
@@ -79,11 +90,9 @@ public class PrésenteurNoficationMessage {
         filEsclaveEnvoyerMessage.start();
     }
 
-    public void setSource(SourceMessage source) {
-        this.source = source;
-    }
 
-    public void notifierMessage(){
+
+    private void notifierMessage(){
         if(modèle.getMessages().size() > 0) {
             créerNotificationParMessage();
             for (Notification notification : modèle.getNotification()) {
@@ -94,13 +103,7 @@ public class PrésenteurNoficationMessage {
 
     }
 
-    private void marquerMessagesNotifier(Notification notification) {
-        for(com.example.brawler.domaine.entité.Message message : notification.getMessage()){
-            commencerFileEscalveMarquerNotifier(message);
-        }
-    }
-
-    public void envoyerMessage(final String texte){
+    private void envoyerMessage(final String texte,final int idUtiliasteur){
         filEsclaveEnvoyerMessage = new Thread(
                 new Runnable() {
                     @Override
@@ -108,7 +111,7 @@ public class PrésenteurNoficationMessage {
                         Message msg = null;
                         try {
                             Thread.sleep(0);
-                            InteracteurMessage.getInstance(source).envoyerMessage(modèle.getUtilisateurEnRevue(), texte);
+                            InteracteurMessage.getInstance(source).envoyerMessage(idUtiliasteur, texte);
                             msg = handlerRéponse.obtainMessage( MSG_NOUVEAU_MESSAGE );
                         } catch (InterruptedException e) {
                             msg = handlerRéponse.obtainMessage( MSG_ANNULER );
@@ -120,6 +123,12 @@ public class PrésenteurNoficationMessage {
                     }
                 });
         filEsclaveEnvoyerMessage.start();
+    }
+
+    private void marquerMessagesNotifier(Notification notification) {
+        for(com.example.brawler.domaine.entité.Message message : notification.getMessage()){
+            commencerFileEscalveMarquerNotifier(message);
+        }
     }
 
     private void commencerFileEscalveMarquerNotifier(final com.example.brawler.domaine.entité.Message message) {
@@ -165,5 +174,9 @@ public class PrésenteurNoficationMessage {
                 modèle.getNotification().add(new Notification(message.getUtilisateur(), message));
             }
         }
+    }
+
+    private void afficherRépondreMessage() {
+        vue.répondreNotification(modèle.getUtilisateurEnRevue(), modèle.getTexteRéponse());
     }
 }

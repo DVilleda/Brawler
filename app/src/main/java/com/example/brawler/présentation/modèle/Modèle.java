@@ -14,6 +14,7 @@ public class Modèle {
     private Utilisateur utilisateur;
     private List<Message> messages;
     private List<Notification> notification;
+    private String texteRéponse;
 
     public Modèle(){
         listeUtilisateurs = new ArrayList<>();
@@ -80,5 +81,13 @@ public class Modèle {
 
     public void setNotification(List<Notification> notification) {
         this.notification = notification;
+    }
+
+    public String getTexteRéponse() {
+        return texteRéponse;
+    }
+
+    public void setTexteRéponse(String texteRéponse) {
+        this.texteRéponse = texteRéponse;
     }
 }

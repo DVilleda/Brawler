@@ -5,7 +5,9 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
+import android.os.Build;
 
+import androidx.annotation.RequiresApi;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 import androidx.core.app.RemoteInput;
@@ -13,12 +15,14 @@ import androidx.core.app.RemoteInput;
 import com.example.brawler.R;
 import com.example.brawler.domaine.entité.Message;
 import com.example.brawler.présentation.présenteur.Notification.PrésenteurNoficationMessage;
+import com.example.brawler.ui.activité.Services.Receiver.MessageReceiver;
 import com.example.brawler.ui.activité.Services.ServiceNotificationMessage;
 import com.example.brawler.ui.activité.Services.jobServices.MessageJobService;
 
 public class VueNotificationMessage {
-    private  final static String CHANNEL_ID = "MessageBrawlerA";
-    private static final String KEY_TEXT_REPLY = "ReplyBrawlerA";
+    private  final static String CHANNEL_ID = "com.brawler.channnelId";
+    private static final String KEY_TEXT_REPLY = "com.brawler.keyTextReply";
+    private static final String EXTRA_ID_UTILISATEUR_NOTIFICATION = "com.brawler.idUtilisateurNotification";
 
     private Context context;
     private Resources resources;
@@ -27,7 +31,9 @@ public class VueNotificationMessage {
     public VueNotificationMessage(Context applicationContext, Resources resources) {
         this.context = applicationContext;
         this.resources = resources;
-        this.resultIntent = new Intent(context, MessageJobService.class);
+
+        //créer l'intent pour le bouton reply de la notifiation
+
     }
 
     public void setPrésenteur(PrésenteurNoficationMessage présenteur) {
@@ -36,6 +42,9 @@ public class VueNotificationMessage {
 
     public void afficherNotification(com.example.brawler.domaine.entité.Notification notification) {
         NotificationCompat.MessagingStyle messages = new NotificationCompat.MessagingStyle(resources.getString(R.string.reply_name));
+
+        this.resultIntent = new Intent(context, MessageReceiver.class);
+        resultIntent.putExtra(EXTRA_ID_UTILISATEUR_NOTIFICATION, notification.getUtilisateur().getId());
 
         //insère les message recu dans la notification
         for(Message message : notification.getMessage()){
@@ -52,7 +61,7 @@ public class VueNotificationMessage {
                 .setLabel(replyLabel)
                 .build();
 
-        //créer le intent poru que l'utilisateur puisse répondre
+        //créer le intent pour que l'utilisateur puisse répondre
         PendingIntent replyPendingIntent =
                 PendingIntent.getBroadcast(context,
                         notification.getUtilisateur().getId(),
@@ -75,6 +84,17 @@ public class VueNotificationMessage {
 
         //Envoie la notification
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
-        notificationManager.notify( 0, uneNotificationAndroid);
+        notificationManager.notify( notification.getUtilisateur().getId(), uneNotificationAndroid);
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public void répondreNotification(int idUtilisateur, String texteRéponse){
+        Notification repliedNotification = new Notification.Builder(context, CHANNEL_ID)
+                .setSmallIcon(R.drawable.ic_aller_profil)
+                .setContentText(texteRéponse)
+                .build();
+
+        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
+        notificationManager.notify(idUtilisateur, repliedNotification);
     }
 }
