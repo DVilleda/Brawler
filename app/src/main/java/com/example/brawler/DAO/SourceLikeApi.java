@@ -1,7 +1,6 @@
 package com.example.brawler.DAO;
 
 import android.util.JsonReader;
-import android.util.Log;
 
 import com.example.brawler.domaine.intéracteur.SourceLike;
 import com.example.brawler.domaine.intéracteur.UtilisateursException;
@@ -32,7 +31,6 @@ public class SourceLikeApi implements SourceLike {
     @Override
     public boolean confirmerLike(int id) throws UtilisateursException {
         Boolean utilisateurAjoutéContact = null;
-        Log.d("url", urlLike + id);
         try {
             url = new URL(urlLike + id);
         } catch (MalformedURLException e) {
@@ -46,7 +44,6 @@ public class SourceLikeApi implements SourceLike {
     private boolean lancerConnexion() throws UtilisateursException {
         Boolean utilisateurAjoutéContact = null;
         try {
-            Log.d("passe", "décoderJson");
             HttpURLConnection connexion =
                     (HttpURLConnection) url.openConnection();
             connexion.setRequestProperty("Authorization", cléBearer);

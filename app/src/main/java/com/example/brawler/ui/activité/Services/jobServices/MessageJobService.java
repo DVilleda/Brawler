@@ -1,19 +1,9 @@
 package com.example.brawler.ui.activité.Services.jobServices;
 
-import android.app.IntentService;
 import android.app.job.JobParameters;
 import android.app.job.JobService;
-import android.content.BroadcastReceiver;
-import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.Build;
 import android.preference.PreferenceManager;
-import android.util.Log;
-import android.widget.Toast;
-
-import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
 
 import com.example.brawler.DAO.SourceMessageApi;
 import com.example.brawler.présentation.modèle.Modèle;
@@ -32,16 +22,13 @@ public class MessageJobService extends JobService {
     @Override
     public boolean onStartJob(JobParameters params) {
 
-
-        Log.i(TAG, "on start job: " + params.getJobId());
         vue = new VueNotificationMessage(getApplicationContext(), getResources());
         présenteur = new PrésenteurNoficationMessage(new Modèle(), vue);
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         clé = sharedPref.getString("token", "");
 
         présenteur.setSource(new SourceMessageApi(clé));
-        présenteur.getMessagesÀNotifier();
-        présenteur.notifierMessage();
+        présenteur.startNotifier();
 
 
         ServiceNotificationMessage.démarerJob(getApplicationContext());
@@ -50,7 +37,6 @@ public class MessageJobService extends JobService {
 
     @Override
     public boolean onStopJob(JobParameters params) {
-        Log.i(TAG, "on Stop job: " + params.getJobId());
 
         return true;
     }

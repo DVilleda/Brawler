@@ -2,7 +2,6 @@ package com.example.brawler.DAO;
 
 import android.net.Uri;
 import android.util.JsonReader;
-import android.util.Log;
 
 import com.example.brawler.domaine.entité.Message;
 import com.example.brawler.domaine.entité.Utilisateur;
@@ -226,7 +225,6 @@ public class SourceMessageApi implements SourceMessage {
         }
         jsonReader.endObject();
 
-        Log.d("id", String.valueOf(id));
         message = new Message(id, texte, utilisateur, temps, lue);
         return message;
     }

@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -33,7 +32,6 @@ public class RecherchMatchActivité extends AppCompatActivity {
 
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         clé = sharedPref.getString("token", "");
-        Log.d("clé", clé);
         if(clé.trim().isEmpty()){
             startActivity(new Intent(this, ConnexionActivité.class));
         }
@@ -68,8 +66,6 @@ public class RecherchMatchActivité extends AppCompatActivity {
         super.onResume();
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         clé = sharedPref.getString("token", "");
-        Log.d("clé", clé);
-        Log.d("passe", "onResume");
         présenteur.setSourceUtilisateurs(new SourceUtilisateursApi(clé));
         présenteur.setSourceLike(new SourceLikeApi(clé));
         présenteur.prochainUtilsateur();

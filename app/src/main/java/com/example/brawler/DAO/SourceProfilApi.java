@@ -1,6 +1,5 @@
 package com.example.brawler.DAO;
 
-import android.net.Uri;
 import android.util.JsonReader;
 import android.util.Pair;
 
@@ -20,12 +19,9 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
-import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
-import java.util.UUID;
 
 public class SourceProfilApi implements SourceUtilisateur{
 

@@ -100,7 +100,6 @@ public class PrésenteurConsulterMessage {
         final Runnable runnable = new Runnable() {
             @Override
             public void run() {
-                Log.d("se", "rafrachit");
                 getMessages(modèle.getUtilisateurEnRevue());
             }
         };
@@ -121,10 +120,8 @@ public class PrésenteurConsulterMessage {
                         } catch (InterruptedException e) {
                             msg = handlerRéponse.obtainMessage( MSG_ANNULER );
                         } catch (MessageException e) {
-                            Log.d("bug", String.valueOf(e));
                             msg = handlerRéponse.obtainMessage( MSG_ERREUR );
                         } catch (UtilisateursException e) {
-                            Log.d("bug", String.valueOf(e));
                             msg = handlerRéponse.obtainMessage( MSG_ERREUR );
                         }
 

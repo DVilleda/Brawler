@@ -16,6 +16,15 @@ public class Message {
         this.utilisateur = utilisateur;
         this.temps = temps;
         this.lue = lue;
+        this.id = id;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getTexte() {

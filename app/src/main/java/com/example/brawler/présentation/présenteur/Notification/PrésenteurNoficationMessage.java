@@ -1,10 +1,8 @@
 package com.example.brawler.présentation.présenteur.Notification;
 
 import android.content.SharedPreferences;
-import android.os.Debug;
 import android.os.Handler;
 import android.os.Message;
-import android.util.Log;
 
 import com.example.brawler.domaine.entité.Notification;
 import com.example.brawler.domaine.intéracteur.InteracteurMessage;
@@ -28,6 +26,8 @@ public class PrésenteurNoficationMessage {
     private final int MSG_CHARGER_MESSAGES = 1;
     private final int MSG_ERREUR = 2;
     private final int MSG_ANNULER = 3;
+    private final int MSG_MARQUER_NOTIFIER = 4;
+    private final int MSG_NOUVEAU_MESSAGE = 5;
 
     public PrésenteurNoficationMessage(Modèle modèle, VueNotificationMessage vue) {
 
@@ -48,6 +48,10 @@ public class PrésenteurNoficationMessage {
                 }
             }
         };
+    }
+
+    public void startNotifier() {
+        getMessagesÀNotifier();
     }
 
     public void getMessagesÀNotifier(){
@@ -84,9 +88,63 @@ public class PrésenteurNoficationMessage {
             créerNotificationParMessage();
             for (Notification notification : modèle.getNotification()) {
                 vue.afficherNotification(notification);
+                marquerMessagesNotifier(notification);
             }
         }
 
+    }
+
+    private void marquerMessagesNotifier(Notification notification) {
+        for(com.example.brawler.domaine.entité.Message message : notification.getMessage()){
+            commencerFileEscalveMarquerNotifier(message);
+        }
+    }
+
+    public void envoyerMessage(final String texte){
+        filEsclaveEnvoyerMessage = new Thread(
+                new Runnable() {
+                    @Override
+                    public void run() {
+                        Message msg = null;
+                        try {
+                            Thread.sleep(0);
+                            InteracteurMessage.getInstance(source).envoyerMessage(modèle.getUtilisateurEnRevue(), texte);
+                            msg = handlerRéponse.obtainMessage( MSG_NOUVEAU_MESSAGE );
+                        } catch (InterruptedException e) {
+                            msg = handlerRéponse.obtainMessage( MSG_ANNULER );
+                        } catch (MessageException e) {
+                            msg = handlerRéponse.obtainMessage( MSG_ANNULER );
+                        }
+
+                        handlerRéponse.sendMessage( msg );
+                    }
+                });
+        filEsclaveEnvoyerMessage.start();
+    }
+
+    private void commencerFileEscalveMarquerNotifier(final com.example.brawler.domaine.entité.Message message) {
+
+        filEsclaveEnvoyerMessage = new Thread(
+                new Runnable() {
+                    @Override
+                    public void run() {
+                        Message msg = null;
+                        try {
+                            Thread.sleep(0);
+                            InteracteurMessage.getInstance(source).marquerNotifier(message.getId());
+                            msg = handlerRéponse.obtainMessage( MSG_MARQUER_NOTIFIER );
+                        } catch (InterruptedException e) {
+                            msg = handlerRéponse.obtainMessage( MSG_ANNULER );
+                        } catch (MessageException e) {
+                            msg = handlerRéponse.obtainMessage( MSG_ERREUR );
+                        } catch (UtilisateursException e) {
+                            msg = handlerRéponse.obtainMessage( MSG_ERREUR );
+                        }
+
+                        handlerRéponse.sendMessage( msg );
+                    }
+                });
+        filEsclaveEnvoyerMessage.start();
     }
 
     private  void créerNotificationParMessage() {
