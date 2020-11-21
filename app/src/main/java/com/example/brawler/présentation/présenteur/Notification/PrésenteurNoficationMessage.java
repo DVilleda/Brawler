@@ -13,6 +13,7 @@ import com.example.brawler.présentation.modèle.Modèle;
 import com.example.brawler.présentation.vue.notification.VueNotificationMessage;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 public class PrésenteurNoficationMessage {
 
@@ -73,11 +74,8 @@ public class PrésenteurNoficationMessage {
                     public void run() {
                         Message msg = null;
                         try {
-                            Thread.sleep(0);
                             modèle.setListeMessage(InteracteurMessage.getInstance(source).getMessagesÀNotifier());
                             msg = handlerRéponse.obtainMessage( MSG_CHARGER_MESSAGES );
-                        } catch (InterruptedException e) {
-                            msg = handlerRéponse.obtainMessage( MSG_ANNULER );
                         } catch (MessageException e) {
                             msg = handlerRéponse.obtainMessage( MSG_ERREUR );
                         } catch (UtilisateursException e) {
@@ -95,9 +93,9 @@ public class PrésenteurNoficationMessage {
     private void notifierMessage(){
         if(modèle.getMessages().size() > 0) {
             créerNotificationParMessage();
-            for (Notification notification : modèle.getNotification()) {
-                vue.afficherNotification(notification);
-                marquerMessagesNotifier(notification);
+            for (com.example.brawler.domaine.entité.Message unMessage: modèle.getMessages()) {
+                vue.afficherNotification(unMessage.getUtilisateur().getId(), unMessage.getTexte(), unMessage.getUtilisateur().getNom(),unMessage.getTemps());
+                marquerMessagesNotifier(unMessage);
             }
         }
 
@@ -110,11 +108,8 @@ public class PrésenteurNoficationMessage {
                     public void run() {
                         Message msg = null;
                         try {
-                            Thread.sleep(0);
                             InteracteurMessage.getInstance(source).envoyerMessage(idUtiliasteur, texte);
                             msg = handlerRéponse.obtainMessage( MSG_NOUVEAU_MESSAGE );
-                        } catch (InterruptedException e) {
-                            msg = handlerRéponse.obtainMessage( MSG_ANNULER );
                         } catch (MessageException e) {
                             msg = handlerRéponse.obtainMessage( MSG_ANNULER );
                         }
@@ -125,10 +120,8 @@ public class PrésenteurNoficationMessage {
         filEsclaveEnvoyerMessage.start();
     }
 
-    private void marquerMessagesNotifier(Notification notification) {
-        for(com.example.brawler.domaine.entité.Message message : notification.getMessage()){
-            commencerFileEscalveMarquerNotifier(message);
-        }
+    private void marquerMessagesNotifier(com.example.brawler.domaine.entité.Message message) {
+        commencerFileEscalveMarquerNotifier(message);
     }
 
     private void commencerFileEscalveMarquerNotifier(final com.example.brawler.domaine.entité.Message message) {
@@ -139,11 +132,8 @@ public class PrésenteurNoficationMessage {
                     public void run() {
                         Message msg = null;
                         try {
-                            Thread.sleep(0);
                             InteracteurMessage.getInstance(source).marquerNotifier(message.getId());
                             msg = handlerRéponse.obtainMessage( MSG_MARQUER_NOTIFIER );
-                        } catch (InterruptedException e) {
-                            msg = handlerRéponse.obtainMessage( MSG_ANNULER );
                         } catch (MessageException e) {
                             msg = handlerRéponse.obtainMessage( MSG_ERREUR );
                         } catch (UtilisateursException e) {
@@ -178,6 +168,6 @@ public class PrésenteurNoficationMessage {
     }
 
     private void afficherRépondreMessage() {
-        vue.répondreNotification(modèle.getUtilisateurEnRevue(), modèle.getTexteRéponse());
+        vue.afficherNotification(modèle.getUtilisateurEnRevue(), modèle.getTexteRéponse(), null, new Date());
     }
 }

@@ -19,14 +19,10 @@ import androidx.core.app.Person;
 import androidx.core.app.RemoteInput;
 
 import com.example.brawler.R;
-import com.example.brawler.domaine.entité.Message;
 import com.example.brawler.présentation.présenteur.Notification.PrésenteurNoficationMessage;
 import com.example.brawler.ui.activité.Services.Receiver.MessageReceiver;
-import com.example.brawler.ui.activité.Services.ServiceNotificationMessage;
-import com.example.brawler.ui.activité.Services.jobServices.MessageJobService;
 
 import java.util.Date;
-import java.util.List;
 
 public class VueNotificationMessage {
     private  final static String CHANNEL_ID = "com.brawler.channnelId";
@@ -49,68 +45,52 @@ public class VueNotificationMessage {
         this.présenteur = présenteur;
     }
 
-    public void afficherNotification(com.example.brawler.domaine.entité.Notification notification) {
+    public void afficherNotification(int idUtilisateur, String texte, String nomUtilisateur, Date date) {
 
         //Envoie la notification
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
+        Notification notificationAndroid = null;
 
         //creer le cahnnel de notifcaiton
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-            NotificationChannel notifcationChannel = new NotificationChannel(CHANNEL_ID, resources.getString(R.string.channel_name), NotificationManager.IMPORTANCE_DEFAULT);
-
-            //détail du channel
-            notifcationChannel.enableLights(true);
-            notifcationChannel.setLightColor(Color.RED);
-
-            notificationManager.createNotificationChannel(notifcationChannel);
-        }
-        notificationManager.notify( notification.getUtilisateur().getId(), créerNotification(notification.getUtilisateur().getId(), créerStyleAvecListeMessage(notification.getMessage())));
-    }
-
-    public void répondreNotification(int idUtilisateur, String texte){
-        Notification repliedNotification = null;
-
-
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                repliedNotification = getActiveNotification(idUtilisateur);
-            }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            notificationAndroid = getActiveNotification(idUtilisateur);
         }
 
-        if(repliedNotification != null) {
-            NotificationCompat.MessagingStyle style = NotificationCompat.MessagingStyle.extractMessagingStyleFromNotification(repliedNotification);
-            style.getMessages();
-            Date date = new Date();
+        créerNoticationChannel(notificationManager);
+
+
+        //vérifie si la notification existe déjà et l'update si oui
+        if(notificationAndroid != null){
+            NotificationCompat.MessagingStyle style = NotificationCompat.MessagingStyle.extractMessagingStyleFromNotification(notificationAndroid);
+            date = new Date();
             style.addMessage(new NotificationCompat.MessagingStyle.Message(texte,
                     date.getTime(),
-                    (Person) null));
-
-            repliedNotification = créerNotification(idUtilisateur, style);
-            NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
-            notificationManager.notify(idUtilisateur, repliedNotification);
+                    nomUtilisateur));
+            notificationAndroid = créerNotification(idUtilisateur, style);
+            Log.d("recreate", texte);
+        } else {
+            Log.d("passe", texte);
+            notificationAndroid = créerNotification(idUtilisateur, créerStyleAvecListeMessage(texte, nomUtilisateur, date));
         }
 
-
+        //envoie la notification
+        notificationManager.notify( idUtilisateur, notificationAndroid);
     }
 
 
-    private NotificationCompat.MessagingStyle créerStyleAvecListeMessage(List<Message> Listemessages){
+    private NotificationCompat.MessagingStyle créerStyleAvecListeMessage(String texte, String nomUtilisateur, Date date){
         NotificationCompat.MessagingStyle style = new NotificationCompat.MessagingStyle(resources.getString(R.string.reply_name));
 
-        for(Message message : Listemessages){
-            NotificationCompat.MessagingStyle.Message nouveauMessage =
-                    new NotificationCompat.MessagingStyle.Message(message.getTexte(),
-                            message.getTemps().getTime(),
-                            message.getUtilisateur().getNom());
-            style.addMessage(nouveauMessage);
-        }
+        NotificationCompat.MessagingStyle.Message nouveauMessage =
+                new NotificationCompat.MessagingStyle.Message(texte,
+                        date.getTime(),
+                        nomUtilisateur);
+        style.addMessage(nouveauMessage);
 
         return style;
     }
 
     private Notification créerNotification(int idUtilisateur, NotificationCompat.MessagingStyle messages){
-
 
         this.resultIntent = new Intent(context, MessageReceiver.class);
         resultIntent.putExtra(EXTRA_ID_UTILISATEUR_NOTIFICATION, idUtilisateur);
@@ -138,8 +118,6 @@ public class VueNotificationMessage {
         //Build la notificaiton
         Notification uneNotificationAndroid = new NotificationCompat.Builder(context, CHANNEL_ID)
                 .setSmallIcon(R.drawable.fist_bump)
-                .setContentTitle("New mail from " + "test@gmail.com")
-                .setContentText("Subject")
                 .setStyle(messages)
                 .addAction(action)
                 .build();
@@ -159,4 +137,19 @@ public class VueNotificationMessage {
         return null;
     }
 
+
+    private void créerNoticationChannel(NotificationManagerCompat notificationManager){
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            NotificationChannel notifcationChannel = null;
+
+            notifcationChannel = new NotificationChannel(CHANNEL_ID, resources.getString(R.string.channel_name), NotificationManager.IMPORTANCE_DEFAULT);
+
+
+            //détail du channel
+            notifcationChannel.enableLights(true);
+            notifcationChannel.setLightColor(Color.RED);
+
+            notificationManager.createNotificationChannel(notifcationChannel);
+        }
+    }
 }
