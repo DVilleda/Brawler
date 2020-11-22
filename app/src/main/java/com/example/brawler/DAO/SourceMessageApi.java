@@ -183,6 +183,7 @@ public class SourceMessageApi implements SourceMessage {
             if(key.equals("message")){
                 jsonReader.beginArray();
                 while (jsonReader.hasNext()){
+                    Log.d("passe", "ici");
                     messages.add(décoderMessage(jsonReader));
                 }
                 jsonReader.endArray();
