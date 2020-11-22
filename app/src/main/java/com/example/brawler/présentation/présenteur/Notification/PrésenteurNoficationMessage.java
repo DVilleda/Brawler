@@ -4,7 +4,6 @@ import android.content.SharedPreferences;
 import android.os.Handler;
 import android.os.Message;
 
-import com.example.brawler.domaine.entité.Notification;
 import com.example.brawler.domaine.intéracteur.InteracteurMessage;
 import com.example.brawler.domaine.intéracteur.MessageException;
 import com.example.brawler.domaine.intéracteur.SourceMessage;
@@ -92,7 +91,6 @@ public class PrésenteurNoficationMessage {
 
     private void notifierMessage(){
         if(modèle.getMessages().size() > 0) {
-            créerNotificationParMessage();
             for (com.example.brawler.domaine.entité.Message unMessage: modèle.getMessages()) {
                 vue.afficherNotification(unMessage.getUtilisateur().getId(), unMessage.getTexte(), unMessage.getUtilisateur().getNom(),unMessage.getTemps());
                 marquerMessagesNotifier(unMessage);
@@ -146,26 +144,6 @@ public class PrésenteurNoficationMessage {
         filEsclaveEnvoyerMessage.start();
     }
 
-    private  void créerNotificationParMessage() {
-        boolean utilisateurDéjàEnNotification;
-        modèle.setNotification(new ArrayList<Notification>());
-        for (com.example.brawler.domaine.entité.Message message : modèle.getMessages()) {
-            utilisateurDéjàEnNotification = false;
-            if(modèle.getNotification().size() != 0) {
-                for (Notification notification : modèle.getNotification()) {
-                    if (message.getUtilisateur().getId() == notification.getUtilisateur().getId()) {
-                        notification.addMessage(message);
-                        utilisateurDéjàEnNotification = true;
-                    }
-                }
-            }
-
-            if(!utilisateurDéjàEnNotification){
-                modèle.getNotification().add(new Notification(message.getUtilisateur(), message));
-                utilisateurDéjàEnNotification = false;
-            }
-        }
-    }
 
     private void afficherRépondreMessage() {
         vue.afficherNotification(modèle.getUtilisateurEnRevue(), modèle.getTexteRéponse(), null, new Date());

@@ -2,6 +2,7 @@ package com.example.brawler.DAO;
 
 import android.net.Uri;
 import android.util.JsonReader;
+import android.util.Log;
 
 import com.example.brawler.domaine.entité.Message;
 import com.example.brawler.domaine.entité.Utilisateur;
@@ -182,7 +183,7 @@ public class SourceMessageApi implements SourceMessage {
             if(key.equals("message")){
                 jsonReader.beginArray();
                 while (jsonReader.hasNext()){
-                    messages.add(décoderMessage((jsonReader)));
+                    messages.add(décoderMessage(jsonReader));
                 }
                 jsonReader.endArray();
             } else {
@@ -209,15 +210,10 @@ public class SourceMessageApi implements SourceMessage {
                 utilisateur = sourceUtilisateur.getUtilisateurParId(jsonReader.nextInt());
             } else if (key.equals("message")){
                 texte = jsonReader.nextString();
+                Log.d("Message:", texte);
             } else if (key.equals("temps")) {
                 temps = décoderTemps(jsonReader.nextString());
-            } else if (key.equals("lue")) {
-                int i = jsonReader.nextInt();
-                if(i == 0)
-                    lue = false;
-                else
-                    lue =true;
-            } else if (key.equals("id")) {
+            }else if (key.equals("id")) {
                 id = jsonReader.nextInt();
             } else {
                 jsonReader.skipValue();
@@ -225,7 +221,7 @@ public class SourceMessageApi implements SourceMessage {
         }
         jsonReader.endObject();
 
-        message = new Message(id, texte, utilisateur, temps, lue);
+        message = new Message(id, texte, utilisateur, new Date(), lue);
         return message;
     }
 
@@ -247,7 +243,7 @@ public class SourceMessageApi implements SourceMessage {
             int minute = Integer.parseInt(tempsATraiter[1]);
             date = new Date(année, mois, journée, heure, minute);
         }
-
+        Log.d("date:", String.valueOf(date));
         return  date;
     }
 }

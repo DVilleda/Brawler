@@ -74,6 +74,7 @@ public class ConsulterMessageActivité extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        ServiceNotificationMessage.arrêterJob(getApplicationContext());
         présenteur.commencerRafraichir();
     }
 

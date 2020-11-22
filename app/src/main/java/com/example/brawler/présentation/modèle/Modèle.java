@@ -1,7 +1,6 @@
 package com.example.brawler.présentation.modèle;
 
 import com.example.brawler.domaine.entité.Message;
-import com.example.brawler.domaine.entité.Notification;
 import com.example.brawler.domaine.entité.Utilisateur;
 
 import java.util.ArrayList;
@@ -13,7 +12,6 @@ public class Modèle {
     private int utilisateurEnRevue;
     private Utilisateur utilisateur;
     private List<Message> messages;
-    private List<Notification> notification;
     private String texteRéponse;
 
     public Modèle(){
@@ -72,22 +70,22 @@ public class Modèle {
         return listeUtilisateurs;
     }
 
-
-    //Notification
-
-    public List<Notification> getNotification() {
-        return notification;
-    }
-
-    public void setNotification(List<Notification> notification) {
-        this.notification = notification;
-    }
-
     public String getTexteRéponse() {
         return texteRéponse;
     }
 
     public void setTexteRéponse(String texteRéponse) {
         this.texteRéponse = texteRéponse;
+    }
+
+    public void trierMessagePartTemps() {
+        for(Message message : messages)
+            for(int i = 0 ; messages.size() == i; i++){
+                if(messages.get(i).getTemps().before(messages.get(i+1).getTemps())) {
+                    Message messageTemp = messages.get(i);
+                    messages.set(i , messages.get(i+1));
+                    messages.set(i + 1, messageTemp);
+                }
+            }
     }
 }

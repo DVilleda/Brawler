@@ -144,7 +144,6 @@ public class VueNotificationMessage {
 
             notifcationChannel = new NotificationChannel(CHANNEL_ID, resources.getString(R.string.channel_name), NotificationManager.IMPORTANCE_DEFAULT);
 
-
             //détail du channel
             notifcationChannel.enableLights(true);
             notifcationChannel.setLightColor(Color.RED);

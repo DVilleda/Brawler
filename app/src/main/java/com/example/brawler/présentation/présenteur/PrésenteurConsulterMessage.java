@@ -47,17 +47,19 @@ public class PrésenteurConsulterMessage {
 
                 if (msg.what == MSG_CHARGER_MESSAGES) {
                     if(nbMessageActuel != getNbMessages()) {
+                        //modèle.trierMessagePartTemps();
                         nbMessageActuel = getNbMessages();
                         vue.rafraîchir();
-                        if(doitRafrahcir)
-                            rafraichir();
+                        if(doitRafrahcir);
+                          //  rafraichir();
                     } else {
-                        if(doitRafrahcir)
-                            rafraichir();
+                        if(doitRafrahcir);
+                            //rafraichir();
                     }
                 } else if (msg.what == MSG_NOUVEAU_MESSAGE){
                     vue.viderTxtMessage();
                     getMessages(modèle.getUtilisateurEnRevue());
+                    doitRafrahcir = true;
                 } else if ( msg.what == MSG_ERREUR ) {
                     Log.e("Brawler", "Erreur d'accès à l'API", (Throwable) msg.obj);
                 }
@@ -80,6 +82,7 @@ public class PrésenteurConsulterMessage {
                         Message msg = null;
                         try {
                             Thread.sleep(0);
+                            doitRafrahcir = false;
                             InteracteurMessage.getInstance(source).envoyerMessage(modèle.getUtilisateurEnRevue(), texte);
                             msg = handlerRéponse.obtainMessage( MSG_NOUVEAU_MESSAGE );
                         } catch (InterruptedException e) {
@@ -94,18 +97,18 @@ public class PrésenteurConsulterMessage {
         filEsclaveEnvoyerMessage.start();
     }
 
-    public void rafraichir() {
-
-        this.handlerRafraîchir = new Handler();
-        final Runnable runnable = new Runnable() {
-            @Override
-            public void run() {
-                getMessages(modèle.getUtilisateurEnRevue());
-            }
-        };
-
-        handlerRafraîchir.postDelayed(runnable, 1000);
-    }
+//    public void rafraichir() {
+//
+//        this.handlerRafraîchir = new Handler();
+//        final Runnable runnable = new Runnable() {
+//            @Override
+//            public void run() {
+//                getMessages(modèle.getUtilisateurEnRevue());
+//            }
+//        };
+//
+//        handlerRafraîchir.postDelayed(runnable, 2000);
+//    }
 
     public void getMessages(final int idUtilisateur){
         filEsclaveEnvoyerMessage = new Thread(
@@ -114,11 +117,8 @@ public class PrésenteurConsulterMessage {
                     public void run() {
                         Message msg = null;
                         try {
-                            Thread.sleep(0);
                             modèle.setListeMessage(InteracteurMessage.getInstance(source).getMessagesparUtilisateurs(idUtilisateur));
                             msg = handlerRéponse.obtainMessage( MSG_CHARGER_MESSAGES );
-                        } catch (InterruptedException e) {
-                            msg = handlerRéponse.obtainMessage( MSG_ANNULER );
                         } catch (MessageException e) {
                             msg = handlerRéponse.obtainMessage( MSG_ERREUR );
                         } catch (UtilisateursException e) {
