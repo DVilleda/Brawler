@@ -13,7 +13,7 @@ public class Modèle {
     private Utilisateur utilisateur;
     private List<Message> messages;
 
-    public Modèle(){
+    public Modèle() {
         listeUtilisateurs = new ArrayList<>();
         utilisateurEnRevue = 0;
     }

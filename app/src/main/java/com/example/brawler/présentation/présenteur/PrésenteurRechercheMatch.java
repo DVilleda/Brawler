@@ -87,7 +87,11 @@ public class PrésenteurRechercheMatch {
 
     public void prochainUtilsateur() {
         modèle.prochainUtilisateur();
-        if (modèle.getListUtilisateurs().size() < 1 || modèle.getListUtilisateurs().size() <= modèle.getUtilisateurEnRevue()) {
+        lancerChargerUtilisateur();
+    }
+
+    public void lancerChargerUtilisateur(){
+        if (modèle.getListUtilisateurs().size() < 1 || modèle.getListUtilisateurs().size() == modèle.getUtilisateurEnRevue()) {
             chargerNouvelleUtilisateur();
         } else if(modèle.getListUtilisateurs().size() > modèle.getUtilisateurEnRevue()){
             vue.afficherUtilisateur(modèle.getUtilisateurActuel());

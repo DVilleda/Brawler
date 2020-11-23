@@ -89,7 +89,7 @@ public class RecherchMatchActivité extends AppCompatActivity {
     @Override
     public void onStart() {
         super.onStart();
-        présenteur.prochainUtilsateur();
+        présenteur.lancerChargerUtilisateur();
     }
 
     @Override
@@ -101,7 +101,6 @@ public class RecherchMatchActivité extends AppCompatActivity {
         Log.d("passe", "onResume");
         présenteur.setSourceUtilisateurs(new SourceUtilisateursApi(clé));
         présenteur.setSourceLike(new SourceLikeApi(clé));
-        présenteur.prochainUtilsateur();
     }
 
     @Override
