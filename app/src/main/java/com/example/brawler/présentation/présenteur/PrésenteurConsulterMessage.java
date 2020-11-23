@@ -35,6 +35,7 @@ public class PrésenteurConsulterMessage {
         this.vue = nouvelleVue;
         this.modèle = modèle;
         doitRafrahcir = true;
+        nbMessageActuel = 0;
 
         this.handlerRéponse = new Handler(){
 
@@ -45,7 +46,6 @@ public class PrésenteurConsulterMessage {
                 filEsclaveEnvoyerMessage = null;
 
                 if (msg.what == MSG_CHARGER_MESSAGES) {
-                    nbMessageActuel = getNbMessages();
                     vue.rafraîchir();
                     rafraichir();
                 } else if (msg.what == MSG_VÉRIFER_NOUVEAU_MESSAGE){
@@ -57,7 +57,7 @@ public class PrésenteurConsulterMessage {
                 } else if (msg.what == MSG_NOUVEAU_MESSAGE){
                     vue.viderTxtMessage();
                     getMessages(modèle.getUtilisateurEnRevue());
-                    doitRafrahcir = true
+                    doitRafrahcir = true;
                 } else if ( msg.what == MSG_ERREUR ) {
                     Log.e("Brawler", "Erreur d'accès à l'API", (Throwable) msg.obj);
                 }
@@ -120,7 +120,7 @@ public class PrésenteurConsulterMessage {
                     public void run() {
                         Message msg = null;
                         try {
-                            modèle.setListeMessage(InteracteurMessage.getInstance(source).getMessagesparUtilisateursEntreDeux(idUtilisateur, nbMessageActuel, nbMessageActuel));
+                            modèle.setListeMessage(InteracteurMessage.getInstance(source).getMessagesparUtilisateursEntreDeux(idUtilisateur, nbMessageActuel, nbMessageActuel + 10));
                             msg = handlerRéponse.obtainMessage( MSG_CHARGER_MESSAGES );
                         } catch (MessageException e) {
                             msg = handlerRéponse.obtainMessage( MSG_ERREUR );
