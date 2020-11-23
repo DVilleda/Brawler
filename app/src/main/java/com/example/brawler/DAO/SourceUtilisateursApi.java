@@ -116,6 +116,7 @@ public class SourceUtilisateursApi implements SourceUtilisateurs {
             if(key.equals("utilisateurs")){
                 utilisateursArrayList = commencerDécoderUtilasteur(jsonReader);
             } else if(key.equals("réponse")) {
+
             } else {
                 jsonReader.skipValue();
             }

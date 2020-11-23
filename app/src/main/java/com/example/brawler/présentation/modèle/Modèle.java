@@ -80,10 +80,14 @@ public class Modèle {
     }
 
     public int getNombreMessageTotale() {
-        return nombreMessageTotale;
+        return this.nombreMessageTotale;
     }
 
     public void setNombreMessageTotale(int nombreMessageTotale) {
         this.nombreMessageTotale = nombreMessageTotale;
+    }
+
+    public void ajouterListeMessage(List<Message> messagesparUtilisateursEntreDeux) {
+        this.messages.addAll(messagesparUtilisateursEntreDeux);
     }
 }

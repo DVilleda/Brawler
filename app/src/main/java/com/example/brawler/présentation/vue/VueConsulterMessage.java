@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -75,8 +76,14 @@ public class VueConsulterMessage extends Fragment {
     public void viderTxtMessage(){
         txtMessage.setText(null);
     }
+
     public void changerBtnEnvoyer(boolean bool){
         btnEnvoyerMessage.setEnabled(bool);
+    }
+
+    public boolean rvAuMax(){
+        LinearLayoutManager layoutManager = (LinearLayoutManager) rvMessages.getLayoutManager();
+        return layoutManager.findFirstCompletelyVisibleItemPosition() == 0;
     }
 
     private TextWatcher envoyerMessageTextWatcher = new TextWatcher() {

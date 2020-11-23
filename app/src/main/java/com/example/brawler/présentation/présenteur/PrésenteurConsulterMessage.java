@@ -18,7 +18,9 @@ public class PrésenteurConsulterMessage {
     private Modèle modèle;
     private SourceMessage source;
     private int nbMessageActuel;
+    private boolean premierCharqement;
     private boolean doitRafrahcir;
+    private boolean doitCharger;
 
     private final Handler handlerRéponse;
     private Handler handlerRafraîchir;
@@ -30,12 +32,15 @@ public class PrésenteurConsulterMessage {
     private final int MSG_ERREUR = 2;
     private final int MSG_ANNULER = 3;
     private final int MSG_VÉRIFER_NOUVEAU_MESSAGE = 4;
+    private boolean nouveauMessage = false;
 
     public PrésenteurConsulterMessage(VueConsulterMessage nouvelleVue, final Modèle modèle) {
         this.vue = nouvelleVue;
         this.modèle = modèle;
         doitRafrahcir = true;
         nbMessageActuel = 0;
+        premierCharqement = true;
+        doitCharger = true;
 
         this.handlerRéponse = new Handler(){
 
@@ -48,20 +53,27 @@ public class PrésenteurConsulterMessage {
                 if (msg.what == MSG_CHARGER_MESSAGES) {
                     vue.rafraîchir();
                     rafraichir();
+                    doitCharger = true;
                 } else if (msg.what == MSG_VÉRIFER_NOUVEAU_MESSAGE){
-                    if(modèle.getNombreMessageTotale() > nbMessageActuel) {
-                        getMessages(modèle.getUtilisateurEnRevue());
+                    if(modèle.getNombreMessageTotale() == 0) {
+                        rafraichir();
+                    } else if(modèle.getNombreMessageTotale() > nbMessageActuel) {
+                        lancerCahrgemetnMessage();
                     } else {
                         rafraichir();
                     }
                 } else if (msg.what == MSG_NOUVEAU_MESSAGE){
                     vue.viderTxtMessage();
-                    getMessages(modèle.getUtilisateurEnRevue());
+                    nbMessageActuel += 1;
+                    reachargerMessage(modèle.getUtilisateurEnRevue(), 0, modèle.getMessages().size());
                     doitRafrahcir = true;
                 } else if ( msg.what == MSG_ERREUR ) {
                     Log.e("Brawler", "Erreur d'accès à l'API", (Throwable) msg.obj);
                 }
             }
+
+
+
         };
 
     }
@@ -100,12 +112,18 @@ public class PrésenteurConsulterMessage {
     }
 
     public void rafraichir() {
+        if(vue.rvAuMax() && doitCharger && modèle.getMessages().size() < modèle.getNombreMessageTotale()) {
+            Log.d("rv", "auMax");
+            lancerCahrgemetnMessage();
+            doitCharger = false;
+        }
+
         if(doitRafrahcir) {
             this.handlerRafraîchir = new Handler();
             final Runnable runnable = new Runnable() {
                 @Override
                 public void run() {
-                    getMessages(modèle.getUtilisateurEnRevue());
+                    getNombreMessagesApi(modèle.getUtilisateurEnRevue());
                 }
             };
 
@@ -113,14 +131,14 @@ public class PrésenteurConsulterMessage {
         }
     }
 
-    public void getMessages(final int idUtilisateur){
+    public void getMessages(final int idUtilisateur, final int début, final int fin){
         filEsclaveEnvoyerMessage = new Thread(
                 new Runnable() {
                     @Override
                     public void run() {
                         Message msg = null;
                         try {
-                            modèle.setListeMessage(InteracteurMessage.getInstance(source).getMessagesparUtilisateursEntreDeux(idUtilisateur, nbMessageActuel, nbMessageActuel + 10));
+                            modèle.ajouterListeMessage(InteracteurMessage.getInstance(source).getMessagesparUtilisateursEntreDeux(idUtilisateur, début, fin));
                             msg = handlerRéponse.obtainMessage( MSG_CHARGER_MESSAGES );
                         } catch (MessageException e) {
                             msg = handlerRéponse.obtainMessage( MSG_ERREUR );
@@ -132,6 +150,26 @@ public class PrésenteurConsulterMessage {
                     }
                 });
         filEsclaveEnvoyerMessage.start();
+    }
+
+    private void reachargerMessage(final int utilisateurEnRevue, final int i, final int size) {
+        filEsclaveEnvoyerMessage = new Thread(
+                new Runnable() {
+                    @Override
+                    public void run() {
+                        Message msg = null;
+                        try {
+                            modèle.setListeMessage(InteracteurMessage.getInstance(source).getMessagesparUtilisateursEntreDeux(utilisateurEnRevue, i, size));
+                            msg = handlerRéponse.obtainMessage( MSG_CHARGER_MESSAGES );
+                        } catch (MessageException e) {
+                            msg = handlerRéponse.obtainMessage( MSG_ERREUR );
+                        } catch (UtilisateursException e) {
+                            msg = handlerRéponse.obtainMessage( MSG_ERREUR );
+                        }
+
+                        handlerRéponse.sendMessage( msg );
+                    }
+                });
     }
 
     public void getNombreMessagesApi(final int idUtilisateur){
@@ -163,6 +201,24 @@ public class PrésenteurConsulterMessage {
 
     public com.example.brawler.domaine.entité.Message getMessageParPos(int id){
         return modèle.getMessages().get(id);
+    }
+
+    private void lancerCahrgemetnMessage() {
+        if(premierCharqement) {
+            if(modèle.getNombreMessageTotale() < 10) {
+                getMessages(modèle.getUtilisateurEnRevue(), 0, modèle.getNombreMessageTotale());
+            } else {
+                getMessages(modèle.getUtilisateurEnRevue(), 0, 10);
+            }
+            premierCharqement = false;
+        } else {
+            if (modèle.getMessages().size() + 10 > modèle.getNombreMessageTotale())
+                getMessages(modèle.getUtilisateurEnRevue(), modèle.getMessages().size(), modèle.getNombreMessageTotale());
+            else
+                getMessages(modèle.getUtilisateurEnRevue(), modèle.getMessages().size(), modèle.getMessages().size() + 10);
+        }
+        nbMessageActuel = modèle.getNombreMessageTotale();
+
     }
 
     public int getIdUtilisateur() {

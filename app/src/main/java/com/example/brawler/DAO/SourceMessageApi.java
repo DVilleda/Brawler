@@ -54,8 +54,9 @@ public class SourceMessageApi implements SourceMessage {
 
     @Override
     public List<Message> getMessagesparUtilisateursEntreDeux(int idUtilisateur, int debutListe, int finListe) throws MessageException, UtilisateursException {
+        Log.d("passe:", "entre deux");
         try {
-            url = new URL(urlMessage + idUtilisateur + "/" + debutListe + "/" + finListe);
+            url = new URL(urlMessage + idUtilisateur + "/"+ debutListe + "/"+ finListe);
         } catch (MalformedURLException e) {
             e.printStackTrace();
         }
@@ -169,7 +170,7 @@ public class SourceMessageApi implements SourceMessage {
         while(jsonReader.hasNext()) {
             String key = jsonReader.nextName();
             if(key.equals("nbMessage")){
-                Log.d("nombre", String.valueOf(jsonReader.nextInt()));
+                nombre = jsonReader.nextInt();
             } else {
                 jsonReader.skipValue();
             }
@@ -244,7 +245,6 @@ public class SourceMessageApi implements SourceMessage {
             if(key.equals("message")){
                 jsonReader.beginArray();
                 while (jsonReader.hasNext()){
-                    Log.d("passe", "ici");
                     messages.add(décoderMessage(jsonReader));
                 }
                 jsonReader.endArray();
@@ -264,6 +264,8 @@ public class SourceMessageApi implements SourceMessage {
         Date temps = null;
         Boolean lue = false;
 
+        Log.d("new", "message");
+
         jsonReader.beginObject();
         while (jsonReader.hasNext()){
             String key = jsonReader.nextName();
@@ -272,7 +274,6 @@ public class SourceMessageApi implements SourceMessage {
                 utilisateur = sourceUtilisateur.getUtilisateurParId(jsonReader.nextInt());
             } else if (key.equals("message")){
                 texte = jsonReader.nextString();
-                Log.d("Message:", texte);
             } else if (key.equals("temps")) {
                 temps = décoderTemps(jsonReader.nextString());
             }else if (key.equals("id")) {
@@ -283,7 +284,7 @@ public class SourceMessageApi implements SourceMessage {
         }
         jsonReader.endObject();
 
-        message = new Message(id, texte, utilisateur, new Date(), lue);
+        message = new Message(id, texte, utilisateur, temps, lue);
         return message;
     }
 
@@ -305,7 +306,6 @@ public class SourceMessageApi implements SourceMessage {
             int minute = Integer.parseInt(tempsATraiter[1]);
             date = new Date(année, mois, journée, heure, minute);
         }
-        Log.d("date:", String.valueOf(date));
         return  date;
     }
 }
