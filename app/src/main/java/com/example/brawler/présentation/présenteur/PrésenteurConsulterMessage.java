@@ -29,13 +29,12 @@ public class PrésenteurConsulterMessage {
     private final int MSG_CHARGER_MESSAGES = 1;
     private final int MSG_ERREUR = 2;
     private final int MSG_ANNULER = 3;
+    private final int MSG_VÉRIFER_NOUVEAU_MESSAGE = 4;
 
     public PrésenteurConsulterMessage(VueConsulterMessage nouvelleVue, final Modèle modèle) {
         this.vue = nouvelleVue;
         this.modèle = modèle;
-        nbMessageActuel = 0;
         doitRafrahcir = true;
-
 
         this.handlerRéponse = new Handler(){
 
@@ -46,20 +45,19 @@ public class PrésenteurConsulterMessage {
                 filEsclaveEnvoyerMessage = null;
 
                 if (msg.what == MSG_CHARGER_MESSAGES) {
-                    if(nbMessageActuel != getNbMessages()) {
-                        //modèle.trierMessagePartTemps();
-                        nbMessageActuel = getNbMessages();
-                        vue.rafraîchir();
-                        if(doitRafrahcir);
-                          //  rafraichir();
+                    nbMessageActuel = getNbMessages();
+                    vue.rafraîchir();
+                    rafraichir();
+                } else if (msg.what == MSG_VÉRIFER_NOUVEAU_MESSAGE){
+                    if(modèle.getNombreMessageTotale() > nbMessageActuel) {
+                        getMessages(modèle.getUtilisateurEnRevue());
                     } else {
-                        if(doitRafrahcir);
-                            //rafraichir();
+                        rafraichir();
                     }
                 } else if (msg.what == MSG_NOUVEAU_MESSAGE){
                     vue.viderTxtMessage();
                     getMessages(modèle.getUtilisateurEnRevue());
-                    doitRafrahcir = true;
+                    doitRafrahcir = true
                 } else if ( msg.what == MSG_ERREUR ) {
                     Log.e("Brawler", "Erreur d'accès à l'API", (Throwable) msg.obj);
                 }
@@ -102,16 +100,17 @@ public class PrésenteurConsulterMessage {
     }
 
     public void rafraichir() {
+        if(doitRafrahcir) {
+            this.handlerRafraîchir = new Handler();
+            final Runnable runnable = new Runnable() {
+                @Override
+                public void run() {
+                    getMessages(modèle.getUtilisateurEnRevue());
+                }
+            };
 
-        this.handlerRafraîchir = new Handler();
-        final Runnable runnable = new Runnable() {
-            @Override
-            public void run() {
-                getMessages(modèle.getUtilisateurEnRevue());
-            }
-        };
-
-        handlerRafraîchir.postDelayed(runnable, 2000);
+            handlerRafraîchir.postDelayed(runnable, 2000);
+        }
     }
 
     public void getMessages(final int idUtilisateur){
@@ -121,7 +120,7 @@ public class PrésenteurConsulterMessage {
                     public void run() {
                         Message msg = null;
                         try {
-                            modèle.setListeMessage(InteracteurMessage.getInstance(source).getMessagesparUtilisateurs(idUtilisateur));
+                            modèle.setListeMessage(InteracteurMessage.getInstance(source).getMessagesparUtilisateursEntreDeux(idUtilisateur, nbMessageActuel, nbMessageActuel));
                             msg = handlerRéponse.obtainMessage( MSG_CHARGER_MESSAGES );
                         } catch (MessageException e) {
                             msg = handlerRéponse.obtainMessage( MSG_ERREUR );
@@ -143,7 +142,7 @@ public class PrésenteurConsulterMessage {
                         Message msg = null;
                         try {
                              modèle.setNombreMessageTotale(InteracteurMessage.getInstance(source).obtenirNombreMessageParUtilisateur(idUtilisateur));
-                             msg = handlerRéponse.obtainMessage(MSG_CHARGER_MESSAGES);
+                             msg = handlerRéponse.obtainMessage(MSG_VÉRIFER_NOUVEAU_MESSAGE);
                         } catch (MessageException e) {
                             msg = handlerRéponse.obtainMessage( MSG_ERREUR );
                         } catch (UtilisateursException e) {
