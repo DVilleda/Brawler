@@ -8,6 +8,7 @@ import com.example.brawler.domaine.entité.Niveau;
 import com.example.brawler.domaine.intéracteur.InteracteurAquisitionUtilisateurs;
 import com.example.brawler.domaine.intéracteur.InteracteurLikeUtilisateur;
 import com.example.brawler.domaine.intéracteur.InterfaceUtiliasteur;
+import com.example.brawler.domaine.intéracteur.LocalisationUtilisateur;
 import com.example.brawler.domaine.intéracteur.SourceLike;
 import com.example.brawler.domaine.intéracteur.SourceUtilisateurs;
 import com.example.brawler.domaine.intéracteur.UtilisateursException;
@@ -32,6 +33,7 @@ public class PrésenteurRechercheMatch {
     private final int MSG_NOUVEAU_LIKE=1;
     private final int MSG_ERREUR = 2;
     private final int MSG_ANNULER = 3;
+    private final int MSG_LOCALISATION_A_JOUR = 3;
 
 
     public PrésenteurRechercheMatch(VueRechercheMatch nouvelleVue, Modèle nouveauModèle) {
@@ -163,6 +165,24 @@ public class PrésenteurRechercheMatch {
         filEsclave.start();
     }
 
+    private void lancerFilEsclaveMettreLocalisationAJour (final String localisation){
+        filEsclave = new Thread(
+                new Runnable() {
+                    @Override
+                    public void run() {
+                        Message msg = null;
+                        try {
+                            LocalisationUtilisateur source = new LocalisationUtilisateur();
+                            source.setLocalisation(localisation);
+                            msg = handlerRéponseApi.obtainMessage( MSG_LOCALISATION_A_JOUR );
+                        } catch (Exception e) {
+                            msg = handlerRéponseApi.obtainMessage( MSG_ERREUR, e );
+                        }
 
+                        handlerRéponseApi.sendMessage( msg );
+                    }
+                });
+        filEsclave.start();
+    }
 
 }
