@@ -72,6 +72,10 @@ public class PrésenteurConsulterMessage {
         this.source = source;
     }
 
+    public void commencerVoirMessage(){
+        getNombreMessagesApi(modèle.getUtilisateurEnRevue());
+    }
+
 
     public void envoyerMessage(final String texte){
         vue.changerBtnEnvoyer(false);
@@ -97,18 +101,18 @@ public class PrésenteurConsulterMessage {
         filEsclaveEnvoyerMessage.start();
     }
 
-//    public void rafraichir() {
-//
-//        this.handlerRafraîchir = new Handler();
-//        final Runnable runnable = new Runnable() {
-//            @Override
-//            public void run() {
-//                getMessages(modèle.getUtilisateurEnRevue());
-//            }
-//        };
-//
-//        handlerRafraîchir.postDelayed(runnable, 2000);
-//    }
+    public void rafraichir() {
+
+        this.handlerRafraîchir = new Handler();
+        final Runnable runnable = new Runnable() {
+            @Override
+            public void run() {
+                getMessages(modèle.getUtilisateurEnRevue());
+            }
+        };
+
+        handlerRafraîchir.postDelayed(runnable, 2000);
+    }
 
     public void getMessages(final int idUtilisateur){
         filEsclaveEnvoyerMessage = new Thread(
@@ -119,6 +123,27 @@ public class PrésenteurConsulterMessage {
                         try {
                             modèle.setListeMessage(InteracteurMessage.getInstance(source).getMessagesparUtilisateurs(idUtilisateur));
                             msg = handlerRéponse.obtainMessage( MSG_CHARGER_MESSAGES );
+                        } catch (MessageException e) {
+                            msg = handlerRéponse.obtainMessage( MSG_ERREUR );
+                        } catch (UtilisateursException e) {
+                            msg = handlerRéponse.obtainMessage( MSG_ERREUR );
+                        }
+
+                        handlerRéponse.sendMessage( msg );
+                    }
+                });
+        filEsclaveEnvoyerMessage.start();
+    }
+
+    public void getNombreMessagesApi(final int idUtilisateur){
+        filEsclaveEnvoyerMessage = new Thread(
+                new Runnable() {
+                    @Override
+                    public void run() {
+                        Message msg = null;
+                        try {
+                             modèle.setNombreMessageTotale(InteracteurMessage.getInstance(source).obtenirNombreMessageParUtilisateur(idUtilisateur));
+                             msg = handlerRéponse.obtainMessage(MSG_CHARGER_MESSAGES);
                         } catch (MessageException e) {
                             msg = handlerRéponse.obtainMessage( MSG_ERREUR );
                         } catch (UtilisateursException e) {

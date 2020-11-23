@@ -22,8 +22,6 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class SourceMessageApi implements SourceMessage {
 
@@ -48,6 +46,16 @@ public class SourceMessageApi implements SourceMessage {
     public List<Message> getMessagesparUtilisateurs(int idUtilisateur) throws MessageException, UtilisateursException {
         try {
             url = new URL(urlMessage + idUtilisateur);
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+        return lancerConnexionRecevoirMessage();
+    }
+
+    @Override
+    public List<Message> getMessagesparUtilisateursEntreDeux(int idUtilisateur, int debutListe, int finListe) throws MessageException, UtilisateursException {
+        try {
+            url = new URL(urlMessage + idUtilisateur + "/" + debutListe + "/" + finListe);
         } catch (MalformedURLException e) {
             e.printStackTrace();
         }
@@ -95,6 +103,17 @@ public class SourceMessageApi implements SourceMessage {
         lancerConnexionEnvoyerMessage(message);
     }
 
+    @Override
+    public int obtenireNombreMessage(int id) throws MessageException, UtilisateursException{
+        try {
+            url = new URL(urlMessage + id);
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+
+        return lancerConnexionObtenirNombreMessage();
+    }
+
     private List<Message> lancerConnexionRecevoirMessage() throws MessageException, UtilisateursException {
         List<Message> messages = null;
 
@@ -115,6 +134,48 @@ public class SourceMessageApi implements SourceMessage {
         }
 
         return messages;
+    }
+
+    private int lancerConnexionObtenirNombreMessage() throws MessageException, UtilisateursException {
+        int nombre = 0;
+
+        try{
+            HttpURLConnection connexion =
+                    (HttpURLConnection)url.openConnection();
+            connexion.setRequestProperty("Authorization", cléBearer);
+            if(connexion.getResponseCode()==200){
+                nombre = compterJson(connexion.getInputStream());
+            }
+            else{
+                throw new SourceMessageApi.SourceMessageApiException( connexion.getResponseCode() );
+            }
+        }
+
+        catch(IOException e){
+            throw new MessageException( e );
+        }
+
+        return nombre;
+    }
+
+    private int compterJson(InputStream inputStream) throws IOException {
+        int nombre = 0;
+        InputStreamReader responseBodyReader =
+                new InputStreamReader(inputStream, "UTF-8");
+
+        JsonReader jsonReader = new JsonReader(responseBodyReader);
+        jsonReader.beginObject();
+
+        while(jsonReader.hasNext()) {
+            String key = jsonReader.nextName();
+            if(key.equals("nbMessage")){
+                Log.d("nombre", String.valueOf(jsonReader.nextInt()));
+            } else {
+                jsonReader.skipValue();
+            }
+
+        }
+        return nombre;
     }
 
     private void lancerConnexionEnvoyerMessage(String message) throws MessageException {

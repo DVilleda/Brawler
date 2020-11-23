@@ -68,7 +68,7 @@ public class ConsulterMessageActivité extends AppCompatActivity {
 
         int idUtilisateurConversation = getIntent().getIntExtra(EXTRA_ID_UTILSAITEUR, -1);
         modèle.setUtilisateurEnRevue(idUtilisateurConversation);
-        présenteur.getMessages(idUtilisateurConversation);
+        présenteur.commencerVoirMessage();
     }
 
     @Override

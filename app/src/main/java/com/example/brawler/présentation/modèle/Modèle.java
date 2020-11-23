@@ -13,6 +13,7 @@ public class Modèle {
     private Utilisateur utilisateur;
     private List<Message> messages;
     private String texteRéponse;
+    private int nombreMessageTotale;
 
     public Modèle(){
         listeUtilisateurs = new ArrayList<>();
@@ -78,14 +79,11 @@ public class Modèle {
         this.texteRéponse = texteRéponse;
     }
 
-    public void trierMessagePartTemps() {
-        for(Message message : messages)
-            for(int i = 0 ; messages.size() == i; i++){
-                if(messages.get(i).getTemps().before(messages.get(i+1).getTemps())) {
-                    Message messageTemp = messages.get(i);
-                    messages.set(i , messages.get(i+1));
-                    messages.set(i + 1, messageTemp);
-                }
-            }
+    public int getNombreMessageTotale() {
+        return nombreMessageTotale;
+    }
+
+    public void setNombreMessageTotale(int nombreMessageTotale) {
+        this.nombreMessageTotale = nombreMessageTotale;
     }
 }
