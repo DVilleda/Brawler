@@ -2,7 +2,6 @@ package com.example.brawler.présentation.présenteur;
 
 import android.os.Handler;
 import android.os.Message;
-import android.util.Log;
 
 import com.example.brawler.domaine.entité.Niveau;
 import com.example.brawler.domaine.intéracteur.InteracteurAquisitionUtilisateurs;
@@ -54,11 +53,9 @@ public class PrésenteurRechercheMatch {
                     vue.toggleÉtatBouton();
                 }
                 else if ( msg.what == MSG_ERREUR ) {
-                    Log.d("Brawler", "Erreur d'accès à l'API", (Throwable) msg.obj);
                     vue.toggleÉtatBouton();
                 }
                 else if (msg.what == MSG_NOUVEAU_LIKE) {
-                    Log.d("passe", "MSG_NOUVEAU_LIKE" );
                     prochainUtilsateur();
                     vue.toggleÉtatBouton();
                 }
@@ -68,7 +65,6 @@ public class PrésenteurRechercheMatch {
     }
 
     public void setSourceUtilisateurs(SourceUtilisateurs source) {
-        Log.d("set:", "source");
         this.sourceUtilisateurs = source;
     }
 
@@ -95,7 +91,6 @@ public class PrésenteurRechercheMatch {
             chargerNouvelleUtilisateur();
         } else if(modèle.getListUtilisateurs().size() > modèle.getUtilisateurEnRevue()){
             vue.afficherUtilisateur(modèle.getUtilisateurActuel());
-            Log.d("id uti:", String.valueOf(modèle.getUtilisateurActuel().getId()));
         }
     }
 
@@ -145,7 +140,6 @@ public class PrésenteurRechercheMatch {
     }
 
     private void lancerFileEsclaveLikerUtilisateur(final int utilisateurLiker){
-        Log.d("passe:", "file esclave");
         filEsclave = new Thread(
                 new Runnable() {
                     @Override
@@ -177,9 +171,6 @@ public class PrésenteurRechercheMatch {
                         Message msg = null;
                         try {
                             LocalisationUtilisateur source = new LocalisationUtilisateur();
-                            boolean verify = source.setLocalisation(clé, localisation);
-                            Log.e("Clé was: ", clé);
-                            Log.e("Update was: ", String.valueOf(verify));
                             msg = handlerRéponseApi.obtainMessage( MSG_LOCALISATION_A_JOUR );
                         } catch (Exception e) {
                             msg = handlerRéponseApi.obtainMessage( MSG_ERREUR, e );

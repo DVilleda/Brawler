@@ -1,7 +1,6 @@
 package com.example.brawler.DAO;
 
 import android.util.JsonReader;
-import android.util.Log;
 
 import com.example.brawler.domaine.entité.Niveau;
 import com.example.brawler.domaine.entité.Utilisateur;
@@ -91,7 +90,6 @@ public class SourceUtilisateursApi implements SourceUtilisateurs {
 
     private List<Utilisateur> lancerConnexion() throws UtilisateursException {
         List<Utilisateur> utilisateursRecue = null;
-        Log.d("clé:", cléBearer);
 
         try{
             HttpURLConnection connexion =
@@ -121,7 +119,6 @@ public class SourceUtilisateursApi implements SourceUtilisateurs {
 
         while(jsonReader.hasNext()) {
             String key = jsonReader.nextName();
-            Log.d("Json", key);
             if(key.equals("utilisateurs")){
                 utilisateursArrayList = commencerDécoderUtilasteur(jsonReader);
             } else if(key.equals("réponse")) {
@@ -297,6 +294,7 @@ public class SourceUtilisateursApi implements SourceUtilisateurs {
         try {
             HttpURLConnection connexion = (HttpURLConnection)url.openConnection();
             connexion.setRequestMethod("POST");
+            connexion.setRequestProperty("Authorization", cléBearer);
             connexion.setRequestProperty( "Content-Type", "application/x-www-form-urlencoded");
             connexion.setRequestProperty( "charset", "utf-8");
             connexion.setDoOutput(true);
@@ -312,7 +310,6 @@ public class SourceUtilisateursApi implements SourceUtilisateurs {
             if (responseCode == HttpURLConnection.HTTP_OK) {
                 serviceResponse = true;
             } else {
-                Log.e("Response code was ", String.valueOf(responseCode));
                 serviceResponse = false;
             }
         } catch (IOException e) {
