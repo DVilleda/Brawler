@@ -67,9 +67,7 @@ public class VueNotificationMessage {
                     date.getTime(),
                     nomUtilisateur));
             notificationAndroid = créerNotification(idUtilisateur, style);
-            Log.d("recreate", texte);
         } else {
-            Log.d("passe", texte);
             notificationAndroid = créerNotification(idUtilisateur, créerStyleAvecListeMessage(texte, nomUtilisateur, date));
         }
 
