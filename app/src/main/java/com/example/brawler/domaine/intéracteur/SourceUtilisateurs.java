@@ -15,5 +15,5 @@ public interface SourceUtilisateurs {
 
     List<Utilisateur> getContact() throws UtilisateursException;
 
-    public JSONObject creerNouveauUtilisateur(String email, String mdp, String prénom, String location, String description );
+    JSONObject creerNouveauUtilisateur(String email, String mdp, String prénom, String location, String description );
 }

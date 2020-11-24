@@ -169,7 +169,7 @@ public class PrésenteurRechercheMatch {
         filEsclave.start();
     }
 
-    private void lancerFilEsclaveMettreLocalisationAJour (final String localisation){
+    public void lancerFilEsclaveMettreLocalisationAJour (final String clé, final String localisation){
         filEsclave = new Thread(
                 new Runnable() {
                     @Override
@@ -177,7 +177,9 @@ public class PrésenteurRechercheMatch {
                         Message msg = null;
                         try {
                             LocalisationUtilisateur source = new LocalisationUtilisateur();
-                            source.setLocalisation(localisation);
+                            boolean verify = source.setLocalisation(clé, localisation);
+                            Log.e("Clé was: ", clé);
+                            Log.e("Update was: ", String.valueOf(verify));
                             msg = handlerRéponseApi.obtainMessage( MSG_LOCALISATION_A_JOUR );
                         } catch (Exception e) {
                             msg = handlerRéponseApi.obtainMessage( MSG_ERREUR, e );

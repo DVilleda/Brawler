@@ -12,7 +12,8 @@ public class LocalisationUtilisateur implements ILocalisationUtilisateur{
     }
 
     @Override
-    public boolean setLocalisation(String localisation) {
+    public boolean setLocalisation(String clé, String localisation) {
+        source = new SourceUtilisateursApi(clé);
         return source.setLocalisation(localisation);
     }
 }

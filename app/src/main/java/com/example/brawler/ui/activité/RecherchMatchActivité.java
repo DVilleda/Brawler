@@ -5,6 +5,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.location.Address;
+import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Build;
@@ -40,6 +42,10 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 
+import java.io.IOException;
+import java.util.List;
+import java.util.Locale;
+
 public class RecherchMatchActivité extends AppCompatActivity {
 
     private PrésenteurRechercheMatch présenteur;
@@ -64,9 +70,6 @@ public class RecherchMatchActivité extends AppCompatActivity {
             startActivity(new Intent(this, ConnexionActivité.class));
         }
 
-        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
-        getLocationPermission();
-
         Toolbar toolbar = (Toolbar) findViewById(R.id.navigation_app);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
@@ -80,6 +83,9 @@ public class RecherchMatchActivité extends AppCompatActivity {
         présenteur.setSourceLike(new SourceLikeApi(clé));
         vue.setPrésenteur(présenteur);
 
+        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
+        getLocationPermission();
+
         FragmentTransaction ft=getSupportFragmentManager().beginTransaction();
         ft.add(R.id.layoutPrincipal, vue);
         ft.commit();
@@ -90,6 +96,7 @@ public class RecherchMatchActivité extends AppCompatActivity {
     public void onStart() {
         super.onStart();
         présenteur.lancerChargerUtilisateur();
+        getDeviceLocation();
     }
 
     @Override
@@ -131,11 +138,7 @@ public class RecherchMatchActivité extends AppCompatActivity {
      * Prompts the user for permission to use the device location.
      */
     private void getLocationPermission() {
-        /*
-         * Request location permission, so that we can get the location of the
-         * device. The result of the permission request is handled by a callback,
-         * onRequestPermissionsResult.
-         */
+
         if (ContextCompat.checkSelfPermission(this.getApplicationContext(),
                 android.Manifest.permission.ACCESS_FINE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED) {
@@ -151,6 +154,7 @@ public class RecherchMatchActivité extends AppCompatActivity {
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         if (requestCode == PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION){
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
+                locationPermissionGranted = true;
                 getDeviceLocation();
             }else{
                 getLocationPermission();
@@ -159,10 +163,6 @@ public class RecherchMatchActivité extends AppCompatActivity {
     }
 
     private void getDeviceLocation() {
-        /*
-         * Get the best and most recent location of the device, which may be null in rare
-         * cases when a location is not available.
-         */
         try {
             if (locationPermissionGranted) {
                 Task<Location> locationTask = fusedLocationProviderClient.getLastLocation();
@@ -170,9 +170,21 @@ public class RecherchMatchActivité extends AppCompatActivity {
                     @Override
                     public void onSuccess(Location location) {
                         if (location != null){
-                            Log.d("Location ", "Latitude: "+location.getLatitude());
-                            Log.d("Location ", "Logitude: "+location.getLongitude());
-                            Log.d("Location ", "String: "+location.toString());
+                            double latitude = location.getLatitude();
+                            double longitude = location.getLongitude();
+                            Locale currentLocale = getResources().getConfiguration().locale;
+                            Geocoder geocoder = new Geocoder(getApplicationContext(), currentLocale);
+                            try {
+                                List<Address> adressesConnues =
+                                        geocoder.getFromLocation(latitude, longitude, 1);
+                                Address adresseConnue = adressesConnues.get(0);
+                                String localité = adresseConnue.getLocality();
+                                Log.d("city is: ",localité);
+                                présenteur.lancerFilEsclaveMettreLocalisationAJour(clé, localité);
+
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
                         }else{
                             Log.d("Location: ", "Location was null");
                         }

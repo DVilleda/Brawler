@@ -312,6 +312,7 @@ public class SourceUtilisateursApi implements SourceUtilisateurs {
             if (responseCode == HttpURLConnection.HTTP_OK) {
                 serviceResponse = true;
             } else {
+                Log.e("Response code was ", String.valueOf(responseCode));
                 serviceResponse = false;
             }
         } catch (IOException e) {
