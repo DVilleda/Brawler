@@ -45,6 +45,5 @@ public class InteracteurChargementProfil {
     public void setUtilisateur(Utilisateur utilisateur) throws UtilisateursException {
         _utilisateur = utilisateur;
         _sourceUtilisateur.setUtilisateur(utilisateur);
-        //TODO Modifier pour changer les donnees dans la source aussi
     }
 }
