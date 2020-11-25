@@ -1,6 +1,10 @@
 package com.example.brawler.DAO;
 
+import android.net.Uri;
+import android.util.Base64;
 import android.util.JsonReader;
+import android.util.JsonToken;
+import android.util.Log;
 import android.util.Pair;
 
 import com.example.brawler.domaine.entité.Niveau;
@@ -20,6 +24,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -81,6 +86,18 @@ public class SourceProfilApi implements SourceUtilisateur{
             connexion.setDoOutput(true);
             connexion.setDoInput(true);
 
+            //Préparer la photo pour la requête
+            String photoString = null;
+            try
+            {
+                System.gc();
+                photoString = Base64.encodeToString(utilisateur.getPhoto(),Base64.DEFAULT);
+            }catch (Exception e) {
+                e.printStackTrace();
+            }catch (OutOfMemoryError e){
+                Log.e("Conversion Image","Out of memory error");
+            }
+
             //Params de la requetes
             List<Pair<String,String>> params = new ArrayList<>();
             params.add(new Pair<>("email", utilisateur.getEmail()));
@@ -88,6 +105,7 @@ public class SourceProfilApi implements SourceUtilisateur{
             params.add(new Pair<>("description",utilisateur.getDescription()));
             params.add(new Pair<>("niveau",utilisateur.getNiveau().toString()));
             params.add(new Pair<>("location",utilisateur.getLocation()));
+            params.add(new Pair<>("photo",photoString));
 
             OutputStream os = connexion.getOutputStream();
             BufferedWriter writer = new BufferedWriter(
@@ -138,6 +156,7 @@ public class SourceProfilApi implements SourceUtilisateur{
         String location = "";
         String email="";
         String description="";
+        byte[] photoProfil=null;
 
         jsonReader.beginObject();
 
@@ -156,13 +175,19 @@ public class SourceProfilApi implements SourceUtilisateur{
                 email = jsonReader.nextString();
             }else if(key.equals("description")){
                 description = jsonReader.nextString();
+            }else if(key.equals("image")){
+                if(jsonReader.peek() != JsonToken.NULL){
+                    photoProfil = Base64.decode(jsonReader.nextString(),Base64.DEFAULT);
+                } else {
+                    jsonReader.nextNull();
+                }
             }
             else
                 {
                 jsonReader.skipValue();
             }
         }
-        return new Utilisateur(id, nom, niveau, location,email,description);
+        return new Utilisateur(id, nom, niveau, location,email,description,photoProfil);
     }
 
     private Niveau stringVersNiveau(String niveau) {
