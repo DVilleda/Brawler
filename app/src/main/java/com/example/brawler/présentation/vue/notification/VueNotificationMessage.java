@@ -45,7 +45,10 @@ public class VueNotificationMessage {
         this.présenteur = présenteur;
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     public void afficherNotification(int idUtilisateur, String texte, String nomUtilisateur, Date date) {
+
+        Person personne = créUtilisateur(nomUtilisateur);
 
         //Envoie la notification
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
@@ -61,28 +64,30 @@ public class VueNotificationMessage {
 
         //vérifie si la notification existe déjà et l'update si oui
         if(notificationAndroid != null){
-            NotificationCompat.MessagingStyle style = NotificationCompat.MessagingStyle.extractMessagingStyleFromNotification(notificationAndroid);
+            NotificationCompat.MessagingStyle.Message message = new NotificationCompat.MessagingStyle.Message(texte, date.getTime(),
+                    personne);
+            NotificationCompat.MessagingStyle style =  NotificationCompat.MessagingStyle.extractMessagingStyleFromNotification(notificationAndroid);
             date = new Date();
-            style.addMessage(new NotificationCompat.MessagingStyle.Message(texte,
-                    date.getTime(),
-                    nomUtilisateur));
+            style.addMessage(message);
             notificationAndroid = créerNotification(idUtilisateur, style);
         } else {
-            notificationAndroid = créerNotification(idUtilisateur, créerStyleAvecListeMessage(texte, nomUtilisateur, date));
+            notificationAndroid = créerNotification(idUtilisateur, créerStyleAvecListeMessage(texte, personne, date));
+
         }
 
-        //envoie la notification
         notificationManager.notify( idUtilisateur, notificationAndroid);
+
     }
 
 
-    private NotificationCompat.MessagingStyle créerStyleAvecListeMessage(String texte, String nomUtilisateur, Date date){
-        NotificationCompat.MessagingStyle style = new NotificationCompat.MessagingStyle(resources.getString(R.string.reply_name));
+    private NotificationCompat.MessagingStyle créerStyleAvecListeMessage(String texte, Person utilisateur, Date date){
+        NotificationCompat.MessagingStyle style = new NotificationCompat.MessagingStyle(resources.getString(R.string.nom_utilisateur_notification_reply));
+
 
         NotificationCompat.MessagingStyle.Message nouveauMessage =
                 new NotificationCompat.MessagingStyle.Message(texte,
                         date.getTime(),
-                        nomUtilisateur);
+                        utilisateur);
         style.addMessage(nouveauMessage);
 
         return style;
@@ -142,11 +147,18 @@ public class VueNotificationMessage {
 
             notifcationChannel = new NotificationChannel(CHANNEL_ID, resources.getString(R.string.channel_name), NotificationManager.IMPORTANCE_DEFAULT);
 
-            //détail du channel
-            notifcationChannel.enableLights(true);
-            notifcationChannel.setLightColor(Color.RED);
 
             notificationManager.createNotificationChannel(notifcationChannel);
         }
+    }
+
+    private Person créUtilisateur(String nomUtilisateur) {
+        Person.Builder builder= new Person.Builder();
+        if(nomUtilisateur == null)
+            builder.setName(resources.getString(R.string.nom_utilisateur_notification_reply));
+        else
+            builder.setName(nomUtilisateur);
+
+        return builder.build();
     }
 }

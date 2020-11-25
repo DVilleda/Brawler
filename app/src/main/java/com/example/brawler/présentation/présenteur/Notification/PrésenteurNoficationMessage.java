@@ -4,6 +4,7 @@ import android.content.SharedPreferences;
 import android.os.Handler;
 import android.os.Message;
 
+import com.example.brawler.R;
 import com.example.brawler.domaine.intéracteur.InteracteurMessage;
 import com.example.brawler.domaine.intéracteur.MessageException;
 import com.example.brawler.domaine.intéracteur.SourceMessage;

@@ -44,5 +44,6 @@
     <!--Page Recherce de Match-->
     <string name="aboutPhoto">Photo de profil de l\'utilisateur</string>
     <string name="channel_name">brawlerChannel</string>
+    <string name="nom_utilisateur_notification_reply">Vous</string>
 
 </resources>

@@ -49,7 +49,10 @@ public class MessageReceiver extends BroadcastReceiver {
     }
 
     private String getTextRéponse(Intent intent){
-        Bundle remoteInput = RemoteInput.getResultsFromIntent(intent);
+        Bundle remoteInput = null;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT_WATCH) {
+            remoteInput = RemoteInput.getResultsFromIntent(intent);
+        }
         if (remoteInput != null)
             return remoteInput.getCharSequence(KEY_TEXT_REPLY).toString();
         return null;
