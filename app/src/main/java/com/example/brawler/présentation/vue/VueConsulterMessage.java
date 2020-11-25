@@ -48,7 +48,11 @@ public class VueConsulterMessage extends Fragment {
         txtMessage.addTextChangedListener(envoyerMessageTextWatcher);
         messageAdapter = new MessageAdapter(présenteur);
         rvMessages.setAdapter(messageAdapter);
-        rvMessages.setLayoutManager(new LinearLayoutManager(getContext()));
+
+        LinearLayoutManager rvLayoutManager = new LinearLayoutManager(getContext());
+        rvLayoutManager.setReverseLayout(true);
+        rvMessages.setLayoutManager(rvLayoutManager);
+
 
 
         btnEnvoyerMessage.setOnClickListener(new View.OnClickListener(){
@@ -63,14 +67,17 @@ public class VueConsulterMessage extends Fragment {
 
 
     public void rafraîchir(){
-
         if(messageAdapter!=null){
             messageAdapter.notifyDataSetChanged();
-            rvMessages.smoothScrollToPosition(présenteur.getNbMessages() - 1);
             if(mettreRvAuDébut) {
                 mettreRvAuDébut = false;
             }
         }
+    }
+
+    public void allerPremierMessage() {
+        LinearLayoutManager layoutManager = (LinearLayoutManager) rvMessages.getLayoutManager();
+        layoutManager.scrollToPositionWithOffset(0, 0);
     }
 
     public void viderTxtMessage(){
@@ -83,7 +90,7 @@ public class VueConsulterMessage extends Fragment {
 
     public boolean rvAuMax(){
         LinearLayoutManager layoutManager = (LinearLayoutManager) rvMessages.getLayoutManager();
-        return layoutManager.findFirstCompletelyVisibleItemPosition() == 0;
+        return layoutManager.findLastCompletelyVisibleItemPosition() == présenteur.getNbMessages() -1;
     }
 
     private TextWatcher envoyerMessageTextWatcher = new TextWatcher() {

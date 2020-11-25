@@ -32,6 +32,7 @@ public class PrésenteurConsulterMessage {
     private final int MSG_ERREUR = 2;
     private final int MSG_ANNULER = 3;
     private final int MSG_VÉRIFER_NOUVEAU_MESSAGE = 4;
+    private boolean envoyerVueDébutMessage;
     private boolean nouveauMessage = false;
 
     public PrésenteurConsulterMessage(VueConsulterMessage nouvelleVue, final Modèle modèle) {
@@ -41,6 +42,7 @@ public class PrésenteurConsulterMessage {
         nbMessageActuel = 0;
         premierCharqement = true;
         doitCharger = true;
+        envoyerVueDébutMessage = true;
 
         this.handlerRéponse = new Handler(){
 
@@ -51,7 +53,13 @@ public class PrésenteurConsulterMessage {
                 filEsclaveEnvoyerMessage = null;
 
                 if (msg.what == MSG_CHARGER_MESSAGES) {
-                    vue.rafraîchir();
+                    if(modèle.getMessages().size() != 0) {
+                        vue.rafraîchir();
+                        if (envoyerVueDébutMessage) {
+                            vue.allerPremierMessage();
+                            envoyerVueDébutMessage = false;
+                        }
+                    }
                     rafraichir();
                     doitCharger = true;
                 } else if (msg.what == MSG_VÉRIFER_NOUVEAU_MESSAGE){
@@ -65,7 +73,7 @@ public class PrésenteurConsulterMessage {
                 } else if (msg.what == MSG_NOUVEAU_MESSAGE){
                     vue.viderTxtMessage();
                     nbMessageActuel += 1;
-                    reachargerMessage(modèle.getUtilisateurEnRevue(), 0, modèle.getMessages().size());
+                    vue.rafraîchir();
                     doitRafrahcir = true;
                 } else if ( msg.what == MSG_ERREUR ) {
                     Log.e("Brawler", "Erreur d'accès à l'API", (Throwable) msg.obj);
@@ -97,6 +105,7 @@ public class PrésenteurConsulterMessage {
                         try {
                             Thread.sleep(0);
                             doitRafrahcir = false;
+                            envoyerVueDébutMessage = true;
                             InteracteurMessage.getInstance(source).envoyerMessage(modèle.getUtilisateurEnRevue(), texte);
                             msg = handlerRéponse.obtainMessage( MSG_NOUVEAU_MESSAGE );
                         } catch (InterruptedException e) {
@@ -150,26 +159,6 @@ public class PrésenteurConsulterMessage {
                     }
                 });
         filEsclaveEnvoyerMessage.start();
-    }
-
-    private void reachargerMessage(final int utilisateurEnRevue, final int i, final int size) {
-        filEsclaveEnvoyerMessage = new Thread(
-                new Runnable() {
-                    @Override
-                    public void run() {
-                        Message msg = null;
-                        try {
-                            modèle.setListeMessage(InteracteurMessage.getInstance(source).getMessagesparUtilisateursEntreDeux(utilisateurEnRevue, i, size));
-                            msg = handlerRéponse.obtainMessage( MSG_CHARGER_MESSAGES );
-                        } catch (MessageException e) {
-                            msg = handlerRéponse.obtainMessage( MSG_ERREUR );
-                        } catch (UtilisateursException e) {
-                            msg = handlerRéponse.obtainMessage( MSG_ERREUR );
-                        }
-
-                        handlerRéponse.sendMessage( msg );
-                    }
-                });
     }
 
     public void getNombreMessagesApi(final int idUtilisateur){
