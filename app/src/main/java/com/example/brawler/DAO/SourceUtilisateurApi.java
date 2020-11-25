@@ -1,7 +1,6 @@
 package com.example.brawler.DAO;
 
 import android.util.JsonReader;
-import android.util.Log;
 
 import com.example.brawler.domaine.entité.Niveau;
 import com.example.brawler.domaine.entité.Utilisateur;

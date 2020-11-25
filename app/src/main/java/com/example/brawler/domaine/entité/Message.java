@@ -3,14 +3,28 @@ package com.example.brawler.domaine.entité;
 import java.util.Date;
 
 public class Message {
+
+    int id;
     String texte;
     Utilisateur utilisateur;
     Date temps;
+    Boolean lue;
 
-    public Message(String texte, Utilisateur utilisateur, Date temps) {
+
+    public Message(int id, String texte, Utilisateur utilisateur, Date temps, Boolean lue) {
         this.texte = texte;
         this.utilisateur = utilisateur;
         this.temps = temps;
+        this.lue = lue;
+        this.id = id;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getTexte() {
@@ -35,5 +49,13 @@ public class Message {
 
     public void setTemps(Date temps) {
         this.temps = temps;
+    }
+
+    public Boolean getLue() {
+        return lue;
+    }
+
+    public void setLue(Boolean lue) {
+        this.lue = lue;
     }
 }

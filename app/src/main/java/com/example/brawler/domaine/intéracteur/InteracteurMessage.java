@@ -21,11 +21,31 @@ public class InteracteurMessage {
         this.source = source;
     }
 
-    public List<Message> getMessages(int idUtilisateur) throws MessageException, UtilisateursException {
+    public List<Message> getMessagesparUtilisateurs(int idUtilisateur) throws MessageException, UtilisateursException {
         return source.getMessagesparUtilisateurs(idUtilisateur);
+    }
+
+    public List<Message> getMessagesparUtilisateursEntreDeux(int idUtilisateur, int debutListe, int finListe) throws MessageException, UtilisateursException {
+        return source.getMessagesparUtilisateursEntreDeux(idUtilisateur, debutListe, finListe);
+    }
+
+    public List<Message> getMessages() throws MessageException, UtilisateursException {
+        return source.getMessages();
+    }
+
+    public List<Message> getMessagesÀNotifier() throws MessageException, UtilisateursException {
+        return source.getMessageÀNotifier();
+    }
+
+    public void marquerNotifier(int idMessage) throws MessageException, UtilisateursException {
+        source.marquerNotifier(idMessage);
     }
 
     public void envoyerMessage(int idUtilisateur, String message) throws MessageException {
         source.envoyerMessage(idUtilisateur, message);
+    }
+
+    public int obtenirNombreMessageParUtilisateur(int id) throws MessageException, UtilisateursException {
+        return source.obtenireNombreMessage(id);
     }
 }

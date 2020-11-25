@@ -12,10 +12,13 @@ public class Modèle {
     private int utilisateurEnRevue;
     private Utilisateur utilisateur;
     private List<Message> messages;
+    private String texteRéponse;
+    private int nombreMessageTotale;
 
     public Modèle(){
         listeUtilisateurs = new ArrayList<>();
         utilisateurEnRevue = 0;
+        messages = new ArrayList<>();
     }
 
     public List<Utilisateur> getListUtilisateurs() {
@@ -62,5 +65,29 @@ public class Modèle {
 
     public void setUtilisateurEnRevue(int i) {
         utilisateurEnRevue = i;
+    }
+
+    public List<Utilisateur> getListeUtilisateurs() {
+        return listeUtilisateurs;
+    }
+
+    public String getTexteRéponse() {
+        return texteRéponse;
+    }
+
+    public void setTexteRéponse(String texteRéponse) {
+        this.texteRéponse = texteRéponse;
+    }
+
+    public int getNombreMessageTotale() {
+        return this.nombreMessageTotale;
+    }
+
+    public void setNombreMessageTotale(int nombreMessageTotale) {
+        this.nombreMessageTotale = nombreMessageTotale;
+    }
+
+    public void ajouterListeMessage(List<Message> messagesparUtilisateursEntreDeux) {
+        this.messages.addAll(messagesparUtilisateursEntreDeux);
     }
 }

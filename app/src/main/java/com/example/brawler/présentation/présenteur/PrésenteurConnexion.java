@@ -1,7 +1,10 @@
 package com.example.brawler.présentation.présenteur;
 
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Handler;
 import android.os.Message;
+import android.preference.PreferenceManager;
 import android.util.Log;
 
 import com.example.brawler.DAO.SourceUtilisateursApi;
@@ -9,6 +12,7 @@ import com.example.brawler.domaine.intéracteur.SourceUtilisateurs;
 import com.example.brawler.présentation.modèle.Modèle;
 import com.example.brawler.présentation.vue.VueConnexion;
 import com.example.brawler.MockDAO.SourceUtilisateurFictif.*;
+import com.example.brawler.ui.activité.CréationCompteActivité;
 
 import org.json.JSONException;
 
@@ -40,6 +44,14 @@ public class PrésenteurConnexion {
 
                 if (msg.what == MSG_NOUVELLE_CONNEXION) {
                     vue.notifierConnexionSuccès(resultat);
+                    SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(vue.getActivity().getApplicationContext());
+                    SharedPreferences.Editor editor = sharedPref.edit();
+                    if (vue.getSeSouvenir()) {
+                        editor.putString("savedUsername", vue.getNomUtilisateur());
+                        editor.putString("savedMdp", vue.getMotDePasseUtilisateur());
+                    }
+                    editor.putString("token", resultat);
+                    editor.apply();
                 }else if ( msg.what == MSG_ERREUR ) {
                     Log.e("Brawler", "Erreur d'accès à l'API", (Throwable) msg.obj);
                 }
@@ -70,6 +82,22 @@ public class PrésenteurConnexion {
 
                 });
         filEsclave.start();
+    }
+
+    public void openVueCreationCompte(){
+        Intent nouvelleVue = new Intent(vue.getActivity(), CréationCompteActivité.class);
+        vue.startActivity(nouvelleVue);
+        vue.getActivity().finish();
+    }
+
+    public String getUsernameFromSharedPreferences(){
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(vue.getActivity().getApplicationContext());
+        return sharedPref.getString("savedUsername", "");
+    }
+
+        public String getMdpFromSharedPreferences(){
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(vue.getActivity().getApplicationContext());
+        return sharedPref.getString("savedMdp", "");
     }
 
 }

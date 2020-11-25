@@ -52,11 +52,10 @@ public class PrésenteurRechercheMatch {
                     vue.toggleÉtatBouton();
                 }
                 else if ( msg.what == MSG_ERREUR ) {
-                    Log.d("Brawler", "Erreur d'accès à l'API", (Throwable) msg.obj);
+                    Log.e("Brawler", "Erreur d'accès à l'API", (Throwable) msg.obj);
                     vue.toggleÉtatBouton();
                 }
                 else if (msg.what == MSG_NOUVEAU_LIKE) {
-                    Log.d("passe", "MSG_NOUVEAU_LIKE" );
                     prochainUtilsateur();
                     vue.toggleÉtatBouton();
                 }
@@ -66,7 +65,6 @@ public class PrésenteurRechercheMatch {
     }
 
     public void setSourceUtilisateurs(SourceUtilisateurs source) {
-        Log.d("set:", "source");
         this.sourceUtilisateurs = source;
     }
 
@@ -84,19 +82,18 @@ public class PrésenteurRechercheMatch {
     }
 
     public void prochainUtilsateur() {
-        modèle.prochainUtilisateur();
+        if(modèle.getUtilisateurEnRevue() != 0)
+            modèle.prochainUtilisateur();
         if (modèle.getListUtilisateurs().size() < 1 || modèle.getListUtilisateurs().size() <= modèle.getUtilisateurEnRevue()) {
             chargerNouvelleUtilisateur();
         } else if(modèle.getListUtilisateurs().size() > modèle.getUtilisateurEnRevue()){
             vue.afficherUtilisateur(modèle.getUtilisateurActuel());
-            Log.d("id uti:", String.valueOf(modèle.getUtilisateurActuel().getId()));
         }
     }
 
     public void changerRecherche(Boolean bool) {
         if(bool != parNiveau){
             parNiveau = bool;
-            //modèle.viderListe();
             prochainUtilsateur();
         }
     }
@@ -139,7 +136,6 @@ public class PrésenteurRechercheMatch {
     }
 
     private void lancerFileEsclaveLikerUtilisateur(final int utilisateurLiker){
-        Log.d("passe:", "file esclave");
         filEsclave = new Thread(
                 new Runnable() {
                     @Override

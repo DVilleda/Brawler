@@ -1,13 +1,10 @@
 package com.example.brawler.présentation.présenteur;
 
-import android.util.Log;
-
 import com.example.brawler.DAO.SourceUtilisateursApi;
 import com.example.brawler.domaine.entité.Utilisateur;
-import com.example.brawler.domaine.intéracteur.SourceUtilisateurs;
+import com.example.brawler.domaine.intéracteur.InscriptionUtilisateur;
 import com.example.brawler.présentation.modèle.Modèle;
 import com.example.brawler.présentation.vue.VueCréationCompte;
-import com.example.brawler.domaine.intéracteur.InscriptionUtilisateur;
 
 import org.json.JSONException;
 import org.json.JSONObject;

@@ -2,6 +2,7 @@ package com.example.brawler.présentation.vue.adapter;
 
 import android.graphics.Color;
 import android.text.Layout;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -35,7 +36,7 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     }
 
     @Override
-    public void onBindViewHolder(@NonNull final RecyclerView.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull final RecyclerView.ViewHolder holder, final int position) {
         Message message = présenteur.getMessageParPos(position);
         String date = message.getTemps().getYear() + "-"+ message.getTemps().getMonth() + "-"+message.getTemps().getDay() + " " + message.getTemps().getHours() + ":" + message.getTemps().getMinutes();
         ((TextView) holder.itemView.findViewById(R.id.txtMessage)).setText(message.getTexte());
@@ -54,6 +55,7 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                                                                                           @Override
                                                                                           public void onClick(View view) {
                                                                                               int estVisible = ((TextView) holder.itemView.findViewById(R.id.txtTemps)).getVisibility();
+                                                                                              Log.d("pos", String.valueOf(position));
                                                                                               if(estVisible == View.GONE) {
                                                                                                   ((TextView) holder.itemView.findViewById(R.id.txtTemps)).setVisibility(View.VISIBLE);
                                                                                               } else {

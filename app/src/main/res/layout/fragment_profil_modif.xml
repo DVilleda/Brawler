@@ -7,13 +7,25 @@
     android:paddingTop="50dp"
     tools:context=".ui.activité.MainActivity">
 
-    <EditText
-        android:id="@+id/Nom"
+    <TextView
+        android:id="@+id/Nom_lbl"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="10dp"
+        android:text="@string/nom_utilisateur"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/Nom"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
         android:autofillHints=""
+        android:background="#D6D6D6"
         android:cursorVisible="true"
         android:fontFamily="sans-serif"
         android:hint="@string/nom_utilisateur"
@@ -24,101 +36,208 @@
         android:textColor="#000000"
         android:textStyle="bold"
         android:visibility="visible"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/Nom_lbl"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <EditText
-        android:id="@+id/Location"
+    <TextView
+        android:id="@+id/email_lbl"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="40dp"
+        android:text="@string/emailHint"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/Nom_lbl" />
+
+    <EditText
+        android:id="@+id/email_edit"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="8dp"
+        android:background="#D6D6D6"
+        android:hint="@string/emailHint"
+        android:inputType="textEmailAddress"
+        android:selectAllOnFocus="true"
+        android:singleLine="true"
+        android:textAlignment="viewStart"
+        android:textColor="#000000"
+        android:textStyle="bold"
+        android:visibility="visible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/email_lbl"
+        app:layout_constraintTop_toBottomOf="@+id/Nom" />
+
+    <TextView
+        android:id="@+id/Emplacement_lbl"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="40dp"
+        android:text="@string/emplacement_actuel"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/email_lbl" />
+
+    <EditText
+        android:id="@+id/Location"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="36dp"
+        android:layout_marginEnd="8dp"
         android:autofillHints=""
+        android:background="#D6D6D6"
         android:fontFamily="@font/source_code_pro_semibold"
         android:hint="@string/emplacement_actuel"
         android:inputType="text"
         android:textAlignment="viewStart"
         android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/Nom" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/Emplacement_lbl"
+        app:layout_constraintTop_toBottomOf="@+id/email_edit" />
 
     <EditText
         android:id="@+id/Age"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="40dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="36dp"
+        android:layout_marginEnd="8dp"
         android:autofillHints=""
+        android:background="#D6D6D6"
         android:hint="@string/age"
         android:inputType="number"
         android:textAlignment="viewStart"
         android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/Age_lbl"
         app:layout_constraintTop_toBottomOf="@+id/Location" />
 
-    <EditText
-        android:id="@+id/Distance"
+    <TextView
+        android:id="@+id/Age_lbl"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="40dp"
+        android:text="@string/age"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/Emplacement_lbl" />
+
+    <EditText
+        android:id="@+id/Distance"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="36dp"
+        android:layout_marginEnd="8dp"
         android:autofillHints=""
+        android:background="#D6D6D6"
         android:hint="@string/distance"
         android:inputType="number"
         android:textAlignment="viewStart"
         android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/Distance_lbl"
         app:layout_constraintTop_toBottomOf="@+id/Age" />
 
     <TextView
-        android:id="@+id/Niveau"
+        android:id="@+id/Distance_lbl"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="40dp"
+        android:text="Distance"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/Age_lbl" />
+
+    <TextView
+        android:id="@+id/Niveau"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="31dp"
+        android:layout_marginEnd="8dp"
+        android:background="#D6D6D6"
         android:fontFamily="@font/source_code_pro_semibold"
         android:hint="@string/niveau_jeu"
         android:textAlignment="viewStart"
         android:textSize="18sp"
         android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/Niveau_lbl"
         app:layout_constraintTop_toBottomOf="@+id/Distance" />
 
-    <EditText
-        android:id="@+id/Description"
+    <TextView
+        android:id="@+id/Niveau_lbl"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="40dp"
-        android:autofillHints=""
-        android:inputType="textMultiLine"
-        android:textAlignment="viewStart"
-        android:textStyle="bold"
+        android:text="Niveau"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/Niveau" />
+        app:layout_constraintTop_toBottomOf="@+id/Distance_lbl" />
 
-    <ImageView
-        android:id="@+id/imageView"
+    <TextView
+        android:id="@+id/Photo_lbl"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
-        android:layout_marginEnd="32dp"
-        android:layout_marginBottom="573dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="40dp"
+        android:text="Photo"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/Niveau_lbl" />
+
+    <Button
+        android:id="@+id/modifier_photo_btn"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="25dp"
+        android:layout_marginEnd="8dp"
+        android:background="#03A9F4"
+        android:text="Changer Photo"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0"
-        app:srcCompat="@android:mipmap/sym_def_app_icon"
-        tools:srcCompat="@tools:sample/avatars[2]"
-        android:contentDescription="@string/modif_description_image" />
+        app:layout_constraintStart_toEndOf="@+id/Photo_lbl"
+        app:layout_constraintTop_toBottomOf="@+id/Niveau" />
+
+    <EditText
+        android:id="@+id/Description"
+        android:layout_width="0dp"
+        android:layout_height="100dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="28dp"
+        android:layout_marginEnd="8dp"
+        android:autofillHints=""
+        android:background="#D6D6D6"
+        android:inputType="textMultiLine"
+        android:scrollbars="vertical"
+        android:textAlignment="viewStart"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toEndOf="@+id/Desc_lbl"
+        app:layout_constraintTop_toBottomOf="@+id/modifier_photo_btn" />
+
+    <TextView
+        android:id="@+id/Desc_lbl"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="40dp"
+        android:text="Description"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/Photo_lbl" />
 
     <Button
         android:id="@+id/ModifierProfil"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="96dp"
-        android:layout_marginTop="525dp"
-        android:layout_marginEnd="96dp"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="550dp"
+        android:layout_marginEnd="4dp"
+        android:background="#4BE608"
         android:text="@string/modifier_les_informations"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.666"
@@ -127,11 +246,12 @@
 
     <Button
         android:id="@+id/AnnulerModif"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="96dp"
+        android:layout_marginStart="4dp"
         android:layout_marginTop="10dp"
-        android:layout_marginEnd="96dp"
+        android:layout_marginEnd="4dp"
+        android:background="#FFC107"
         android:text="@string/annuler"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

@@ -1,11 +1,9 @@
 package com.example.brawler.DAO;
 
 import android.util.JsonReader;
-import android.util.Log;
 
 import com.example.brawler.domaine.entité.Niveau;
 import com.example.brawler.domaine.entité.Utilisateur;
-import com.example.brawler.domaine.intéracteur.SourceUtilisateur;
 import com.example.brawler.domaine.intéracteur.SourceUtilisateurs;
 import com.example.brawler.domaine.intéracteur.UtilisateursException;
 
@@ -17,17 +15,12 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-
-import javax.xml.transform.Source;
 
 public class SourceUtilisateursApi implements SourceUtilisateurs {
 
@@ -91,7 +84,6 @@ public class SourceUtilisateursApi implements SourceUtilisateurs {
 
     private List<Utilisateur> lancerConnexion() throws UtilisateursException {
         List<Utilisateur> utilisateursRecue = null;
-        Log.d("clé:", cléBearer);
 
         try{
             HttpURLConnection connexion =
@@ -121,10 +113,10 @@ public class SourceUtilisateursApi implements SourceUtilisateurs {
 
         while(jsonReader.hasNext()) {
             String key = jsonReader.nextName();
-            Log.d("Json", key);
             if(key.equals("utilisateurs")){
                 utilisateursArrayList = commencerDécoderUtilasteur(jsonReader);
             } else if(key.equals("réponse")) {
+
             } else {
                 jsonReader.skipValue();
             }

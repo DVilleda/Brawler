@@ -1,6 +1,5 @@
 package com.example.brawler.DAO;
 
-import android.net.Uri;
 import android.util.JsonReader;
 import android.util.Pair;
 
@@ -20,12 +19,9 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
-import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
-import java.util.UUID;
 
 public class SourceProfilApi implements SourceUtilisateur{
 
@@ -87,9 +83,6 @@ public class SourceProfilApi implements SourceUtilisateur{
 
             //Params de la requetes
             List<Pair<String,String>> params = new ArrayList<>();
-            byte[] array = new byte[5]; // length is bounded by 5
-            new Random().nextBytes(array);
-            String generatedString = new String(array, Charset.forName("UTF-8"));
             params.add(new Pair<>("email", utilisateur.getEmail()));
             params.add(new Pair<>("prénom",utilisateur.getNom()));
             params.add(new Pair<>("description",utilisateur.getDescription()));

@@ -1,12 +1,9 @@
 package com.example.brawler.ui.activité;
 
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.os.Handler;
 import android.preference.PreferenceManager;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -18,12 +15,11 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.example.brawler.DAO.SourceLikeApi;
 import com.example.brawler.DAO.SourceUtilisateursApi;
-import com.example.brawler.MockDAO.SourceUtilisateurFictif;
 import com.example.brawler.R;
-import com.example.brawler.domaine.intéracteur.UtilisateursException;
 import com.example.brawler.présentation.modèle.Modèle;
 import com.example.brawler.présentation.présenteur.PrésenteurRechercheMatch;
 import com.example.brawler.présentation.vue.VueRechercheMatch;
+import com.example.brawler.ui.activité.Services.ServiceNotificationMessage;
 
 public class RecherchMatchActivité extends AppCompatActivity {
 
@@ -35,9 +31,10 @@ public class RecherchMatchActivité extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        ServiceNotificationMessage.démarerJob(getApplicationContext());
+
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         clé = sharedPref.getString("token", "");
-        Log.d("clé", clé);
         if(clé.trim().isEmpty()){
             startActivity(new Intent(this, ConnexionActivité.class));
         }
@@ -72,8 +69,6 @@ public class RecherchMatchActivité extends AppCompatActivity {
         super.onResume();
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         clé = sharedPref.getString("token", "");
-        Log.d("clé", clé);
-        Log.d("passe", "onResume");
         présenteur.setSourceUtilisateurs(new SourceUtilisateursApi(clé));
         présenteur.setSourceLike(new SourceLikeApi(clé));
         présenteur.prochainUtilsateur();

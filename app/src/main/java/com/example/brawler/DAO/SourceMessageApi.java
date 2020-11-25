@@ -22,8 +22,6 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class SourceMessageApi implements SourceMessage {
 
@@ -55,6 +53,47 @@ public class SourceMessageApi implements SourceMessage {
     }
 
     @Override
+    public List<Message> getMessagesparUtilisateursEntreDeux(int idUtilisateur, int debutListe, int finListe) throws MessageException, UtilisateursException {
+        Log.d("passe:", "entre deux");
+        try {
+            url = new URL(urlMessage + idUtilisateur + "/"+ debutListe + "/"+ finListe);
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+        return lancerConnexionRecevoirMessage();
+    }
+
+    @Override
+    public List<Message> getMessages() throws MessageException, UtilisateursException {
+        try {
+            url = new URL(urlMessage);
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+        return lancerConnexionRecevoirMessage();
+    }
+
+    @Override
+    public List<Message> getMessageÀNotifier() throws MessageException, UtilisateursException {
+        try {
+            url = new URL(urlMessage + "/ANotifier");
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+        return lancerConnexionRecevoirMessage();
+    }
+
+    @Override
+    public void marquerNotifier(int idMessage) throws MessageException, UtilisateursException {
+        try {
+            url = new URL(urlMessage + "/marquerNotifier/" + idMessage);
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+        lancerConnexionMarquerNotifier();
+    }
+
+    @Override
     public void envoyerMessage(int idUtilisateur, String message) throws MessageException {
         try {
             url = new URL(urlEnvoyerMessage + idUtilisateur);
@@ -63,6 +102,17 @@ public class SourceMessageApi implements SourceMessage {
         }
 
         lancerConnexionEnvoyerMessage(message);
+    }
+
+    @Override
+    public int obtenireNombreMessage(int id) throws MessageException, UtilisateursException{
+        try {
+            url = new URL(urlMessage + id);
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+
+        return lancerConnexionObtenirNombreMessage();
     }
 
     private List<Message> lancerConnexionRecevoirMessage() throws MessageException, UtilisateursException {
@@ -76,7 +126,6 @@ public class SourceMessageApi implements SourceMessage {
                 messages = décoderJSON(connexion.getInputStream());
             }
             else{
-                Log.d("problème:", String.valueOf(connexion.getResponseCode()));
                 throw new SourceMessageApi.SourceMessageApiException( connexion.getResponseCode() );
             }
         }
@@ -86,6 +135,48 @@ public class SourceMessageApi implements SourceMessage {
         }
 
         return messages;
+    }
+
+    private int lancerConnexionObtenirNombreMessage() throws MessageException, UtilisateursException {
+        int nombre = 0;
+
+        try{
+            HttpURLConnection connexion =
+                    (HttpURLConnection)url.openConnection();
+            connexion.setRequestProperty("Authorization", cléBearer);
+            if(connexion.getResponseCode()==200){
+                nombre = compterJson(connexion.getInputStream());
+            }
+            else{
+                throw new SourceMessageApi.SourceMessageApiException( connexion.getResponseCode() );
+            }
+        }
+
+        catch(IOException e){
+            throw new MessageException( e );
+        }
+
+        return nombre;
+    }
+
+    private int compterJson(InputStream inputStream) throws IOException {
+        int nombre = 0;
+        InputStreamReader responseBodyReader =
+                new InputStreamReader(inputStream, "UTF-8");
+
+        JsonReader jsonReader = new JsonReader(responseBodyReader);
+        jsonReader.beginObject();
+
+        while(jsonReader.hasNext()) {
+            String key = jsonReader.nextName();
+            if(key.equals("nbMessage")){
+                nombre = jsonReader.nextInt();
+            } else {
+                jsonReader.skipValue();
+            }
+
+        }
+        return nombre;
     }
 
     private void lancerConnexionEnvoyerMessage(String message) throws MessageException {
@@ -117,13 +208,27 @@ public class SourceMessageApi implements SourceMessage {
             if(connexion.getResponseCode()==200){
             }
             else{
-                Log.d("problème:", String.valueOf(connexion.getResponseCode()));
                 throw new SourceMessageApi.SourceMessageApiException( connexion.getResponseCode() );
             }
         }
 
         catch(IOException e){
             throw new MessageException( e );
+        }
+    }
+
+    private boolean lancerConnexionMarquerNotifier() throws MessageException {
+        try {
+            HttpURLConnection connexion =
+                    (HttpURLConnection) url.openConnection();
+            connexion.setRequestProperty("Authorization", cléBearer);
+            if (connexion.getResponseCode() == 200) {
+                return true;
+            } else {
+                throw new SourceMessageApi.SourceMessageApiException(connexion.getResponseCode());
+            }
+        }catch(IOException e){
+                throw new MessageException( e );
         }
     }
 
@@ -140,7 +245,7 @@ public class SourceMessageApi implements SourceMessage {
             if(key.equals("message")){
                 jsonReader.beginArray();
                 while (jsonReader.hasNext()){
-                    messages.add(décoderMessage((jsonReader)));
+                    messages.add(décoderMessage(jsonReader));
                 }
                 jsonReader.endArray();
             } else {
@@ -153,9 +258,13 @@ public class SourceMessageApi implements SourceMessage {
 
     private  Message décoderMessage(JsonReader jsonReader) throws IOException, UtilisateursException {
         Message message = null;
+        int id = -1;
         Utilisateur utilisateur = null;
         String texte = "";
         Date temps = null;
+        Boolean lue = false;
+
+        Log.d("new", "message");
 
         jsonReader.beginObject();
         while (jsonReader.hasNext()){
@@ -167,27 +276,27 @@ public class SourceMessageApi implements SourceMessage {
                 texte = jsonReader.nextString();
             } else if (key.equals("temps")) {
                 temps = décoderTemps(jsonReader.nextString());
+            }else if (key.equals("id")) {
+                id = jsonReader.nextInt();
             } else {
                 jsonReader.skipValue();
             }
         }
         jsonReader.endObject();
 
-        message = new Message(texte, utilisateur, temps);
+        message = new Message(id, texte, utilisateur, temps, lue);
         return message;
     }
 
-    //exemple de date: 2020-10-26 05:53:35
+    //exemple de date: Thu, 19 Nov 2020 03:49:50
     private Date décoderTemps(String temps){
         Date date = null;
 
         String[] dateATraiter = null;
         String[] tempsATraiter = null;
-
         String[] partie = temps.split(" ");
         dateATraiter = partie[0].split("-");
         tempsATraiter = partie[1].split(":");
-
 
         if(dateATraiter != null && tempsATraiter != null) {
             int année = Integer.parseInt(dateATraiter[0]);
@@ -197,7 +306,6 @@ public class SourceMessageApi implements SourceMessage {
             int minute = Integer.parseInt(tempsATraiter[1]);
             date = new Date(année, mois, journée, heure, minute);
         }
-
         return  date;
     }
 }

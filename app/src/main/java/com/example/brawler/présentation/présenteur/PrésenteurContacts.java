@@ -51,7 +51,7 @@ public class PrésenteurContacts {
                     vueContacts.afficherContacts();
                 }
                 else if ( msg.what == MSG_ERREUR ) {
-                    Log.d("Brawler", "Erreur d'accès à l'API", (Throwable) msg.obj);
+                    Log.e("Brawler", "Erreur d'accès à l'API", (Throwable) msg.obj);
                 }
 
             }

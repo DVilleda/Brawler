@@ -23,6 +23,7 @@ import com.example.brawler.présentation.présenteur.PrésenteurConsulterMessage
 import com.example.brawler.présentation.présenteur.PrésenteurRechercheMatch;
 import com.example.brawler.présentation.vue.VueConsulterMessage;
 import com.example.brawler.présentation.vue.VueRechercheMatch;
+import com.example.brawler.ui.activité.Services.ServiceNotificationMessage;
 
 public class ConsulterMessageActivité extends AppCompatActivity {
     private static final String EXTRA_ID_UTILSAITEUR = "com.brawler.idUtilisateur";
@@ -39,7 +40,6 @@ public class ConsulterMessageActivité extends AppCompatActivity {
 
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         clé = sharedPref.getString("token", "");
-        Log.d("clé", clé);
         if(clé.trim().isEmpty()){
             startActivity(new Intent(this, ConnexionActivité.class));
         }
@@ -64,10 +64,32 @@ public class ConsulterMessageActivité extends AppCompatActivity {
     @Override
     public void onStart() {
         super.onStart();
+        ServiceNotificationMessage.arrêterJob(getApplicationContext());
 
         int idUtilisateurConversation = getIntent().getIntExtra(EXTRA_ID_UTILSAITEUR, -1);
         modèle.setUtilisateurEnRevue(idUtilisateurConversation);
-        présenteur.getMessages(idUtilisateurConversation);
+        présenteur.commencerVoirMessage();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        ServiceNotificationMessage.arrêterJob(getApplicationContext());
+        présenteur.commencerRafraichir();
+    }
+
+    @Override
+    protected void onPause(){
+        super.onPause();
+        ServiceNotificationMessage.démarerJob(getApplicationContext());
+        présenteur.arrêterRafraichir();
+    }
+
+    @Override
+    protected void onStop(){
+        super.onStop();
+        ServiceNotificationMessage.démarerJob(getApplicationContext());
+        présenteur.arrêterRafraichir();
     }
 
     @Override
