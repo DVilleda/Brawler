@@ -1,22 +1,29 @@
 package com.example.brawler.présentation.présenteur;
 
-import android.os.Debug;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 
+import com.example.brawler.domaine.intéracteur.InteracteurAquisitionUtilisateur;
 import com.example.brawler.domaine.intéracteur.InteracteurMessage;
 import com.example.brawler.domaine.intéracteur.MessageException;
 import com.example.brawler.domaine.intéracteur.SourceMessage;
+import com.example.brawler.domaine.intéracteur.SourceUtilisateur;
 import com.example.brawler.domaine.intéracteur.UtilisateursException;
 import com.example.brawler.présentation.modèle.Modèle;
 import com.example.brawler.présentation.vue.VueConsulterMessage;
+
+import java.io.IOException;
 
 public class PrésenteurConsulterMessage {
 
     private VueConsulterMessage vue;
     private Modèle modèle;
-    private SourceMessage source;
+    private SourceMessage sourceMessage;
+    private SourceUtilisateur sourceUtilisateur;
+
     private int nbMessageActuel;
     private boolean premierCharqement;
     private boolean doitRafrahcir;
@@ -32,6 +39,8 @@ public class PrésenteurConsulterMessage {
     private final int MSG_ERREUR = 2;
     private final int MSG_ANNULER = 3;
     private final int MSG_VÉRIFER_NOUVEAU_MESSAGE = 4;
+    private final int MSG_UTILIASTEUR_CHARGER = 5;
+
     private boolean envoyerVueDébutMessage;
     private boolean nouveauMessage = false;
 
@@ -47,51 +56,83 @@ public class PrésenteurConsulterMessage {
         this.handlerRéponse = new Handler(){
 
             @Override
-            public void handleMessage(Message msg){
+            public void handleMessage(Message msg) {
                 super.handleMessage(msg);
 
                 filEsclaveEnvoyerMessage = null;
 
                 if (msg.what == MSG_CHARGER_MESSAGES) {
-                    if(modèle.getMessages().size() != 0) {
+                    if (modèle.getMessages().size() != 0) {
                         vue.rafraîchir();
                         if (envoyerVueDébutMessage) {
                             vue.allerPremierMessage();
                             envoyerVueDébutMessage = false;
                         }
                     }
+                    doitRafrahcir = true;
                     rafraichir();
                     doitCharger = true;
-                } else if (msg.what == MSG_VÉRIFER_NOUVEAU_MESSAGE){
-                    if(modèle.getNombreMessageTotale() == 0) {
+                } else if (msg.what == MSG_VÉRIFER_NOUVEAU_MESSAGE) {
+                    vue.rafraîchir();
+                    if (modèle.getNombreMessageTotale() == 0) {
                         rafraichir();
-                    } else if(modèle.getNombreMessageTotale() > nbMessageActuel) {
+                    } else if (modèle.getNombreMessageTotale() > nbMessageActuel) {
                         lancerCahrgemetnMessage();
                     } else {
                         rafraichir();
                     }
-                } else if (msg.what == MSG_NOUVEAU_MESSAGE){
+                } else if (msg.what == MSG_NOUVEAU_MESSAGE) {
                     vue.viderTxtMessage();
-                    nbMessageActuel += 1;
                     vue.rafraîchir();
-                    doitRafrahcir = true;
-                } else if ( msg.what == MSG_ERREUR ) {
+                } else if (msg.what == MSG_UTILIASTEUR_CHARGER) {
+                    if(modèle.getUtilisateur().getPhoto() != null) {
+                        Bitmap bitmap = BitmapFactory.decodeByteArray(modèle.getUtilisateur().getPhoto(), 0, modèle.getUtilisateur().getPhoto().length);
+                        modèle.setBitmap(bitmap);
+                    }
+                    vue.setInfoUtilisateur(modèle.getUtilisateur().getNom(), modèle.getUtilisateur().getPhoto());
+                    getNombreMessagesApi(modèle.getUtilisateurEnRevue());
+                } else if (msg.what == MSG_ERREUR) {
                     Log.e("Brawler", "Erreur d'accès à l'API", (Throwable) msg.obj);
                 }
             }
-
 
 
         };
 
     }
 
-    public void setSource(SourceMessage source) {
-        this.source = source;
+    public void setSourceMessage(SourceMessage sourceMessage) {
+        this.sourceMessage = sourceMessage;
+    }
+
+    public void setSourceUtilisateur(SourceUtilisateur sourceUtilisateur) {
+        this.sourceUtilisateur = sourceUtilisateur;
     }
 
     public void commencerVoirMessage(){
-        getNombreMessagesApi(modèle.getUtilisateurEnRevue());
+        chargerUtilisateur();
+    }
+
+    private void chargerUtilisateur() {
+        filEsclaveEnvoyerMessage = new Thread(
+                new Runnable() {
+                    @Override
+                    public void run() {
+                        Message msg = null;
+                        try {
+                            Thread.sleep(0);
+                            modèle.setUtilisateur(InteracteurAquisitionUtilisateur.getInstance(sourceUtilisateur).getUtilisateurParId(modèle.getUtilisateurEnRevue()));
+                            msg = handlerRéponse.obtainMessage( MSG_UTILIASTEUR_CHARGER );
+                        } catch (InterruptedException e) {
+                            msg = handlerRéponse.obtainMessage( MSG_ANNULER );
+                        } catch (UtilisateursException e) {
+                            e.printStackTrace();
+                        }
+
+                        handlerRéponse.sendMessage( msg );
+                    }
+                });
+        filEsclaveEnvoyerMessage.start();
     }
 
 
@@ -106,12 +147,16 @@ public class PrésenteurConsulterMessage {
                             Thread.sleep(0);
                             doitRafrahcir = false;
                             envoyerVueDébutMessage = true;
-                            InteracteurMessage.getInstance(source).envoyerMessage(modèle.getUtilisateurEnRevue(), texte);
+                            modèle.getMessages().add(0, InteracteurMessage.getInstance(sourceMessage).envoyerMessage(modèle.getUtilisateurEnRevue(), texte));
                             msg = handlerRéponse.obtainMessage( MSG_NOUVEAU_MESSAGE );
                         } catch (InterruptedException e) {
                             msg = handlerRéponse.obtainMessage( MSG_ANNULER );
                         } catch (MessageException e) {
-                            msg = handlerRéponse.obtainMessage( MSG_ANNULER );
+                            msg = handlerRéponse.obtainMessage( MSG_ERREUR );
+                        } catch (UtilisateursException e) {
+                            msg = handlerRéponse.obtainMessage( MSG_ERREUR );
+                        } catch (IOException e) {
+                            msg = handlerRéponse.obtainMessage( MSG_ERREUR );
                         }
 
                         handlerRéponse.sendMessage( msg );
@@ -121,10 +166,11 @@ public class PrésenteurConsulterMessage {
     }
 
     public void rafraichir() {
-        if(vue.rvAuMax() && doitCharger && modèle.getMessages().size() < modèle.getNombreMessageTotale()) {
-            Log.d("rv", "auMax");
+
+        if(vue.rvAuMax() && doitCharger && modèle.getMessages().size() <= modèle.getNombreMessageTotale()) {
             lancerCahrgemetnMessage();
             doitCharger = false;
+            doitRafrahcir = false;
         }
 
         if(doitRafrahcir) {
@@ -135,8 +181,7 @@ public class PrésenteurConsulterMessage {
                     getNombreMessagesApi(modèle.getUtilisateurEnRevue());
                 }
             };
-
-            handlerRafraîchir.postDelayed(runnable, 2000);
+            handlerRafraîchir.postDelayed(runnable, 4000);
         }
     }
 
@@ -147,7 +192,7 @@ public class PrésenteurConsulterMessage {
                     public void run() {
                         Message msg = null;
                         try {
-                            modèle.ajouterListeMessage(InteracteurMessage.getInstance(source).getMessagesparUtilisateursEntreDeux(idUtilisateur, début, fin));
+                            modèle.ajouterListeMessage(InteracteurMessage.getInstance(sourceMessage).getMessagesparUtilisateursEntreDeux(idUtilisateur, début, fin));
                             msg = handlerRéponse.obtainMessage( MSG_CHARGER_MESSAGES );
                         } catch (MessageException e) {
                             msg = handlerRéponse.obtainMessage( MSG_ERREUR );
@@ -168,7 +213,7 @@ public class PrésenteurConsulterMessage {
                     public void run() {
                         Message msg = null;
                         try {
-                             modèle.setNombreMessageTotale(InteracteurMessage.getInstance(source).obtenirNombreMessageParUtilisateur(idUtilisateur));
+                             modèle.setNombreMessageTotale(InteracteurMessage.getInstance(sourceMessage).obtenirNombreMessageParUtilisateur(idUtilisateur));
                              msg = handlerRéponse.obtainMessage(MSG_VÉRIFER_NOUVEAU_MESSAGE);
                         } catch (MessageException e) {
                             msg = handlerRéponse.obtainMessage( MSG_ERREUR );
@@ -220,5 +265,13 @@ public class PrésenteurConsulterMessage {
 
     public void commencerRafraichir(){
         doitRafrahcir = true;
+    }
+
+    public Bitmap getPhotoUtilisateur() {
+        return modèle.getBitmap();
+    }
+
+    public void stopActivity() {
+        vue.getActivity().finish();
     }
 }

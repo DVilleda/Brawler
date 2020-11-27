@@ -1,5 +1,7 @@
 package com.example.brawler.présentation.modèle;
 
+import android.graphics.Bitmap;
+
 import com.example.brawler.domaine.entité.Message;
 import com.example.brawler.domaine.entité.Utilisateur;
 
@@ -14,6 +16,7 @@ public class Modèle {
     private List<Message> messages;
     private String texteRéponse;
     private int nombreMessageTotale;
+    private Bitmap bitmap;
 
     public Modèle(){
         listeUtilisateurs = new ArrayList<>();
@@ -89,5 +92,13 @@ public class Modèle {
 
     public void ajouterListeMessage(List<Message> messagesparUtilisateursEntreDeux) {
         this.messages.addAll(messagesparUtilisateursEntreDeux);
+    }
+
+    public Bitmap getBitmap() {
+        return bitmap;
+    }
+
+    public void setBitmap(Bitmap bitmap) {
+        this.bitmap = bitmap;
     }
 }

@@ -1,5 +1,7 @@
 package com.example.brawler.présentation.vue;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.Editable;
@@ -9,6 +11,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
@@ -25,10 +29,12 @@ public class VueConsulterMessage extends Fragment {
 
     private PrésenteurConsulterMessage présenteur;
     private TextView txtMessage;
-    private Button  btnEnvoyerMessage;
+    private ImageButton btnEnvoyerMessage;
     private RecyclerView rvMessages;
     private MessageAdapter messageAdapter;
-    private boolean mettreRvAuDébut;
+    private ImageButton btnBack;
+    private TextView txtConversation;
+    private ImageView imgNomConversation;
 
     public void setPrésenteur(PrésenteurConsulterMessage présenteur) {
         this.présenteur = présenteur;
@@ -40,10 +46,12 @@ public class VueConsulterMessage extends Fragment {
                               Bundle savedInstanceState) {
 
         View vue = inflater.inflate(R.layout.fragment_consulter_message, container, false);
-        mettreRvAuDébut = true;
         txtMessage = vue.findViewById(R.id.txtMessage);
         btnEnvoyerMessage = vue.findViewById(R.id.btnEnvoyerMessage);
         rvMessages = vue.findViewById(R.id.rvMessages);
+        btnBack = vue.findViewById(R.id.btnBack);
+        imgNomConversation = vue.findViewById(R.id.imgConversation);
+        txtConversation = vue.findViewById(R.id.txtNomConversation);
         btnEnvoyerMessage.setEnabled(false);
         txtMessage.addTextChangedListener(envoyerMessageTextWatcher);
         messageAdapter = new MessageAdapter(présenteur);
@@ -53,6 +61,12 @@ public class VueConsulterMessage extends Fragment {
         rvLayoutManager.setReverseLayout(true);
         rvMessages.setLayoutManager(rvLayoutManager);
 
+
+        btnBack.setOnClickListener(new View.OnClickListener(){
+            public void onClick(View v){
+                présenteur.stopActivity();
+            }
+        });
 
 
         btnEnvoyerMessage.setOnClickListener(new View.OnClickListener(){
@@ -69,9 +83,6 @@ public class VueConsulterMessage extends Fragment {
     public void rafraîchir(){
         if(messageAdapter!=null){
             messageAdapter.notifyDataSetChanged();
-            if(mettreRvAuDébut) {
-                mettreRvAuDébut = false;
-            }
         }
     }
 
@@ -91,6 +102,12 @@ public class VueConsulterMessage extends Fragment {
     public boolean rvAuMax(){
         LinearLayoutManager layoutManager = (LinearLayoutManager) rvMessages.getLayoutManager();
         return layoutManager.findLastCompletelyVisibleItemPosition() == présenteur.getNbMessages() -1;
+    }
+
+    public void setInfoUtilisateur(String texte, byte[] photo){
+        txtConversation.setText(texte);
+        if(présenteur.getPhotoUtilisateur() != null)
+            imgNomConversation.setImageBitmap(présenteur.getPhotoUtilisateur());
     }
 
     private TextWatcher envoyerMessageTextWatcher = new TextWatcher() {

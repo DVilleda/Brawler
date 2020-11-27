@@ -30,6 +30,8 @@ import java.util.List;
 
 public class SourceProfilApi implements SourceUtilisateur{
 
+
+
     public class SourceProfilApiException extends UtilisateursException{
         public SourceProfilApiException (int numErreur){super("Erreur num: "+numErreur);}
     }
@@ -68,6 +70,11 @@ public class SourceProfilApi implements SourceUtilisateur{
         }
 
         return utilisateur;
+    }
+
+    @Override
+    public Utilisateur getUtilisateurParId(int id, boolean bool) throws UtilisateursException {
+        return null;
     }
 
     @Override
