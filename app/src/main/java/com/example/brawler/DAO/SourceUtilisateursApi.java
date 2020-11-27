@@ -145,7 +145,7 @@ public class SourceUtilisateursApi implements SourceUtilisateurs {
             if(key.equals("id")){
                 id = jsonReader.nextInt();
                 SourceUtilisateurApi nouvelleSource = new SourceUtilisateurApi(clé);
-                utilisateur = nouvelleSource.getUtilisateurParId(id);
+                utilisateur = nouvelleSource.getUtilisateurParId(id, true);
             } else {
                 jsonReader.skipValue();
             }

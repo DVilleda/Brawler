@@ -1,9 +1,8 @@
 package com.example.brawler.domaine.intéracteur;
 
 import com.example.brawler.domaine.entité.Message;
-import com.example.brawler.domaine.entité.Niveau;
-import com.example.brawler.domaine.entité.Utilisateur;
 
+import java.io.IOException;
 import java.util.List;
 
 public class InteracteurMessage {
@@ -41,8 +40,8 @@ public class InteracteurMessage {
         source.marquerNotifier(idMessage);
     }
 
-    public void envoyerMessage(int idUtilisateur, String message) throws MessageException {
-        source.envoyerMessage(idUtilisateur, message);
+    public Message envoyerMessage(int idUtilisateur, String message) throws MessageException, IOException, UtilisateursException {
+        return source.envoyerMessage(idUtilisateur, message);
     }
 
     public int obtenirNombreMessageParUtilisateur(int id) throws MessageException, UtilisateursException {

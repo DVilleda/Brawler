@@ -62,6 +62,7 @@ public class PrésenteurContacts {
     public void setSource(SourceUtilisateurs source){this._source =source;}
 
     public void chargerListeContacts(){
+        vueContacts.rafraichirVue();
         filEsclave = new Thread(
                 new Runnable() {
                     @Override

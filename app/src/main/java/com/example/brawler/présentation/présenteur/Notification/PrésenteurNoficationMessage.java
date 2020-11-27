@@ -1,8 +1,11 @@
 package com.example.brawler.présentation.présenteur.Notification;
 
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Handler;
 import android.os.Message;
+
+import androidx.annotation.RequiresApi;
 
 import com.example.brawler.R;
 import com.example.brawler.domaine.intéracteur.InteracteurMessage;
@@ -12,6 +15,7 @@ import com.example.brawler.domaine.intéracteur.UtilisateursException;
 import com.example.brawler.présentation.modèle.Modèle;
 import com.example.brawler.présentation.vue.notification.VueNotificationMessage;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -90,6 +94,7 @@ public class PrésenteurNoficationMessage {
 
 
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     private void notifierMessage(){
         if(modèle.getMessages().size() > 0) {
             for (com.example.brawler.domaine.entité.Message unMessage: modèle.getMessages()) {
@@ -111,6 +116,10 @@ public class PrésenteurNoficationMessage {
                             msg = handlerRéponse.obtainMessage( MSG_NOUVEAU_MESSAGE );
                         } catch (MessageException e) {
                             msg = handlerRéponse.obtainMessage( MSG_ANNULER );
+                        } catch (UtilisateursException e) {
+                            msg = handlerRéponse.obtainMessage( MSG_ERREUR );
+                        } catch (IOException e) {
+                            msg = handlerRéponse.obtainMessage( MSG_ERREUR );
                         }
 
                         handlerRéponse.sendMessage( msg );

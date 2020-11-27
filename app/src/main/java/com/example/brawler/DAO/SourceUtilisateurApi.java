@@ -1,9 +1,12 @@
 package com.example.brawler.DAO;
 
+import android.util.Base64;
 import android.util.JsonReader;
+import android.util.JsonToken;
 
 import com.example.brawler.domaine.entité.Niveau;
 import com.example.brawler.domaine.entité.Utilisateur;
+import com.example.brawler.domaine.intéracteur.SourceUtilisateur;
 import com.example.brawler.domaine.intéracteur.UtilisateursException;
 
 import java.io.IOException;
@@ -13,7 +16,7 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-public class SourceUtilisateurApi {
+public class SourceUtilisateurApi implements SourceUtilisateur {
 
     public class SourceUtilisateursApiException extends UtilisateursException {
         public SourceUtilisateursApiException (int noEreur) { super("Erreur no: " +noEreur);}
@@ -28,7 +31,13 @@ public class SourceUtilisateurApi {
         this.clé = "Bearer " + clé;
     }
 
-    public Utilisateur getUtilisateurParId (int id) throws UtilisateursException {
+    @Override
+    public Utilisateur getUtilisateur() throws UtilisateursException {
+        return null;
+    }
+
+    @Override
+    public Utilisateur getUtilisateurParId (int id, boolean doitLireImage) throws UtilisateursException {
 
 
         Utilisateur utilisateur = null;
@@ -39,7 +48,7 @@ public class SourceUtilisateurApi {
         }
 
         try{
-            utilisateur = lancerConnexion();
+            utilisateur = lancerConnexion(doitLireImage);
         }
         catch(IOException e) {
             throw new UtilisateursException(e);
@@ -48,19 +57,24 @@ public class SourceUtilisateurApi {
 
     }
 
-    private Utilisateur lancerConnexion() throws IOException {
+    @Override
+    public void setUtilisateur(Utilisateur utilisateur) throws UtilisateursException {
+
+    }
+
+    private Utilisateur lancerConnexion(boolean doitLireImage) throws IOException {
         Utilisateur utilisateur= null;
         HttpURLConnection connexion =
                 (HttpURLConnection)urlUnUtilisateur.openConnection();
         connexion.setRequestProperty("Authorization", clé);
 
         if(connexion.getResponseCode()==200){
-            utilisateur = décoderUtilisateur(connexion.getInputStream());
+            utilisateur = décoderUtilisateur(connexion.getInputStream(), doitLireImage);
         }
         return utilisateur;
     }
 
-    private Utilisateur décoderUtilisateur (InputStream utilisateurEncoder) throws IOException {
+    private Utilisateur décoderUtilisateur (InputStream utilisateurEncoder, boolean doitLireImage) throws IOException {
         InputStreamReader responseBodyReader =
                 new InputStreamReader(utilisateurEncoder, "UTF-8");
         Utilisateur utilisateur = null;
@@ -71,7 +85,7 @@ public class SourceUtilisateurApi {
         while(jsonReader.hasNext()) {
             String key = jsonReader.nextName();
             if(key.equals("data")){
-                utilisateur =  lireUtilisateur(jsonReader);
+                utilisateur =  lireUtilisateur(jsonReader, doitLireImage);
             } else {
                 jsonReader.skipValue();
             }
@@ -79,14 +93,17 @@ public class SourceUtilisateurApi {
         return utilisateur;
     }
 
-    private Utilisateur lireUtilisateur (JsonReader jsonReader) throws IOException {
+    private Utilisateur lireUtilisateur (JsonReader jsonReader,boolean doitLireImage) throws IOException {
         Utilisateur utilisateur = null;
 
         int id = -1;
         String nom = "";
         Niveau niveau = null;
         String location = "";
+        byte[] photoProfil=null;
+
         jsonReader.beginObject();
+
 
         while (jsonReader.hasNext()) {
             String key = jsonReader.nextName();
@@ -100,11 +117,19 @@ public class SourceUtilisateurApi {
                 location = jsonReader.nextString();
             } else if (key.equals("id")) {
                 id = jsonReader.nextInt();
-            } else {
+            }else if(key.equals("image") && doitLireImage){
+                if(jsonReader.peek() != JsonToken.NULL){
+                    photoProfil = Base64.decode(jsonReader.nextString(),Base64.DEFAULT);
+                } else {
+                    jsonReader.nextNull();
+                }
+            }
+            else {
                 jsonReader.skipValue();
             }
         }
         utilisateur = new Utilisateur(id, nom, niveau, location);
+        utilisateur.setPhoto(photoProfil);
         return utilisateur;
     }
 

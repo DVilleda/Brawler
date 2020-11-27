@@ -2,6 +2,7 @@ package com.example.brawler.domaine.intéracteur;
 
 import com.example.brawler.domaine.entité.Message;
 
+import java.io.IOException;
 import java.util.List;
 
 public interface SourceMessage {
@@ -16,7 +17,7 @@ public interface SourceMessage {
 
     void marquerNotifier(int idMessage) throws MessageException, UtilisateursException;
 
-    public void envoyerMessage(int idUtilisateur, String message) throws MessageException;
+    public Message envoyerMessage(int idUtilisateur, String message) throws MessageException, IOException, UtilisateursException;
 
     int obtenireNombreMessage(int id) throws MessageException, UtilisateursException;
 }

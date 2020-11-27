@@ -2,7 +2,6 @@ package com.example.brawler.DAO;
 
 import android.net.Uri;
 import android.util.JsonReader;
-import android.util.Log;
 
 import com.example.brawler.domaine.entité.Message;
 import com.example.brawler.domaine.entité.Utilisateur;
@@ -54,7 +53,6 @@ public class SourceMessageApi implements SourceMessage {
 
     @Override
     public List<Message> getMessagesparUtilisateursEntreDeux(int idUtilisateur, int debutListe, int finListe) throws MessageException, UtilisateursException {
-        Log.d("passe:", "entre deux");
         try {
             url = new URL(urlMessage + idUtilisateur + "/"+ debutListe + "/"+ finListe);
         } catch (MalformedURLException e) {
@@ -94,14 +92,14 @@ public class SourceMessageApi implements SourceMessage {
     }
 
     @Override
-    public void envoyerMessage(int idUtilisateur, String message) throws MessageException {
+    public Message envoyerMessage(int idUtilisateur, String message) throws MessageException, IOException, UtilisateursException {
         try {
             url = new URL(urlEnvoyerMessage + idUtilisateur);
         } catch (MalformedURLException e) {
             e.printStackTrace();
         }
 
-        lancerConnexionEnvoyerMessage(message);
+        return lancerConnexionEnvoyerMessage(message);
     }
 
     @Override
@@ -179,43 +177,43 @@ public class SourceMessageApi implements SourceMessage {
         return nombre;
     }
 
-    private void lancerConnexionEnvoyerMessage(String message) throws MessageException {
-        try{
-            HttpURLConnection connexion =
-                    (HttpURLConnection)url.openConnection();
-            connexion.setRequestProperty("Authorization", cléBearer);
-            connexion.setReadTimeout(10000);
-            connexion.setConnectTimeout(15000);
-            connexion.setRequestMethod("POST");
-            connexion.setDoInput(true);
-            connexion.setDoOutput(true);
+    private Message lancerConnexionEnvoyerMessage(String message) throws MessageException, IOException, UtilisateursException {
+        HttpURLConnection connexion =
+                (HttpURLConnection)url.openConnection();
+        connexion.setRequestProperty("Authorization", cléBearer);
+        connexion.setReadTimeout(10000);
+        connexion.setConnectTimeout(15000);
+        connexion.setRequestMethod("POST");
+        connexion.setDoInput(true);
+        connexion.setDoOutput(true);
 
-            Uri.Builder builder = new Uri.Builder()
-                    .appendQueryParameter("message", message);
-            String query = builder.build().getEncodedQuery();
+        Uri.Builder builder = new Uri.Builder()
+                .appendQueryParameter("message", message);
+        String query = builder.build().getEncodedQuery();
 
-            OutputStream os = connexion.getOutputStream();
-            BufferedWriter writer = new BufferedWriter(
-                    new OutputStreamWriter(os, "UTF-8"));
-            writer.write(query);
-            writer.flush();
-            writer.close();
-            os.close();
+        OutputStream os = connexion.getOutputStream();
+        BufferedWriter writer = new BufferedWriter(
+                new OutputStreamWriter(os, "UTF-8"));
+        writer.write(query);
+        writer.flush();
+        writer.close();
+        os.close();
 
-            connexion.connect();
+        connexion.connect();
 
+        Message messageARenvoyer = null;
 
-            if(connexion.getResponseCode()==200){
-            }
-            else{
-                throw new SourceMessageApi.SourceMessageApiException( connexion.getResponseCode() );
-            }
+        if(connexion.getResponseCode()==200){
+            messageARenvoyer = décoderUnMessageJSON(connexion.getInputStream());
+        }
+        else{
+            throw new SourceMessageApi.SourceMessageApiException( connexion.getResponseCode() );
         }
 
-        catch(IOException e){
-            throw new MessageException( e );
-        }
+        return messageARenvoyer;
     }
+
+
 
     private boolean lancerConnexionMarquerNotifier() throws MessageException {
         try {
@@ -256,6 +254,26 @@ public class SourceMessageApi implements SourceMessage {
         return messages;
     }
 
+    private Message décoderUnMessageJSON(InputStream inputStream) throws IOException, UtilisateursException {
+        Message message = null;
+        InputStreamReader responseBodyReader =
+                new InputStreamReader(inputStream, "UTF-8");
+
+        JsonReader jsonReader = new JsonReader(responseBodyReader);
+        jsonReader.beginObject();
+
+        while(jsonReader.hasNext()) {
+            String key = jsonReader.nextName();
+            if(key.equals("réponse")){
+                message = décoderMessage(jsonReader);
+            } else {
+                jsonReader.skipValue();
+            }
+
+        }
+        return message;
+    }
+
     private  Message décoderMessage(JsonReader jsonReader) throws IOException, UtilisateursException {
         Message message = null;
         int id = -1;
@@ -264,14 +282,12 @@ public class SourceMessageApi implements SourceMessage {
         Date temps = null;
         Boolean lue = false;
 
-        Log.d("new", "message");
-
         jsonReader.beginObject();
         while (jsonReader.hasNext()){
             String key = jsonReader.nextName();
             if(key.equals("idEnvoyeur")){
                 SourceUtilisateurApi sourceUtilisateur = new SourceUtilisateurApi(clé);
-                utilisateur = sourceUtilisateur.getUtilisateurParId(jsonReader.nextInt());
+                utilisateur = sourceUtilisateur.getUtilisateurParId(jsonReader.nextInt(), false);
             } else if (key.equals("message")){
                 texte = jsonReader.nextString();
             } else if (key.equals("temps")) {
