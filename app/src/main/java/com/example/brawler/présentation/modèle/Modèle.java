@@ -15,7 +15,7 @@ public class Modèle {
     private String texteRéponse;
     private int nombreMessageTotale;
 
-    public Modèle(){
+    public Modèle() {
         listeUtilisateurs = new ArrayList<>();
         utilisateurEnRevue = 0;
         messages = new ArrayList<>();

@@ -277,4 +277,40 @@ public class SourceUtilisateursApi implements SourceUtilisateurs {
         }
         return serviceResponse;
     }
+
+    public boolean setLocalisation (String localisation){
+        boolean serviceResponse = false;
+        String urlParameters  = "location=" + localisation;
+        try {
+            url = new URL("http://52.3.68.3/modifierLocation");
+        } catch (MalformedURLException e) {
+            //try/catch obligatoire pour satisfaire le compilateur.
+        }
+        try {
+            HttpURLConnection connexion = (HttpURLConnection)url.openConnection();
+            connexion.setRequestMethod("POST");
+            connexion.setRequestProperty("Authorization", cléBearer);
+            connexion.setRequestProperty( "Content-Type", "application/x-www-form-urlencoded");
+            connexion.setRequestProperty( "charset", "utf-8");
+            connexion.setDoOutput(true);
+            byte[] postData       = urlParameters.getBytes( StandardCharsets.UTF_8 );
+            int postDataLength    = postData.length;
+            connexion.setRequestProperty( "Content-Length", Integer.toString( postDataLength ));
+
+            try( DataOutputStream wr = new DataOutputStream( connexion.getOutputStream())) {
+                wr.write( postData );
+            }
+
+            int responseCode = connexion.getResponseCode();
+            if (responseCode == HttpURLConnection.HTTP_OK) {
+                serviceResponse = true;
+            } else {
+                serviceResponse = false;
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return serviceResponse;
+    }
+
 }
