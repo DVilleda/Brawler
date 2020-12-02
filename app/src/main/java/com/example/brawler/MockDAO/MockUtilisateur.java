@@ -25,4 +25,9 @@ public class MockUtilisateur implements SourceUtilisateur {
     public void setUtilisateur(Utilisateur utilisateur) {
 
     }
+
+    @Override
+    public Utilisateur getUtilisateurActuel() throws UtilisateursException {
+        return null;
+    }
 }
