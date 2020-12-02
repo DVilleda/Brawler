@@ -11,8 +11,10 @@ import java.util.List;
 public class Modèle {
 
     private List<Utilisateur> listeUtilisateurs;
+    private List<Integer> listUtilisateursId;
     private int utilisateurEnRevue;
     private Utilisateur utilisateur;
+    private Utilisateur utilisateurDeApplication;
     private List<Message> messages;
     private String texteRéponse;
     private int nombreMessageTotale;
@@ -20,6 +22,7 @@ public class Modèle {
 
     public Modèle() {
         listeUtilisateurs = new ArrayList<>();
+        listUtilisateursId = new ArrayList<>();
         utilisateurEnRevue = 0;
         messages = new ArrayList<>();
     }
@@ -32,6 +35,13 @@ public class Modèle {
         this.listeUtilisateurs = listUtilisateurs;
     }
 
+    public List<Integer> getListUtilisateursId() {
+        return listUtilisateursId;
+    }
+
+    public void setListUtilisateursId(List<Integer> listUtilisateursId) {
+        this.listUtilisateursId = listUtilisateursId;
+    }
 
     public void setListeMessage(List<Message> messages) {
         this.messages = messages;
@@ -41,8 +51,8 @@ public class Modèle {
         return messages;
     }
 
-    public Utilisateur getUtilisateurActuel() {
-        return listeUtilisateurs.get(utilisateurEnRevue);
+    public int getUtilisateurIdActuel() {
+        return listUtilisateursId.get(utilisateurEnRevue);
     }
 
     public int getUtilisateurEnRevue(){
@@ -52,8 +62,8 @@ public class Modèle {
     public void prochainUtilisateur(){utilisateurEnRevue +=1;}
 
     public void viderListeUtilisateurs() {
-        if (listeUtilisateurs.size() != 0) {
-            listeUtilisateurs.removeAll(listeUtilisateurs);
+        if (listUtilisateursId.size() != 0) {
+            listUtilisateursId.removeAll(listeUtilisateurs);
             utilisateurEnRevue = 0;
         }
     }
@@ -65,6 +75,8 @@ public class Modèle {
     public void setUtilisateur(Utilisateur utilisateur) {
         this.utilisateur = utilisateur;
     }
+
+
 
     public void setUtilisateurEnRevue(int i) {
         utilisateurEnRevue = i;
@@ -100,5 +112,17 @@ public class Modèle {
 
     public void setBitmap(Bitmap bitmap) {
         this.bitmap = bitmap;
+    }
+
+    public Utilisateur getUtilisateurDeApplication() {
+        return utilisateurDeApplication;
+    }
+
+    public void setUtilisateurDeApplication(Utilisateur utilisateurDeApplication) {
+        this.utilisateurDeApplication = utilisateurDeApplication;
+    }
+
+    public void setMessages(List<Message> messages) {
+        this.messages = messages;
     }
 }

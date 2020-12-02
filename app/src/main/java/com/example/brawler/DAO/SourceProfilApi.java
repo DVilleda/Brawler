@@ -135,6 +135,11 @@ public class SourceProfilApi implements SourceUtilisateur{
         }
     }
 
+    @Override
+    public Utilisateur getUtilisateurActuel() throws UtilisateursException {
+        return null;
+    }
+
     private Utilisateur décoderUtilisateur (InputStream utilisateurEncoder) throws IOException {
         InputStreamReader responseBodyReader =
                 new InputStreamReader(utilisateurEncoder, "UTF-8");

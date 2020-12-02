@@ -1,5 +1,7 @@
 package com.example.brawler.présentation.vue;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -82,9 +84,14 @@ public class VueRechercheMatch extends Fragment {
         txtLocation.setText(utilisateur.getLocation());
         txtNom.setText(utilisateur.getNom());
         txtVictoire.setText(String.valueOf(utilisateur.getStatistique().getNombreVictoire()));
+        if(utilisateur.getPhoto() != null) {
+            Bitmap bitmap = BitmapFactory.decodeByteArray(utilisateur.getPhoto(), 0, utilisateur.getPhoto().length);
+            imgUtilisateur.setImageBitmap(bitmap);
+        }
     }
 
     public void  toggleÉtatBouton() {
+
         btnMatchClickable = !btnMatchClickable;
         btnAccepter.setClickable(btnMatchClickable);
         btnPasser.setClickable(btnMatchClickable);

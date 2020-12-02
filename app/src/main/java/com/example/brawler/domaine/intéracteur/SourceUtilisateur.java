@@ -14,4 +14,6 @@ public interface SourceUtilisateur {
     Utilisateur getUtilisateurParId(int id, boolean doitLireImage) throws UtilisateursException;
 
     void setUtilisateur(Utilisateur utilisateur) throws UtilisateursException;
+
+    Utilisateur getUtilisateurActuel() throws UtilisateursException;
 }
