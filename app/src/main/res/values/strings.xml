@@ -46,5 +46,7 @@
     <string name="channel_name">brawlerChannel</string>
     <string name="nom_utilisateur_notification_reply">Vous</string>
     <string name="btn_deconnecter">Déconnecter</string>
+    <string name="accepter">Accepter</string>
+    <string name="refuser">Refuser</string>
 
 </resources>

@@ -3,6 +3,7 @@ package com.example.brawler.présentation.modèle;
 import android.graphics.Bitmap;
 
 import com.example.brawler.domaine.entité.Message;
+import com.example.brawler.domaine.entité.Partie;
 import com.example.brawler.domaine.entité.Utilisateur;
 
 import java.util.ArrayList;
@@ -18,7 +19,8 @@ public class Modèle {
     private List<Message> messages;
     private String texteRéponse;
     private int nombreMessageTotale;
-    private Bitmap bitmap;
+    private Bitmap bitmapPhoto;
+    private List<Partie> parties;
 
     public Modèle() {
         listeUtilisateurs = new ArrayList<>();
@@ -106,12 +108,12 @@ public class Modèle {
         this.messages.addAll(messagesparUtilisateursEntreDeux);
     }
 
-    public Bitmap getBitmap() {
-        return bitmap;
+    public Bitmap getBitmapPhoto() {
+        return bitmapPhoto;
     }
 
-    public void setBitmap(Bitmap bitmap) {
-        this.bitmap = bitmap;
+    public void setBitmapPhoto(Bitmap bitmapPhoto) {
+        this.bitmapPhoto = bitmapPhoto;
     }
 
     public Utilisateur getUtilisateurDeApplication() {
@@ -124,5 +126,15 @@ public class Modèle {
 
     public void setMessages(List<Message> messages) {
         this.messages = messages;
+    }
+
+
+    //Partie
+    public void setParties(List<Partie> parties){
+        this.parties = parties;
+    }
+
+    public List<Partie> getParties() {
+        return this.parties;
     }
 }

@@ -87,7 +87,7 @@ public class PrésenteurConsulterMessage {
                 } else if (msg.what == MSG_UTILIASTEUR_CHARGER) {
                     if(modèle.getUtilisateur().getPhoto() != null) {
                         Bitmap bitmap = BitmapFactory.decodeByteArray(modèle.getUtilisateur().getPhoto(), 0, modèle.getUtilisateur().getPhoto().length);
-                        modèle.setBitmap(bitmap);
+                        modèle.setBitmapPhoto(bitmap);
                     }
                     vue.setInfoUtilisateur(modèle.getUtilisateur().getNom(), modèle.getUtilisateur().getPhoto());
                     getNombreMessagesApi(modèle.getUtilisateurEnRevue());
@@ -268,7 +268,7 @@ public class PrésenteurConsulterMessage {
     }
 
     public Bitmap getPhotoUtilisateur() {
-        return modèle.getBitmap();
+        return modèle.getBitmapPhoto();
     }
 
     public void stopActivity() {
