@@ -30,6 +30,7 @@ public class SourceUtilisateursApi implements SourceUtilisateurs {
 
     private URL url;
     private URL urlUnUtilisateur;
+    private String urlDeBase = "http://52.3.68.3/";
     private String urlUtilisateur = "http://52.3.68.3/utilisateur/";
     private String urlContact = "http://52.3.68.3/contact";
     private String clé;
@@ -285,7 +286,7 @@ public class SourceUtilisateursApi implements SourceUtilisateurs {
                 "&description=" + description;
 
         try {
-            url = new URL("http://52.3.68.3/inscription");
+            url = new URL(urlDeBase + "inscription");
         } catch (MalformedURLException e) {
             e.printStackTrace();
         }
@@ -337,7 +338,7 @@ public class SourceUtilisateursApi implements SourceUtilisateurs {
         String urlParameters  = "email=" + leEmail + "&mdp=" + leMdp;
 
         try {
-            url = new URL("http://52.3.68.3/connexion");
+            url = new URL(urlDeBase + "connexion");
         } catch (MalformedURLException e) {
             e.printStackTrace();
         }
@@ -384,7 +385,7 @@ public class SourceUtilisateursApi implements SourceUtilisateurs {
         boolean serviceResponse = false;
         String urlParameters  = "location=" + localisation;
         try {
-            url = new URL("http://52.3.68.3/modifierLocation");
+            url = new URL(urlDeBase + "modifierLocation");
         } catch (MalformedURLException e) {
             //try/catch obligatoire pour satisfaire le compilateur.
         }
@@ -415,4 +416,42 @@ public class SourceUtilisateursApi implements SourceUtilisateurs {
         return serviceResponse;
     }
 
+    public JSONObject getParties() {
+        String serviceResponseInText ="";
+        JSONObject parties = new JSONObject();
+        try {
+            url = new URL(urlDeBase + "partie");
+        } catch (MalformedURLException e) {
+            //try/catch obligatoire pour satisfaire le compilateur.
+        }
+        try{
+            HttpURLConnection connexion =
+                    (HttpURLConnection)url.openConnection();
+            connexion.setRequestProperty("Authorization", cléBearer);
+            if(connexion.getResponseCode()==200){
+                BufferedReader in = new BufferedReader(new InputStreamReader(
+                        connexion.getInputStream()));
+                String inputLine;
+                StringBuffer response = new StringBuffer();
+
+                while ((inputLine = in.readLine()) != null) {
+                    response.append(inputLine);
+                }
+                in.close();
+
+                // store result on variable
+                serviceResponseInText = response.toString();
+                parties = new JSONObject(serviceResponseInText);
+
+
+            } else {
+                parties = new JSONObject("{\"r\\u00e9ponse\":\"getParties a échoué\",\"statut\":\"échec\"}");
+            }
+        }
+        catch(IOException | JSONException e) {
+            e.printStackTrace();
+        }
+
+        return parties;
+    }
 }
