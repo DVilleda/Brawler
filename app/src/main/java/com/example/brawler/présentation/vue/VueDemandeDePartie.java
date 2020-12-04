@@ -43,6 +43,9 @@ public class VueDemandeDePartie extends Fragment {
         return view;
     }
 
+    /**
+     * rafrachit la vue et met a jour les objet dans le Recyclerview
+     */
     public void rafraichirVue(){
         if(demandeDePartieAdapter!=null)
             demandeDePartieAdapter.notifyDataSetChanged();

@@ -105,6 +105,10 @@ public class ConsulterMessageActivité extends AppCompatActivity {
                 Intent contact = new Intent(this,CommunicationUtilisateurs.class);
                 startActivity(contact);
                 break;
+            case R.id.menu_partie:
+                Intent demandePartie = new Intent(this,ConsulterDemandePartieActivité.class);
+                startActivity(demandePartie);
+                break;
         }
         return super.onOptionsItemSelected(item);
     }

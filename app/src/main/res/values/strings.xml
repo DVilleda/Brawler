@@ -48,5 +48,6 @@
     <string name="btn_deconnecter">Déconnecter</string>
     <string name="accepter">Accepter</string>
     <string name="refuser">Refuser</string>
+    <string name="allet_partie">Aller Partie</string>
 
 </resources>

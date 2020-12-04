@@ -100,7 +100,7 @@ public class Message {
     }
 
     /**
-     * 
+     *
      * @param lue
      */
     public void setLue(Boolean lue) {
