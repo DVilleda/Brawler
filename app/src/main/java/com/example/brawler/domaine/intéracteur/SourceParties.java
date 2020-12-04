@@ -7,4 +7,8 @@ import java.util.List;
 
 public interface SourceParties {
     public List<Partie> getDemandeParties() throws SourcePartiesApi.SourcePartieApiException;
+
+    void envoyerDemandePartie(int id) throws SourcePartiesApi.SourcePartieApiException;
+
+    void refuserDemandePartie(int id) throws SourcePartiesApi.SourcePartieApiException;
 }

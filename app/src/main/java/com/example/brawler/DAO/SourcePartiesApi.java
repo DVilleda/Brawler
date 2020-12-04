@@ -2,10 +2,8 @@ package com.example.brawler.DAO;
 
 import android.util.JsonReader;
 
-import com.example.brawler.domaine.entité.Message;
 import com.example.brawler.domaine.entité.Partie;
 import com.example.brawler.domaine.entité.Utilisateur;
-import com.example.brawler.domaine.intéracteur.MessageException;
 import com.example.brawler.domaine.intéracteur.PartieException;
 import com.example.brawler.domaine.intéracteur.SourceParties;
 import com.example.brawler.domaine.intéracteur.UtilisateursException;
@@ -17,7 +15,6 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 public class SourcePartiesApi implements SourceParties {
@@ -32,23 +29,63 @@ public class SourcePartiesApi implements SourceParties {
     }
 
     private URL url;
-    private String urlParties = "http://52.3.68.3/demandePartie";
+    private String urlDemandeParties = "http://52.3.68.3/demandePartie";
+    private String urlRefuserDemandeParties = "http://52.3.68.3/refuserDemandePartie";
     private String clé;
     private String cléBearer;
-    
+
+    /**
+     * constructeur selon la clé de l'utilisateur vers l'api
+     * @param clé
+     */
     public SourcePartiesApi (String clé) {
         this.clé = clé;
         this.cléBearer = "Bearer " + clé;
     }
-    
+
+    /**
+     * Permet la connexion a l'api et d'obtenir toutes les demandes de partie d'un joueur
+     * @return
+     * @throws SourcePartieApiException
+     */
     @Override
     public List<Partie> getDemandeParties() throws SourcePartieApiException {
         try {
-            url = new URL(urlParties);
+            url = new URL(urlDemandeParties);
         } catch (MalformedURLException e) {
             e.printStackTrace();
         }
         return lancerConnexionObtenirParties();
+    }
+
+    /**
+     * Permet la connexion a l'api et d'accepter ou de creer une demande de partie
+     * @param idAversaire
+     * @throws SourcePartieApiException
+     */
+    @Override
+    public void envoyerDemandePartie(int idAversaire) throws SourcePartieApiException {
+        try {
+            url = new URL(urlDemandeParties + "/" + idAversaire);
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+        lancerConnexionDemandePartie();
+    }
+
+    /**
+     * Permet la connexion a l'api et de refuser une demande de partie
+     * @param idAversaire
+     * @throws SourcePartieApiException
+     */
+    @Override
+    public void refuserDemandePartie(int idAversaire) throws SourcePartieApiException {
+        try {
+            url = new URL(urlRefuserDemandeParties + "/" + idAversaire);
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+        lancerConnexionDemandePartie();
     }
 
     private List<Partie> lancerConnexionObtenirParties() throws SourcePartieApiException {
@@ -69,6 +106,24 @@ public class SourcePartiesApi implements SourceParties {
         }
 
         return parties;
+    }
+
+    private void lancerConnexionDemandePartie() throws SourcePartieApiException {
+        List<Partie> parties = null;
+
+        try{
+            HttpURLConnection connexion =
+                    (HttpURLConnection)url.openConnection();
+            connexion.setRequestProperty("Authorization", cléBearer);
+            if(connexion.getResponseCode()==200){
+                parties = décoderJSON(connexion.getInputStream());
+            }
+            else{
+                throw new SourcePartiesApi.SourcePartieApiException( connexion.getResponseCode() );
+            }
+        } catch(IOException | UtilisateursException e){
+            throw new SourcePartiesApi.SourcePartieApiException((Exception) e);
+        }
     }
 
     private List<Partie> décoderJSON(InputStream inputStream) throws IOException, UtilisateursException {

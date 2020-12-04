@@ -36,6 +36,8 @@ public class PrésenteurDemandeDePartie {
 
                 if (msg.what == MSG_CHARGER_PARTIE) {
                     vue.rafraichirVue();
+                } else if (msg.what == MSG_ANNULER) {
+
                 }
             }
         };
@@ -49,7 +51,14 @@ public class PrésenteurDemandeDePartie {
         chercherDemandeDePartie();
     }
 
-    public void chercherDemandeDePartie(){
+    public void accepeterDemande(int position) {
+        lancerFileEsclaveAccepterDemande(modèle.getParties().get(position).getId());
+    }
+
+    public void refuserDemande(int position) {
+    }
+
+    private void chercherDemandeDePartie(){
         filEsclaveEnvoyerMessage = new Thread(
                 new Runnable() {
                     @Override
@@ -69,5 +78,7 @@ public class PrésenteurDemandeDePartie {
         filEsclaveEnvoyerMessage.start();
     }
 
+    private void lancerFileEsclaveAccepterDemande(int id) {
+    }
 
 }

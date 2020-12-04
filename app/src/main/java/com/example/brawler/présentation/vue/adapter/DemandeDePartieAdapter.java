@@ -3,7 +3,10 @@ package com.example.brawler.présentation.vue.adapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -28,8 +31,25 @@ public class DemandeDePartieAdapter extends RecyclerView.Adapter<RecyclerView.Vi
     }
 
     @Override
-    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, final int position) {
+        TextView tvNomAdversaire = holder.itemView.findViewById(R.id.txtNomAdversaire);
+        ImageButton btnAcctepter = holder.itemView.findViewById(R.id.btn_accepter);
+        ImageButton btnRefuser = holder.itemView.findViewById(R.id.btn_passer);
 
+        btnAcctepter.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    présenteur.accepeterDemande(position);
+                }
+            }
+        );
+        btnRefuser.setOnClickListener(new View.OnClickListener() {
+                                             @Override
+                                             public void onClick(View view) {
+                                                 présenteur.refuserDemande(position);
+                                             }
+                                         }
+        );
     }
 
     @Override
