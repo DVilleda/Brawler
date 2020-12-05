@@ -3,7 +3,6 @@ package com.example.brawler.présentation.vue.adapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -36,10 +35,12 @@ public class DemandeDePartieAdapter extends RecyclerView.Adapter<RecyclerView.Vi
         ImageButton btnAcctepter = holder.itemView.findViewById(R.id.btn_accepter);
         ImageButton btnRefuser = holder.itemView.findViewById(R.id.btn_passer);
 
+        tvNomAdversaire.setText(présenteur.getDemandeParId(position).getAdversaire().getNom());
         btnAcctepter.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     présenteur.accepeterDemande(position);
+
                 }
             }
         );
@@ -54,6 +55,7 @@ public class DemandeDePartieAdapter extends RecyclerView.Adapter<RecyclerView.Vi
 
     @Override
     public int getItemCount() {
-        return 0;
+        if(présenteur==null) return 0;
+        return présenteur.getNbDemande();
     }
 }

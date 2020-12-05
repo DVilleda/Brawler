@@ -32,6 +32,8 @@ dependencies {
     implementation 'androidx.annotation:annotation:1.1.0'
     implementation 'com.bignerdranch.android:expandablerecyclerview:1.0.3'
     implementation 'com.google.android.gms:play-services-location:17.0.0'
+    androidTestImplementation 'androidx.test:runner:1.1.0'
+    androidTestImplementation 'androidx.test:rules:1.1.0'
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
@@ -48,11 +50,10 @@ dependencies {
 
     // optional - RxJava2 support
     implementation "androidx.work:work-rxjava2:$work_version"
-
     // optional - GCMNetworkManager support
     implementation "androidx.work:work-gcm:$work_version"
 
     // optional - Test helpers
-    androidTestImplementation "androidx.work:work-testing:$work_version"
+    androidTestImplementation group: 'org.mockito', name: 'mockito-android', version: '3.5.11'
 
 }

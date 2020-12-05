@@ -26,7 +26,9 @@ public class Modèle {
         listeUtilisateurs = new ArrayList<>();
         listUtilisateursId = new ArrayList<>();
         utilisateurEnRevue = 0;
+        parties = new ArrayList<>();
         messages = new ArrayList<>();
+
     }
 
     public List<Utilisateur> getListUtilisateurs() {

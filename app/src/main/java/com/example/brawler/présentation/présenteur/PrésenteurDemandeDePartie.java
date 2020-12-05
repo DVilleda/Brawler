@@ -5,13 +5,10 @@ import android.os.Message;
 
 import com.example.brawler.DAO.SourcePartiesApi;
 import com.example.brawler.domaine.entité.Partie;
-import com.example.brawler.domaine.intéracteur.InteracteurAquisitionUtilisateur;
 import com.example.brawler.domaine.intéracteur.InteracteurAquistionPartie;
 import com.example.brawler.domaine.intéracteur.SourceParties;
-import com.example.brawler.domaine.intéracteur.UtilisateursException;
 import com.example.brawler.présentation.modèle.Modèle;
 import com.example.brawler.présentation.vue.VueDemandeDePartie;
-import com.example.brawler.présentation.vue.VueRechercheMatch;
 
 public class PrésenteurDemandeDePartie {
     private final Handler handlerRéponse;
@@ -112,7 +109,7 @@ public class PrésenteurDemandeDePartie {
                     public void run() {
                         Message msg = null;
                         try {
-                            InteracteurAquistionPartie.getInstance(sourceParties).enovyerDemandePartie(partie.getId());
+                            InteracteurAquistionPartie.getInstance(sourceParties).enovyerDemandePartie(partie.getAdversaire().getId());
                             modèle.getParties().remove(partie);
                             msg = handlerRéponse.obtainMessage( MSG_PARTIE_ACCEPTER );
                         } catch (SourcePartiesApi.SourcePartieApiException e) {
@@ -132,7 +129,7 @@ public class PrésenteurDemandeDePartie {
                     public void run() {
                         Message msg = null;
                         try {
-                            InteracteurAquistionPartie.getInstance(sourceParties).refuserDemandePartie(partie.getId());
+                            InteracteurAquistionPartie.getInstance(sourceParties).refuserDemandePartie(partie.getAdversaire().getId());
                             modèle.getParties().remove(partie);
                             msg = handlerRéponse.obtainMessage( MSG_REFUSER_PARTIE );
                         } catch (SourcePartiesApi.SourcePartieApiException e) {
@@ -145,4 +142,13 @@ public class PrésenteurDemandeDePartie {
         filEsclaveEnvoyerMessage.start();
     }
 
+    public int getNbDemande() {
+        if(modèle.getParties().size() > 0)
+            return modèle.getParties().size();
+        return 0;
+    }
+
+    public Partie getDemandeParId(int position) {
+        return  modèle.getParties().get(position);
+    }
 }

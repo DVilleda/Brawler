@@ -1,6 +1,7 @@
 package com.example.brawler.DAO;
 
 import android.util.JsonReader;
+import android.util.Log;
 
 import com.example.brawler.domaine.entité.Partie;
 import com.example.brawler.domaine.entité.Utilisateur;
@@ -80,6 +81,7 @@ public class SourcePartiesApi implements SourceParties {
      */
     @Override
     public void refuserDemandePartie(int idAversaire) throws SourcePartieApiException {
+        Log.d("passe", "here");
         try {
             url = new URL(urlRefuserDemandeParties + "/" + idAversaire);
         } catch (MalformedURLException e) {
@@ -109,19 +111,18 @@ public class SourcePartiesApi implements SourceParties {
     }
 
     private void lancerConnexionDemandePartie() throws SourcePartieApiException {
-        List<Partie> parties = null;
 
         try{
             HttpURLConnection connexion =
                     (HttpURLConnection)url.openConnection();
             connexion.setRequestProperty("Authorization", cléBearer);
             if(connexion.getResponseCode()==200){
-                parties = décoderJSON(connexion.getInputStream());
             }
             else{
+                Log.e("code", String.valueOf(connexion.getResponseCode()));
                 throw new SourcePartiesApi.SourcePartieApiException( connexion.getResponseCode() );
             }
-        } catch(IOException | UtilisateursException e){
+        } catch(IOException e){
             throw new SourcePartiesApi.SourcePartieApiException((Exception) e);
         }
     }
@@ -136,7 +137,7 @@ public class SourcePartiesApi implements SourceParties {
 
         while(jsonReader.hasNext()) {
             String key = jsonReader.nextName();
-            if(key.equals("demande")){
+            if(key.equals("demandes")){
                 jsonReader.beginArray();
                 while (jsonReader.hasNext()){
                     parties.add(décoderDemandePartie(jsonReader));
@@ -154,11 +155,10 @@ public class SourcePartiesApi implements SourceParties {
         Partie partie = null;
         int id = -1;
         Utilisateur adversaire = null;
-
         jsonReader.beginObject();
         while (jsonReader.hasNext()){
             String key = jsonReader.nextName();
-            if(key.equals("idEnvoyeur")){
+            if(key.equals("adversaire")){
                 SourceUtilisateurApi sourceUtilisateur = new SourceUtilisateurApi(clé);
                 adversaire = sourceUtilisateur.getUtilisateurParId(jsonReader.nextInt(), false);
             }else if (key.equals("id")) {
