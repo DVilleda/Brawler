@@ -1,44 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="horizontal"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:background="#26a5a9b0"
+    android:layout_marginBottom="10dp">
 
-    <TextView
-        android:id="@+id/txtNomAdversaire"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:text="TextView" />
+        <TextView
+            android:id="@+id/txtNomAdversaire"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:paddingLeft="50dp"
+            android:text="TextView" />
 
-    <ImageButton
-        android:id="@+id/btn_passer"
-        android:layout_width="70dp"
-        android:layout_height="70dp"
-        android:layout_marginStart="32dp"
-        android:layout_marginBottom="32dp"
-        android:background="@drawable/custom_button_pass"
-        android:contentDescription="@string/fairePaix"
-        android:elevation="7dp"
-        android:outlineAmbientShadowColor="#000"
-        android:text="@string/fairePaix"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:srcCompat="@drawable/ic_peace" />
+        <ImageButton
+            android:id="@+id/btn_passer"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:layout_gravity="center"
+            android:layout_marginStart="32dp"
+            android:background="@drawable/custom_button_pass"
+            android:contentDescription="@string/fairePaix"
+            android:elevation="7dp"
+            android:outlineAmbientShadowColor="#000"
+            android:text="@string/fairePaix"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:srcCompat="@drawable/ic_peace" />
 
-    <ImageButton
-        android:id="@+id/btn_accepter"
-        android:layout_width="70dp"
-        android:layout_height="70dp"
-        android:layout_marginEnd="32dp"
-        android:background="@drawable/custom_button_accept"
-        android:contentDescription="@string/seBattre"
-        android:elevation="7dp"
-        android:outlineAmbientShadowColor="#000"
-        android:text="@string/seBattre"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:srcCompat="@drawable/ic_fist" />
-         />
+        <ImageButton
+            android:id="@+id/btn_accepter"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:layout_gravity="center"
+            android:layout_marginLeft="500dp"
+            android:layout_marginEnd="32dp"
+            android:background="@drawable/custom_button_accept"
+            android:contentDescription="@string/seBattre"
+            android:elevation="7dp"
+            android:outlineAmbientShadowColor="#000"
+            android:text="@string/seBattre"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:srcCompat="@drawable/ic_fist" />
 </LinearLayout>

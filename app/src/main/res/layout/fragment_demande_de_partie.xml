@@ -6,6 +6,13 @@
     android:orientation="vertical"
     android:paddingTop="55dp">
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/vosDemandeDePArtie"
+        android:textColor="#000000"
+        android:textSize="24sp" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/listPartie"
         android:layout_width="match_parent"

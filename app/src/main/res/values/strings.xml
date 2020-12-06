@@ -49,5 +49,6 @@
     <string name="accepter">Accepter</string>
     <string name="refuser">Refuser</string>
     <string name="allet_partie">Aller Partie</string>
+    <string name="vosDemandeDePArtie">Vos demandes de partie:</string>
 
 </resources>

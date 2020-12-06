@@ -96,6 +96,8 @@ public class RecherchMatchActivité extends AppCompatActivity {
     @Override
     public void onStart() {
         super.onStart();
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        clé = sharedPref.getString("token", "");
         présenteur.démmarerPrésenteur();
         getDeviceLocation();
     }
@@ -105,8 +107,8 @@ public class RecherchMatchActivité extends AppCompatActivity {
         super.onResume();
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         clé = sharedPref.getString("token", "");
-        présenteur.setSourceUtilisateurs(new SourceUtilisateursApi(clé));
-        présenteur.setSourceLike(new SourceLikeApi(clé));
+        présenteur.démmarerPrésenteur();
+        getDeviceLocation();
     }
 
     @Override
