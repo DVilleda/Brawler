@@ -42,7 +42,9 @@ public class InteracteurAquistionPartie {
      * @param idAversaire
      * @throws SourcePartiesApi.SourcePartieApiException
      */
-    public void enovyerDemandePartie(int idAversaire) throws SourcePartiesApi.SourcePartieApiException {
+    public void enovyerDemandePartie(int idAversaire) throws SourcePartiesApi.SourcePartieApiException, UtilisateursException {
+        if(idAversaire < 0)
+            throw new UtilisateursException("Utilisateur inexistant");
         source.envoyerDemandePartie(idAversaire);
     }
 
@@ -51,7 +53,9 @@ public class InteracteurAquistionPartie {
      * @param idAversaire
      * @throws SourcePartiesApi.SourcePartieApiException
      */
-    public void refuserDemandePartie(int idAversaire) throws SourcePartiesApi.SourcePartieApiException {
+    public void refuserDemandePartie(int idAversaire) throws SourcePartiesApi.SourcePartieApiException, UtilisateursException {
+        if(idAversaire < 0)
+            throw new UtilisateursException("Utilisateur inexistant");
         source.refuserDemandePartie(idAversaire);
     }
 

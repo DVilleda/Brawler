@@ -30,12 +30,12 @@ public class VueDemandeDePartie extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_voir_contact,container,false);
+        View view = inflater.inflate(R.layout.fragment_demande_de_partie,container,false);
 
         /**
          * Création du recyclerview et de l'adapteur. Fontion pour initer la liste et vue.
          */
-        rvPartie = (RecyclerView)view.findViewById(R.id.listeContacts);
+        rvPartie = (RecyclerView)view.findViewById(R.id.listPartie);
         demandeDePartieAdapter = new DemandeDePartieAdapter(présenteur);
         rvPartie.setAdapter(demandeDePartieAdapter);
         rvPartie.setLayoutManager(new LinearLayoutManager(this.getContext()));

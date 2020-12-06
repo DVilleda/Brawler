@@ -7,6 +7,7 @@ import com.example.brawler.DAO.SourcePartiesApi;
 import com.example.brawler.domaine.entité.Partie;
 import com.example.brawler.domaine.intéracteur.InteracteurAquistionPartie;
 import com.example.brawler.domaine.intéracteur.SourceParties;
+import com.example.brawler.domaine.intéracteur.UtilisateursException;
 import com.example.brawler.présentation.modèle.Modèle;
 import com.example.brawler.présentation.vue.VueDemandeDePartie;
 
@@ -114,6 +115,8 @@ public class PrésenteurDemandeDePartie {
                             msg = handlerRéponse.obtainMessage( MSG_PARTIE_ACCEPTER );
                         } catch (SourcePartiesApi.SourcePartieApiException e) {
                             msg = handlerRéponse.obtainMessage( MSG_ERREUR );
+                        } catch (UtilisateursException e) {
+                            msg = handlerRéponse.obtainMessage( MSG_ERREUR );
                         }
 
                         handlerRéponse.sendMessage( msg );
@@ -132,7 +135,7 @@ public class PrésenteurDemandeDePartie {
                             InteracteurAquistionPartie.getInstance(sourceParties).refuserDemandePartie(partie.getAdversaire().getId());
                             modèle.getParties().remove(partie);
                             msg = handlerRéponse.obtainMessage( MSG_REFUSER_PARTIE );
-                        } catch (SourcePartiesApi.SourcePartieApiException e) {
+                        } catch (SourcePartiesApi.SourcePartieApiException | UtilisateursException e) {
                             msg = handlerRéponse.obtainMessage( MSG_ERREUR );
                         }
 
@@ -150,5 +153,10 @@ public class PrésenteurDemandeDePartie {
 
     public Partie getDemandeParId(int position) {
         return  modèle.getParties().get(position);
+    }
+
+
+    public void setModèle(Modèle modèle) {
+        this.modèle = modèle;
     }
 }

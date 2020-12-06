@@ -1,4 +1,9 @@
-package com.example.brawler;
+package com.example.brawler.présentation.présenteur;
+
+
+import android.app.Instrumentation;
+
+import androidx.test.platform.app.InstrumentationRegistry;
 
 import com.example.brawler.DAO.SourcePartiesApi;
 import com.example.brawler.domaine.entité.Niveau;
@@ -6,25 +11,19 @@ import com.example.brawler.domaine.entité.Partie;
 import com.example.brawler.domaine.entité.Utilisateur;
 import com.example.brawler.domaine.intéracteur.SourceParties;
 import com.example.brawler.présentation.modèle.Modèle;
-import com.example.brawler.présentation.présenteur.PrésenteurDemandeDePartie;
 import com.example.brawler.présentation.vue.VueDemandeDePartie;
 
 import org.junit.Test;
-import org.junit.runner.RunWith;
-
-import static org.junit.Assert.fail;
-import static org.mockito.Mockito.*;
-
-import android.app.Instrumentation;
-
-import androidx.test.ext.junit.runners.AndroidJUnit4;
-import androidx.test.platform.app.InstrumentationRegistry;
 
 import java.util.ArrayList;
 import java.util.List;
 
-@RunWith(AndroidJUnit4.class)
-public class TestPrésenteurDemandePartie {
+import static org.junit.Assert.fail;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
+public class PrésenteurDemandeDePartieTest {
 
     @Test
     public void testDémmarer(){

@@ -8,6 +8,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
+import androidx.annotation.FontRes;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -47,11 +48,15 @@ public class ConsulterDemandePartieActivité extends AppCompatActivity {
         présenteur = new PrésenteurDemandeDePartie(vue, modèle);
         présenteur.setSourceParties(new SourcePartiesApi(clé));
         vue.setPresenteur(présenteur);
-        présenteur.démarer();
 
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         ft.add(R.id.layoutPrincipal, vue);
         ft.commit();
+    }
+    @Override
+    public void onStart() {
+        super.onStart();
+        présenteur.démarer();
     }
 
     private void chargerClé(){
@@ -90,4 +95,7 @@ public class ConsulterDemandePartieActivité extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    public PrésenteurDemandeDePartie getPrésenteur() {
+        return présenteur;
+    }
 }
