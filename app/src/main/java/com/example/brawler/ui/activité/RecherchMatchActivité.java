@@ -1,14 +1,11 @@
 package com.example.brawler.ui.activité;
 
-import android.Manifest;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
-import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -33,9 +30,7 @@ import com.example.brawler.présentation.présenteur.PrésenteurRechercheMatch;
 import com.example.brawler.présentation.vue.VueRechercheMatch;
 import com.example.brawler.ui.activité.Services.ServiceNotificationMessage;
 import com.google.android.gms.location.FusedLocationProviderClient;
-import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -118,7 +113,7 @@ public class RecherchMatchActivité extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()){
             case R.id.menu_profil:
-                Intent profil = new Intent(this,MainActivity.class);
+                Intent profil = new Intent(this, ConsulterProfilActivité.class);
                 startActivity(profil);
                 break;
             case R.id.menu_match:

@@ -105,7 +105,7 @@ public class SourceProfilApi implements SourceUtilisateur{
                 Log.e("Conversion Image","Out of memory error");
             }
 
-            //Params de la requetes
+            //Params de la requete
             List<Pair<String,String>> params = new ArrayList<>();
             params.add(new Pair<>("email", utilisateur.getEmail()));
             params.add(new Pair<>("prénom",utilisateur.getNom()));

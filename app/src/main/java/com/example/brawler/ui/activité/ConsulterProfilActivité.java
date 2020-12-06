@@ -24,7 +24,7 @@ import com.example.brawler.présentation.modèle.Modèle;
 import com.example.brawler.présentation.présenteur.PrésenteurProfil;
 import com.example.brawler.présentation.vue.VueProfil;
 
-public class MainActivity extends AppCompatActivity {
+public class ConsulterProfilActivité extends AppCompatActivity {
     /**
      * Paramètres
      */

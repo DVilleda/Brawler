@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/layoutContacts"
-    tools:context=".ui.activité.MainActivity"
+    tools:context=".ui.activité.ConsulterProfilActivité"
     >
 
     <include

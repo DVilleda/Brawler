@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/linearLayout3"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -125,6 +126,18 @@
         app:layout_constraintEnd_toStartOf="@+id/txt_nombre_victoire"
         app:layout_constraintTop_toBottomOf="@+id/txt_nom"
         app:srcCompat="@drawable/ic_trophy" />
+
+    <Button
+        android:id="@+id/lancerPartie"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="25dp"
+        android:layout_marginTop="50dp"
+        android:layout_marginEnd="25dp"
+        android:text="Tester Partie"
+        app:layout_constraintEnd_toStartOf="@+id/btn_ParNiveau"
+        app:layout_constraintStart_toEndOf="@+id/btn_parLocation"
+        app:layout_constraintTop_toTopOf="parent" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

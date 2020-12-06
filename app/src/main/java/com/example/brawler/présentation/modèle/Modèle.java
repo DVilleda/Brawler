@@ -3,6 +3,8 @@ package com.example.brawler.présentation.modèle;
 import android.graphics.Bitmap;
 
 import com.example.brawler.domaine.entité.Message;
+import com.example.brawler.domaine.entité.Mouvement;
+import com.example.brawler.domaine.entité.Partie;
 import com.example.brawler.domaine.entité.Utilisateur;
 
 import java.util.ArrayList;
@@ -17,6 +19,8 @@ public class Modèle {
     private String texteRéponse;
     private int nombreMessageTotale;
     private Bitmap bitmap;
+    private Partie partieChoisi;
+    private List<Mouvement> mouvementList;
 
     public Modèle() {
         listeUtilisateurs = new ArrayList<>();
@@ -70,10 +74,6 @@ public class Modèle {
         utilisateurEnRevue = i;
     }
 
-    public List<Utilisateur> getListeUtilisateurs() {
-        return listeUtilisateurs;
-    }
-
     public String getTexteRéponse() {
         return texteRéponse;
     }
@@ -100,5 +100,21 @@ public class Modèle {
 
     public void setBitmap(Bitmap bitmap) {
         this.bitmap = bitmap;
+    }
+
+    public Partie getPartieChoisi() {
+        return partieChoisi;
+    }
+
+    public void setPartieChoisi(Partie partieChoisi) {
+        this.partieChoisi = partieChoisi;
+    }
+
+    public List<Mouvement> getMouvementList() {
+        return mouvementList;
+    }
+
+    public void setMouvementList(List<Mouvement> mouvementList) {
+        this.mouvementList = mouvementList;
     }
 }

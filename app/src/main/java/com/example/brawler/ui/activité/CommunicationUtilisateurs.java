@@ -9,15 +9,11 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Toast;
 
 import com.example.brawler.DAO.SourceUtilisateursApi;
-import com.example.brawler.MockDAO.SourceUtilisateurFictif;
 import com.example.brawler.R;
 import com.example.brawler.présentation.modèle.Modèle;
 import com.example.brawler.présentation.présenteur.PrésenteurContacts;
@@ -80,7 +76,7 @@ public class CommunicationUtilisateurs extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()){
             case R.id.menu_profil:
-                Intent profil = new Intent(this,MainActivity.class);
+                Intent profil = new Intent(this, ConsulterProfilActivité.class);
                 startActivity(profil);
                 break;
             case R.id.menu_match:

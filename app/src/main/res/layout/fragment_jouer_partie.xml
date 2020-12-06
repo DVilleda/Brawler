@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/layout_partie"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_gravity="fill_vertical"
+    android:layout_weight="2"
+    android:orientation="vertical">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <ImageButton
+            android:id="@+id/btnRetourner"
+            android:layout_width="43dp"
+            android:layout_height="86dp"
+            android:layout_gravity="start"
+            android:layout_weight="1"
+            android:background="@drawable/bordure_contact"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="?attr/homeAsUpIndicator" />
+
+        <TextView
+            android:id="@+id/txtNomAdversaire"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="188dp"
+            android:textSize="24sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.493" />
+
+        <ImageView
+            android:id="@+id/imgAdversaire"
+            android:layout_width="83dp"
+            android:layout_height="39dp"
+            android:layout_weight="1"
+            android:background="@drawable/bordure_contact"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/txtNomAdversaire"
+            app:layout_constraintStart_toEndOf="@+id/btnRetourner"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_baseline_people_24" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="566dp">
+
+        <TextView
+            android:id="@+id/num_tour"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="150dp"
+            android:layout_marginEnd="150dp"
+            android:fontFamily="@font/source_code_pro_semibold"
+            android:text="Tour num :"
+            android:textAlignment="center"
+            android:textColor="#000000"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/mouvement_soi"
+            android:layout_width="0dp"
+            android:layout_height="150dp"
+            android:layout_marginStart="120dp"
+            android:layout_marginEnd="120dp"
+            android:layout_marginBottom="80dp"
+            android:background="@drawable/bordure_contact"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:srcCompat="@drawable/rockpaperscissors" />
+
+        <TextView
+            android:id="@+id/txt_result"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginStart="80dp"
+            android:layout_marginTop="30dp"
+            android:layout_marginEnd="80dp"
+            android:layout_marginBottom="30dp"
+            android:fontFamily="@font/source_code_pro_semibold"
+            android:text="Résultat : "
+            android:textAlignment="center"
+            android:textColor="#000000"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@+id/mouvement_soi"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/mouvement_adv" />
+
+        <ImageView
+            android:id="@+id/mouvement_adv"
+            android:layout_width="0dp"
+            android:layout_height="150dp"
+            android:layout_marginStart="120dp"
+            android:layout_marginTop="80dp"
+            android:layout_marginEnd="120dp"
+            android:background="@drawable/bordure_contact"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/rockpaperscissors" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:orientation="horizontal"
+
+        android:padding="0dp">
+
+        <ImageButton
+            android:id="@+id/btnGiveUp"
+            android:layout_width="wrap_content"
+            android:layout_height="80dp"
+            android:layout_weight="2"
+            android:background="@drawable/bordure_contact"
+            app:srcCompat="@android:drawable/ic_menu_myplaces" />
+
+        <Button
+            android:id="@+id/choisirArme"
+            android:layout_width="236dp"
+            android:layout_height="match_parent"
+            android:layout_weight="2"
+            android:background="@drawable/bordure_contact"
+            android:text="@string/boutton_choisir_arme" />
+
+        <Button
+            android:id="@+id/btnJouer"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="2"
+            android:background="@drawable/bordure_contact"
+            android:text="Jouer" />
+
+    </LinearLayout>
+</LinearLayout>
