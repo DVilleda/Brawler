@@ -135,4 +135,42 @@ public class PrésenteurDemandeDePartieTest {
         });
 
     }
+
+    /**
+     * terste de cahnger la recherche pour les partie en cour
+     */
+    @Test
+    public void testchangerRecherche(){
+        final List<Partie> parties = new ArrayList<Partie>();
+        final Partie partie = new Partie();
+
+        partie.setAdversaire(new Utilisateur(0, "Jaques", Niveau.DÉBUTANT, "Montréal", "gmail@gmail.com", "cool guy"));
+        partie.setId(0);
+        parties.add(partie);
+
+        final VueDemandeDePartie mockVue = mock(VueDemandeDePartie.class);
+        final Modèle mockModèle = mock(Modèle.class);
+        final SourceParties mockSource = mock(SourceParties.class);
+
+        when(mockModèle.getParties()).thenReturn(parties);
+
+        Instrumentation instrumentation = InstrumentationRegistry.getInstrumentation();
+
+        instrumentation.runOnMainSync(
+                new Runnable(){
+                    public void run(){
+                        final PrésenteurDemandeDePartie présenteur = new PrésenteurDemandeDePartie( mockVue, mockModèle );
+                        présenteur.setSourceParties( mockSource );
+                        présenteur.changerAffichage(false);
+                    }
+                });
+
+        instrumentation.waitForIdle( new Runnable() {
+            public void run() {
+                verify(mockModèle).getParties().removeAll(mockModèle.getParties());
+                verify(mockVue).rafraichirVue();
+            }
+        });
+
+    }
 }
