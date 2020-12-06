@@ -33,13 +33,13 @@ public class PartieEnCourAdapter  extends RecyclerView.Adapter<RecyclerView.View
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, final int position) {
         TextView tvNomAdversaire = holder.itemView.findViewById(R.id.txtNomAdversaire);
-        Button btnAcctepter = holder.itemView.findViewById(R.id.btn_acceder);
+        Button btnAcceder = holder.itemView.findViewById(R.id.btn_acceder);
 
         tvNomAdversaire.setText(présenteur.getDemandeParId(position).getAdversaire().getNom());
-        btnAcctepter.setOnClickListener(new View.OnClickListener() {
+        btnAcceder.setOnClickListener(new View.OnClickListener() {
                                             @Override
                                             public void onClick(View view) {
-                                                présenteur.accepeterDemande(position);
+                                                présenteur.accederPartie(position);
 
                                             }
                                         }

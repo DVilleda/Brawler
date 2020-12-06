@@ -204,7 +204,47 @@ public class ConsulterDemandePartieActivitéTest {
 
     }
 
+    /**
+     * test sur cliquer le bouton refuser d'une partie
+     */
+    @Test
+    public void testCliqueAccederPartie(){
+        final List<Partie> parties = new ArrayList<Partie>();
+        final Partie partie = new Partie();
+        partie.setAdversaire(new Utilisateur(-1, "Jaques", Niveau.DÉBUTANT, "Montréal", "gmail@gmail.com", "cool guy"));
 
+        partie.setId(0);
+        parties.add(partie);
+        final Modèle mockModèle = mock(Modèle.class);
+        final SourceParties mockSource = mock(SourceParties.class);
+
+        when(mockModèle.getParties()).thenReturn(parties);
+
+        try{
+            when(mockSource.getPartieEnCour()).thenReturn(parties);
+        } catch (SourcePartiesApi.SourcePartieApiException e) {
+            fail(e.getMessage());
+        }
+
+        ActivityScenario<ConsulterDemandePartieActivité> scenario = rule.getScenario().launch(ConsulterDemandePartieActivité.class);
+        scenario.onActivity( activité -> activité.getPrésenteur().changerAffichage(false));
+        scenario.onActivity( activité -> activité.getPrésenteur().setSourceParties(mockSource));
+        scenario.onActivity( activité -> activité.getPrésenteur().setModèle(mockModèle));
+        scenario.onActivity( activité -> activité.getPrésenteur().démarer());
+        
+        onView(withId(R.id.btn_acceder))
+                .perform(click());
+
+
+        Instrumentation instrumentation = InstrumentationRegistry.getInstrumentation();
+        instrumentation.waitForIdle( new Runnable() {
+            public void run() {
+                verify(scenario.onActivity( activité -> activité.getPrésenteur().accederPartie(-1)));
+                verify(mockModèle.getParties().get(-1).getId());
+            }
+        });
+
+    }
 
     @Test
     public void testScollTopDuRecyclerView() {

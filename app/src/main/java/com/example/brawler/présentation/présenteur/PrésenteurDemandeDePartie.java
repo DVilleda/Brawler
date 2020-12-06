@@ -220,4 +220,8 @@ public class PrésenteurDemandeDePartie {
             vue.setTextTvTypePartite(R.string.vosPartieEnCour);
         }
     }
+
+    public void accederPartie(int position) {
+        modèle.getParties().get(position).getId();
+    }
 }
