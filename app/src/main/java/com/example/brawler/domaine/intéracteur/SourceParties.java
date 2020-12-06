@@ -11,4 +11,6 @@ public interface SourceParties {
     void envoyerDemandePartie(int id) throws SourcePartiesApi.SourcePartieApiException;
 
     void refuserDemandePartie(int id) throws SourcePartiesApi.SourcePartieApiException;
+
+    List<Partie> getPartieEnCour() throws SourcePartiesApi.SourcePartieApiException;
 }

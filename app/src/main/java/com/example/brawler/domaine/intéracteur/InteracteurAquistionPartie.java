@@ -59,4 +59,7 @@ public class InteracteurAquistionPartie {
         source.refuserDemandePartie(idAversaire);
     }
 
+    public List<Partie> getPartieEnCour() throws SourcePartiesApi.SourcePartieApiException {
+        return source.getPartieEnCour();
+    }
 }

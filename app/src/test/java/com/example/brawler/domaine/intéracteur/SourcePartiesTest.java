@@ -14,6 +14,9 @@ import static org.junit.Assert.*;
 
 public class SourcePartiesTest {
 
+    /**
+     * test si get demadne aprtie existe
+     */
     @Test
     public void testAccesseurPArtie() {
         SourceParties sourceParties = new SourceParties() {
@@ -32,6 +35,11 @@ public class SourcePartiesTest {
             public void refuserDemandePartie(int id) throws SourcePartiesApi.SourcePartieApiException {
                 int idutilisateur = id;
             }
+
+            @Override
+            public List<Partie> getPartieEnCour() throws SourcePartiesApi.SourcePartieApiException {
+                return null;
+            }
         };
         InteracteurAquistionPartie interacteur = new InteracteurAquistionPartie(sourceParties);
         try {
@@ -43,6 +51,9 @@ public class SourcePartiesTest {
         }
     }
 
+    /**
+     * test si fonctionne pas avec un id négatif
+     */
     @Test
     public void intereacteurAccepterDemandePartie() {
         SourceParties sourceParties = new SourceParties() {
@@ -68,6 +79,11 @@ public class SourcePartiesTest {
             public void refuserDemandePartie(int id) throws SourcePartiesApi.SourcePartieApiException {
                 int idutilisateur = id;
             }
+
+            @Override
+            public List<Partie> getPartieEnCour() throws SourcePartiesApi.SourcePartieApiException {
+                return null;
+            }
         };
         InteracteurAquistionPartie interacteur = new InteracteurAquistionPartie(sourceParties);
         try {
@@ -80,6 +96,9 @@ public class SourcePartiesTest {
         }
     }
 
+    /**
+     * test si fonctionne pas avec un id négatif
+     */
     @Test
     public void intereacteurAccepterDemandePartieAvecChiffreNegarif() {
         SourceParties sourceParties = new SourceParties() {
@@ -105,6 +124,11 @@ public class SourcePartiesTest {
             public void refuserDemandePartie(int id) throws SourcePartiesApi.SourcePartieApiException {
                 int idutilisateur = id;
             }
+
+            @Override
+            public List<Partie> getPartieEnCour() throws SourcePartiesApi.SourcePartieApiException {
+                return null;
+            }
         };
         InteracteurAquistionPartie interacteur = new InteracteurAquistionPartie(sourceParties);
         try {
@@ -114,6 +138,43 @@ public class SourcePartiesTest {
             fail( e.getMessage() );
         } catch (UtilisateursException e) {
             assert true;
+        }
+    }
+
+    /**
+     * test si get partie en cour cprésent dans accesseur
+     */
+    @Test
+    public void testAccesseurGetPArtieEnCour() {
+        SourceParties sourceParties = new SourceParties() {
+
+            @Override
+            public List<Partie> getDemandeParties() throws SourcePartiesApi.SourcePartieApiException {
+                return new ArrayList<Partie>();
+            }
+
+            @Override
+            public void envoyerDemandePartie(int id) throws SourcePartiesApi.SourcePartieApiException {
+                int idutilisateur = id;
+            }
+
+            @Override
+            public void refuserDemandePartie(int id) throws SourcePartiesApi.SourcePartieApiException {
+                int idutilisateur = id;
+            }
+
+            @Override
+            public List<Partie> getPartieEnCour() throws SourcePartiesApi.SourcePartieApiException {
+                return new ArrayList<Partie>();
+            }
+        };
+        InteracteurAquistionPartie interacteur = new InteracteurAquistionPartie(sourceParties);
+        try {
+            List<Partie> parties1 = interacteur.getPartieEnCour();
+            List<Partie> parties2 = interacteur.getPartieEnCour();
+            assertTrue( parties1.size() == parties2.size());
+        } catch (SourcePartiesApi.SourcePartieApiException e) {
+            fail( e.getMessage() );
         }
     }
 

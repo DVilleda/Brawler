@@ -4,6 +4,7 @@ import android.os.Handler;
 import android.os.Message;
 
 import com.example.brawler.DAO.SourcePartiesApi;
+import com.example.brawler.R;
 import com.example.brawler.domaine.entité.Partie;
 import com.example.brawler.domaine.intéracteur.InteracteurAquistionPartie;
 import com.example.brawler.domaine.intéracteur.SourceParties;
@@ -19,6 +20,8 @@ public class PrésenteurDemandeDePartie {
     Modèle modèle;
     SourceParties sourceParties;
 
+    private boolean afficherDemandeDePartie;
+
     private final int MSG_CHARGER_PARTIE = 1;
     private final int MSG_ERREUR = 2;
     private final int MSG_PARTIE_ACCEPTER = 3;
@@ -33,6 +36,7 @@ public class PrésenteurDemandeDePartie {
         this.vue = vue;
         this.modèle = modèle;
 
+        this.afficherDemandeDePartie = true;
         this.handlerRéponse = new Handler() {
 
             @Override
@@ -42,6 +46,7 @@ public class PrésenteurDemandeDePartie {
                 filEsclaveEnvoyerMessage = null;
 
                 if (msg.what == MSG_CHARGER_PARTIE || msg.what == MSG_PARTIE_ACCEPTER  || msg.what == MSG_REFUSER_PARTIE) {
+                    vue.chargerAdapterListePartie(afficherDemandeDePartie);
                     vue.rafraichirVue();
                 } else if (msg.what == MSG_ERREUR) {
 
@@ -62,8 +67,14 @@ public class PrésenteurDemandeDePartie {
      * permet de démarrer pour la première fois le présenteur
      */
     public void démarer(){
-        chercherDemandeDePartie();
+        if(afficherDemandeDePartie) {
+            chercherDemandeDePartie();
+        } else {
+            checherPartieEnCour();
+        }
     }
+
+
 
     /**
      * lance l'acceptation d'une demande de partie
@@ -103,6 +114,29 @@ public class PrésenteurDemandeDePartie {
         filEsclaveEnvoyerMessage.start();
     }
 
+    private void checherPartieEnCour() {
+        filEsclaveEnvoyerMessage = new Thread(
+                new Runnable() {
+                    @Override
+                    public void run() {
+                        Message msg = null;
+                        try {
+                            modèle.setParties(InteracteurAquistionPartie.getInstance(sourceParties).getPartieEnCour());
+                            msg = handlerRéponse.obtainMessage( MSG_CHARGER_PARTIE );
+                        } catch (SourcePartiesApi.SourcePartieApiException e) {
+                            msg = handlerRéponse.obtainMessage( MSG_ERREUR );
+                        }
+
+                        handlerRéponse.sendMessage( msg );
+                    }
+                });
+        filEsclaveEnvoyerMessage.start();
+    }
+
+    /**
+     * lance l'intérateur pour accepter la demande de partie
+     * @param partie
+     */
     private void lancerFileEsclaveAccepterDemande(final Partie partie) {
         filEsclaveEnvoyerMessage = new Thread(
                 new Runnable() {
@@ -125,6 +159,10 @@ public class PrésenteurDemandeDePartie {
         filEsclaveEnvoyerMessage.start();
     }
 
+    /**
+     * Lance l'interacteur pour refuser la demande de partie
+     * @param partie
+     */
     private void lancerFileEsclaveRefuserDemande(final Partie partie) {
         filEsclaveEnvoyerMessage = new Thread(
                 new Runnable() {
@@ -145,18 +183,41 @@ public class PrésenteurDemandeDePartie {
         filEsclaveEnvoyerMessage.start();
     }
 
+    /**
+     * obtient le nombre de demande
+     * @return
+     */
     public int getNbDemande() {
         if(modèle.getParties().size() > 0)
             return modèle.getParties().size();
         return 0;
     }
 
+    /**
+     * Retourne une partie par id
+     * @param position
+     * @return
+     */
     public Partie getDemandeParId(int position) {
         return  modèle.getParties().get(position);
     }
 
 
+    /**
+     *
+     * @param modèle
+     */
     public void setModèle(Modèle modèle) {
         this.modèle = modèle;
+    }
+
+    public void changerAffichage(boolean bool) {
+        modèle.getParties().removeAll(modèle.getParties());
+        afficherDemandeDePartie = bool;
+        if(afficherDemandeDePartie){
+            vue.setTextTvTypePartite(R.string.vosDemandeDePArtie);
+        } else {
+            vue.setTextTvTypePartite(R.string.vosPartieEnCour);
+        }
     }
 }

@@ -50,5 +50,9 @@
     <string name="refuser">Refuser</string>
     <string name="allet_partie">Aller Partie</string>
     <string name="vosDemandeDePArtie">Vos demandes de partie:</string>
+    <string name="demandePartie">Demande de partie</string>
+    <string name="partieEnCour">Parties en cour</string>
+    <string name="accederPartie">Acceder partie</string>
+    <string name="vosPartieEnCour">Vos parties en cour:</string>
 
 </resources>

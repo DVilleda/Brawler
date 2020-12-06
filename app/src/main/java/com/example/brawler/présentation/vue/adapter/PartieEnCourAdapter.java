@@ -3,7 +3,7 @@ package com.example.brawler.présentation.vue.adapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -13,10 +13,11 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.brawler.R;
 import com.example.brawler.présentation.présenteur.PrésenteurDemandeDePartie;
 
-public class DemandeDePartieAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
+public class PartieEnCourAdapter  extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+
     PrésenteurDemandeDePartie présenteur;
 
-    public DemandeDePartieAdapter(PrésenteurDemandeDePartie présenteur) {
+    public PartieEnCourAdapter(PrésenteurDemandeDePartie présenteur) {
         this.présenteur = présenteur;
     }
 
@@ -24,7 +25,7 @@ public class DemandeDePartieAdapter extends RecyclerView.Adapter<RecyclerView.Vi
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LinearLayout racine = (LinearLayout) LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.item_objet_demande_partie, parent, false);
+                .inflate(R.layout.item_objet_partie_en_cour, parent, false);
 
         return new RecyclerView.ViewHolder(racine){};
     }
@@ -32,24 +33,16 @@ public class DemandeDePartieAdapter extends RecyclerView.Adapter<RecyclerView.Vi
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, final int position) {
         TextView tvNomAdversaire = holder.itemView.findViewById(R.id.txtNomAdversaire);
-        ImageButton btnAcctepter = holder.itemView.findViewById(R.id.btn_accepter);
-        ImageButton btnRefuser = holder.itemView.findViewById(R.id.btn_passer);
+        Button btnAcctepter = holder.itemView.findViewById(R.id.btn_acceder);
 
         tvNomAdversaire.setText(présenteur.getDemandeParId(position).getAdversaire().getNom());
         btnAcctepter.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    présenteur.accepeterDemande(position);
+                                            @Override
+                                            public void onClick(View view) {
+                                                présenteur.accepeterDemande(position);
 
-                }
-            }
-        );
-        btnRefuser.setOnClickListener(new View.OnClickListener() {
-                                             @Override
-                                             public void onClick(View view) {
-                                                 présenteur.refuserDemande(position);
-                                             }
-                                         }
+                                            }
+                                        }
         );
     }
 
