@@ -113,7 +113,7 @@ public class SourcePartieJoueurApi implements SourceDeroulementPartie {
     private Partie decoderPartie (InputStream partieEncoder) throws IOException{
         InputStreamReader responeBodyReader =
                 new InputStreamReader(partieEncoder,"UTF-8");
-        Partie partie = new Partie(-1,false,-1,null);
+        Partie partie = new Partie(-1,false,-1,false,null);
 
         JsonReader jsonReader = new JsonReader(responeBodyReader);
         jsonReader.beginObject();
@@ -134,6 +134,7 @@ public class SourcePartieJoueurApi implements SourceDeroulementPartie {
         int idPartie = -1;
         int idAdv = -1;
         boolean enCours = false;
+        boolean victoire = false;
         List<Mouvement> mouvementList=null;
 
         jsonReader.beginObject();
@@ -153,11 +154,13 @@ public class SourcePartieJoueurApi implements SourceDeroulementPartie {
                 }else{
                     jsonReader.nextNull();
                 }
+            }else if (key.equals("Gagné")){
+                victoire = jsonReader.nextBoolean();
             }else{
                 jsonReader.skipValue();
             }
         }
-        return new Partie(idPartie,enCours,idAdv,mouvementList);
+        return new Partie(idPartie,enCours,idAdv,victoire,mouvementList);
     }
 
     private List<Mouvement> lireMouvements(JsonReader jsonReader) throws  IOException{

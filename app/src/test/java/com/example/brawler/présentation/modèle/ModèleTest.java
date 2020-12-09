@@ -1,22 +1,17 @@
 package com.example.brawler.présentation.modèle;
 
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-
 import com.example.brawler.domaine.entité.Message;
 import com.example.brawler.domaine.entité.Niveau;
 import com.example.brawler.domaine.entité.Utilisateur;
 
-import org.junit.Assert;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 public class ModèleTest {
 

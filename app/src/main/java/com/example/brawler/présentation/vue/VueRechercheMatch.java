@@ -31,9 +31,6 @@ public class VueRechercheMatch extends Fragment {
     private boolean btnMatchClickable;
     private ImageView imgUtilisateur;
 
-    //TODO ENLEVER BTN TEST
-    private Button btnTest;
-
     public void setPrésenteur(PrésenteurRechercheMatch présenteur) {
         this.présenteur = présenteur;
     }
@@ -53,14 +50,6 @@ public class VueRechercheMatch extends Fragment {
         btnParLocation = vue.findViewById(R.id.btn_parLocation);
         btnParNiveau = vue.findViewById(R.id.btn_ParNiveau);
         imgUtilisateur = vue.findViewById(R.id.img_utilisateur);
-        btnTest = vue.findViewById(R.id.lancerPartie);
-        btnTest.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent testPartie = new Intent(getContext(), MatchBrawler.class);
-                startActivity(testPartie);
-            }
-        });
 
         ServiceNotificationMessage.démarerJob(getContext());
 

@@ -20,6 +20,9 @@ import com.example.brawler.présentation.présenteur.PrésenteurContacts;
 import com.example.brawler.présentation.vue.VueContacts;
 
 public class CommunicationUtilisateurs extends AppCompatActivity {
+    /**
+     * Paramètres de l'activité
+     */
     private PrésenteurContacts présenteurContacts;
     private String clé;
 
@@ -28,19 +31,27 @@ public class CommunicationUtilisateurs extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_contacts);
 
+        /**
+         * Obtenir le token du compte storé dans les prefs
+         */
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         clé = sharedPref.getString("token", "");
         if(clé.trim().isEmpty()){
             startActivity(new Intent(this, ConnexionActivité.class));
         }
 
-
+        /**
+         * Aller chercher le custom toolbar et l'afficher au haut de l'activité
+         */
         Toolbar toolbar = (Toolbar) findViewById(R.id.navigation_app);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         toolbar.setTitle("");
         toolbar.setSubtitle("");
 
+        /**
+         * Initier le présenteur, le modèle, la source et afficher le fragment
+         */
         VueContacts vueContacts= new VueContacts();
         Modèle modèle = new Modèle();
         présenteurContacts = new PrésenteurContacts(vueContacts,modèle, this);
@@ -74,6 +85,9 @@ public class CommunicationUtilisateurs extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        /**
+         * Switch case pour naviguer les activités principales de l'application
+         */
         switch (item.getItemId()){
             case R.id.menu_profil:
                 Intent profil = new Intent(this, ConsulterProfilActivité.class);

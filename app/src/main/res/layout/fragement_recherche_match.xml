@@ -127,17 +127,5 @@
         app:layout_constraintTop_toBottomOf="@+id/txt_nom"
         app:srcCompat="@drawable/ic_trophy" />
 
-    <Button
-        android:id="@+id/lancerPartie"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="25dp"
-        android:layout_marginTop="50dp"
-        android:layout_marginEnd="25dp"
-        android:text="Tester Partie"
-        app:layout_constraintEnd_toStartOf="@+id/btn_ParNiveau"
-        app:layout_constraintStart_toEndOf="@+id/btn_parLocation"
-        app:layout_constraintTop_toTopOf="parent" />
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

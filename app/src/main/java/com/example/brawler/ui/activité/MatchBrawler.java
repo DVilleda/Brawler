@@ -15,6 +15,9 @@ import com.example.brawler.présentation.présenteur.PresenteurPartieBrawler;
 import com.example.brawler.présentation.vue.VuePartieBrawler;
 
 public class MatchBrawler extends AppCompatActivity {
+    /**
+     * Params de l'activité qui sont le présenteur et token
+     */
     PresenteurPartieBrawler _presenteur;
     private String token;
 
@@ -23,11 +26,17 @@ public class MatchBrawler extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_match_brawler);
 
+        /**
+         * Obtenir le token du compte storé dans les prefs
+         */
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         token = sharedPref.getString("token", "");
         if(token.trim().isEmpty()){
             startActivity(new Intent(this, ConnexionActivité.class));
         }
+        /**
+         * Initier le présenteur, le modèle, la source et afficher le fragment
+         */
         Modèle modèle = new Modèle();
         VuePartieBrawler vuePartieBrawler = new VuePartieBrawler();
         _presenteur = new PresenteurPartieBrawler(vuePartieBrawler,modèle);
@@ -43,6 +52,6 @@ public class MatchBrawler extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         //TODO UTILISER LE BUNDLE POUR AVOIR LE ID
-        _presenteur.chargerPartie(3);
+        _presenteur.chargerPartie(22);
     }
 }

@@ -21,11 +21,11 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar"
         android:usesCleartextTraffic="true">
-        <activity android:name=".ui.activité.MatchBrawler"></activity>
+        <activity android:name=".ui.activité.MatchBrawler" />
         <activity android:name=".ui.activité.CommunicationUtilisateurs" />
         <activity
             android:name=".ui.activité.ConsulterProfilActivité"
-            android:exported="true"></activity>
+            android:exported="true" />
         <activity android:name=".ui.activité.RecherchMatchActivité">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

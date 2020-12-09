@@ -30,18 +30,30 @@ public class InteracteurChargementProfil {
     }
 
     /**
-     * Cette methode va charger un nouvel utilisateur et le placer comme utilisateur actuel
+     * Cette methode va charger un utilisateur qui est dans l'instace
+     * et le placer comme utilisateur actuel
      * @return l'utilisateur chargé par l'application
      */
     public Utilisateur chargerUtilisateurActuel() throws UtilisateursException {
         return _utilisateur;
     }
 
+    /**
+     * Cette méthode va permettre de charger un utilisateur qui est dans l'API
+     * @return
+     * @throws UtilisateursException
+     */
     public Utilisateur getUtilisateur() throws UtilisateursException {
         _utilisateur = _sourceUtilisateur.getUtilisateur();
         return _utilisateur;
     }
 
+    /**
+     * Cette methode va modifer l'utilisateur dans la source de données et le placer
+     * dans l'instance de cette classe
+     * @param utilisateur aprés modification
+     * @throws UtilisateursException Si erreur de source
+     */
     public void setUtilisateur(Utilisateur utilisateur) throws UtilisateursException {
         _utilisateur = utilisateur;
         _sourceUtilisateur.setUtilisateur(utilisateur);

@@ -65,6 +65,10 @@ public class VueProfil extends Fragment {
         LayoutView = vue.findViewById(R.id.frameLayout);
         Button modifierProfil = vue.findViewById(R.id.aller_modif_profil);
 
+        /**
+         * Initier le fragement modifier profil et assigner le présenteur
+         * Changer le fragment
+         */
         modifierProfil.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -81,6 +85,9 @@ public class VueProfil extends Fragment {
         return vue;
     }
 
+    /**
+     * Aller chercher l'utilisateur lorsque le fragement revient
+     */
     @Override
     public void onResume() {
         _presenteur.rafraichirPage();
@@ -123,10 +130,5 @@ public class VueProfil extends Fragment {
             expandableView.setVisibility(View.INVISIBLE);
             layoutInfosInitiale.setVisibility(View.VISIBLE);
         }
-    }
-
-    public void afficherErreur( String msgErr ){
-        txtNom.setText( "Oups!\n" + msgErr );
-        txtNomExpand.setText( "Oups!\n" + msgErr );
     }
 }

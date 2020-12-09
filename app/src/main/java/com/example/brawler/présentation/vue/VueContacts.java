@@ -1,28 +1,19 @@
 package com.example.brawler.présentation.vue;
 
-import android.graphics.Canvas;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.brawler.R;
-import com.example.brawler.domaine.entité.Utilisateur;
-import com.example.brawler.présentation.vue.adapter.ContactsAdapter;
 import com.example.brawler.présentation.présenteur.PrésenteurContacts;
-
-import java.util.List;
-
-import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator;
+import com.example.brawler.présentation.vue.adapter.ContactsAdapter;
 
 public class VueContacts extends Fragment {
     private PrésenteurContacts _presenteur;
@@ -44,22 +35,33 @@ public class VueContacts extends Fragment {
         contactsAdapter.setPrésenteur(_presenteur);
         rvContacts.setAdapter(contactsAdapter);
         rvContacts.setLayoutManager(new LinearLayoutManager(this.getContext()));
-        new ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(rvContacts);
-
+        /**
+         * Fonction future
+         * new ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(rvContacts);
+         */
         return view;
     }
 
+    /**
+     * Set la liste d'utilisateurs et rafraichit la vue
+     */
     public void afficherContacts(){
         contactsAdapter.setListUtilisateurs();
         rafraichirVue();
     }
 
+    /**
+     * Rafraichit la vue si changement est nécessaire
+     */
     public void rafraichirVue(){
         if(contactsAdapter!=null)
             contactsAdapter.notifyDataSetChanged();
     }
 
-    ItemTouchHelper.SimpleCallback itemTouchHelperCallback = new ItemTouchHelper.SimpleCallback(0,ItemTouchHelper.LEFT) {
+    /**
+     * Fonction de delete contact non implémenté
+     *
+     ItemTouchHelper.SimpleCallback itemTouchHelperCallback = new ItemTouchHelper.SimpleCallback(0,ItemTouchHelper.LEFT) {
         @Override
         public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
             return false;
@@ -68,6 +70,7 @@ public class VueContacts extends Fragment {
         @Override
         public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
             final int position = viewHolder.getAdapterPosition();
+
 
             switch (direction) {
                 case ItemTouchHelper.LEFT:
@@ -87,5 +90,5 @@ public class VueContacts extends Fragment {
                     .decorate();
             super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
         }
-    };
+    };**/
 }

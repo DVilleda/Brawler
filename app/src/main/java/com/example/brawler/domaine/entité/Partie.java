@@ -6,13 +6,15 @@ public class Partie {
     int idPartie;
     int idAdv;
     boolean enCours;
+    boolean gagne;
     List<Mouvement> mouvementsPartie;
 
-    public Partie(int idPartie, boolean enCours,int idAdv, List<Mouvement> mouvementsPartie) {
+    public Partie(int idPartie, boolean enCours,int idAdv,boolean victorieux, List<Mouvement> mouvementsPartie) {
         this.idPartie = idPartie;
         this.enCours = enCours;
         this.idAdv = idAdv;
         this.mouvementsPartie = mouvementsPartie;
+        this.gagne = victorieux;
     }
 
     public int getIdPartie() {
@@ -45,5 +47,13 @@ public class Partie {
 
     public void setMouvementsPartie(List<Mouvement> mouvementsPartie) {
         this.mouvementsPartie = mouvementsPartie;
+    }
+
+    public boolean isGagne() {
+        return gagne;
+    }
+
+    public void setGagne(boolean gagne) {
+        this.gagne = gagne;
     }
 }
