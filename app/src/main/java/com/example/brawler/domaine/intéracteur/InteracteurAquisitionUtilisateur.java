@@ -23,4 +23,8 @@ public class InteracteurAquisitionUtilisateur {
             return source.getUtilisateurParId(id, true);
         }
 
+    public Utilisateur getUtilisateurActuel() throws UtilisateursException {
+        return source.getUtilisateurActuel();
+    }
+
 }

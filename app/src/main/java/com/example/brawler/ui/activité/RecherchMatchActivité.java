@@ -23,6 +23,7 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.example.brawler.DAO.SourceLikeApi;
+import com.example.brawler.DAO.SourceUtilisateurApi;
 import com.example.brawler.DAO.SourceUtilisateursApi;
 import com.example.brawler.R;
 import com.example.brawler.présentation.modèle.Modèle;
@@ -74,6 +75,7 @@ public class RecherchMatchActivité extends AppCompatActivity {
         VueRechercheMatch vue = new VueRechercheMatch();
         présenteur = new PrésenteurRechercheMatch(vue, modèle);
         présenteur.setSourceUtilisateurs(new SourceUtilisateursApi(clé));
+        présenteur.setSourceUtilisateur(new SourceUtilisateurApi(clé));
         présenteur.setSourceLike(new SourceLikeApi(clé));
         vue.setPrésenteur(présenteur);
 
@@ -89,7 +91,7 @@ public class RecherchMatchActivité extends AppCompatActivity {
     @Override
     public void onStart() {
         super.onStart();
-        présenteur.lancerChargerUtilisateur();
+        présenteur.démmarerPrésenteur();
         getDeviceLocation();
     }
 

@@ -69,6 +69,34 @@ public class SourceUtilisateursApi implements SourceUtilisateurs {
     }
 
     @Override
+    public List<Integer> getUtilisateurIDSeulementParNiveau(Niveau niveau) throws UtilisateursException {
+        List<Integer> utilisateursRecue = null;
+
+        try {
+            url = new URL(urlUtilisateur + "/niveau/" + niveau.toString());
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+        utilisateursRecue = lancerConnexionIdSeulement();
+
+        return utilisateursRecue;
+    }
+
+    @Override
+    public List<Integer> getUtilisateurIDSeulement() throws UtilisateursException {
+        List<Integer> utilisateursRecue = null;
+        try {
+            url = new URL(urlUtilisateur + "location");
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+
+        utilisateursRecue = lancerConnexionIdSeulement();
+
+        return utilisateursRecue;
+    }
+
+    @Override
     public List<Utilisateur> getContact() throws UtilisateursException {
         List<Utilisateur> utilisateursRecue = null;
         try {
@@ -103,6 +131,27 @@ public class SourceUtilisateursApi implements SourceUtilisateurs {
         return utilisateursRecue;
     }
 
+    private List<Integer> lancerConnexionIdSeulement() throws UtilisateursException {
+        List<Integer> utilisateursRecue = null;
+
+        try{
+            HttpURLConnection connexion =
+                    (HttpURLConnection)url.openConnection();
+            connexion.setRequestProperty("Authorization", cléBearer);
+            if(connexion.getResponseCode()==200){
+                utilisateursRecue = décoderJsonIdSeulement(connexion.getInputStream());
+            }
+            else{
+                throw new SourceUtilisateursApi.SourceUtilisateursApiException( connexion.getResponseCode() );
+            }
+        }
+        catch(IOException e){
+            throw new UtilisateursException( e );
+        }
+
+        return utilisateursRecue;
+    }
+
     private List<Utilisateur> décoderJson ( InputStream utilisateursEncoder) throws IOException, UtilisateursException {
         InputStreamReader responseBodyReader =
                 new InputStreamReader(utilisateursEncoder, "UTF-8");
@@ -125,6 +174,29 @@ public class SourceUtilisateursApi implements SourceUtilisateurs {
         return utilisateursArrayList;
     }
 
+    private List<Integer> décoderJsonIdSeulement (InputStream utilisateursEncoder) throws IOException, UtilisateursException {
+        InputStreamReader responseBodyReader =
+                new InputStreamReader(utilisateursEncoder, "UTF-8");
+        List<Integer> utilisateursArrayList= null;
+
+        JsonReader jsonReader = new JsonReader(responseBodyReader);
+        jsonReader.beginObject();
+
+        while(jsonReader.hasNext()) {
+            String key = jsonReader.nextName();
+            if(key.equals("utilisateurs")){
+                utilisateursArrayList = commencerDécoderUtilasteurIdSeulement(jsonReader);
+            } else if(key.equals("réponse")) {
+
+            } else {
+                jsonReader.skipValue();
+            }
+
+        }
+        return utilisateursArrayList;
+    }
+
+
     private List<Utilisateur> commencerDécoderUtilasteur(JsonReader jsonReader) throws IOException, UtilisateursException {
         List<Utilisateur> utilisateurs = new ArrayList<Utilisateur>();
 
@@ -134,6 +206,36 @@ public class SourceUtilisateursApi implements SourceUtilisateurs {
         }
         jsonReader.endArray();
         return utilisateurs;
+    }
+
+    private List<Integer> commencerDécoderUtilasteurIdSeulement(JsonReader jsonReader) throws IOException, UtilisateursException {
+        List<Integer> utilisateurs = new ArrayList<Integer>();
+
+        jsonReader.beginArray();
+        while (jsonReader.hasNext()){
+            int id = lireUtilisateurIdSeulement(jsonReader);
+            if(id != -1)
+                utilisateurs.add(id);
+        }
+        jsonReader.endArray();
+        return utilisateurs;
+    }
+
+    private int lireUtilisateurIdSeulement(JsonReader jsonReader) throws IOException {
+        int id = -1;
+        Utilisateur utilisateur = null;
+        jsonReader.beginObject();
+        while(jsonReader.hasNext()) {
+            String key = jsonReader.nextName();
+            if(key.equals("id")){
+                id = jsonReader.nextInt();
+            } else {
+                jsonReader.skipValue();
+            }
+        }
+        jsonReader.endObject();
+        return  id;
+
     }
 
     private Utilisateur lireUtilisateur(JsonReader jsonReader) throws IOException, UtilisateursException {

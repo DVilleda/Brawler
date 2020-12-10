@@ -3,6 +3,7 @@ package com.example.brawler.DAO;
 import android.util.Base64;
 import android.util.JsonReader;
 import android.util.JsonToken;
+import android.util.Log;
 
 import com.example.brawler.domaine.entité.Niveau;
 import com.example.brawler.domaine.entité.Utilisateur;
@@ -22,9 +23,8 @@ public class SourceUtilisateurApi implements SourceUtilisateur {
         public SourceUtilisateursApiException (int noEreur) { super("Erreur no: " +noEreur);}
     }
 
-    private URL url;
     private URL urlUnUtilisateur;
-    private String urlUtilisateur = "http://52.3.68.3/utilisateur/";
+    private String urlUtilisateur = "http://52.3.68.3/utilisateur";
     private  String clé;
 
     public SourceUtilisateurApi(String clé){
@@ -42,7 +42,7 @@ public class SourceUtilisateurApi implements SourceUtilisateur {
 
         Utilisateur utilisateur = null;
         try {
-            urlUnUtilisateur = new URL(urlUtilisateur + String.valueOf(id));
+            urlUnUtilisateur = new URL(urlUtilisateur + "/" + String.valueOf(id));
         } catch (MalformedURLException e) {
             //try/catch obligatoire pour satisfaire le compilateur.
         }
@@ -55,6 +55,24 @@ public class SourceUtilisateurApi implements SourceUtilisateur {
         }
         return utilisateur;
 
+    }
+
+    @Override
+    public Utilisateur getUtilisateurActuel() throws UtilisateursException {
+        Utilisateur utilisateur = null;
+        try {
+            urlUnUtilisateur = new URL(urlUtilisateur);
+        } catch (MalformedURLException e) {
+            //try/catch obligatoire pour satisfaire le compilateur.
+        }
+
+        try{
+            utilisateur = lancerConnexion(true);
+        }
+        catch(IOException e) {
+            throw new UtilisateursException(e);
+        }
+        return utilisateur;
     }
 
     @Override
@@ -110,7 +128,6 @@ public class SourceUtilisateurApi implements SourceUtilisateur {
 
             if (key.equals("prénom")) {
                 nom = jsonReader.nextString();
-
             } else if (key.equals("niveau")) {
                 niveau = stringVersNiveau(jsonReader.nextString());
             } else if (key.equals("location")) {
@@ -120,9 +137,11 @@ public class SourceUtilisateurApi implements SourceUtilisateur {
             }else if(key.equals("image") && doitLireImage){
                 if(jsonReader.peek() != JsonToken.NULL){
                     photoProfil = Base64.decode(jsonReader.nextString(),Base64.DEFAULT);
+
                 } else {
                     jsonReader.nextNull();
                 }
+                Log.d("photo", String.valueOf(photoProfil));
             }
             else {
                 jsonReader.skipValue();
