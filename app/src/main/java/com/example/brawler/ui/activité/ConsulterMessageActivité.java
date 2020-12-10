@@ -10,7 +10,6 @@ import android.view.MenuItem;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.example.brawler.DAO.SourceMessageApi;
@@ -94,7 +93,7 @@ public class ConsulterMessageActivité extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()){
             case R.id.menu_profil:
-                Intent profil = new Intent(this,MainActivity.class);
+                Intent profil = new Intent(this, ConsulterProfilActivité.class);
                 startActivity(profil);
                 break;
             case R.id.menu_match:

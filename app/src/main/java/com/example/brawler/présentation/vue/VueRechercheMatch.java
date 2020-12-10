@@ -1,5 +1,6 @@
 package com.example.brawler.présentation.vue;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -16,6 +17,7 @@ import androidx.fragment.app.Fragment;
 import com.example.brawler.R;
 import com.example.brawler.domaine.entité.Utilisateur;
 import com.example.brawler.présentation.présenteur.PrésenteurRechercheMatch;
+import com.example.brawler.ui.activité.MatchBrawler;
 import com.example.brawler.ui.activité.Services.ServiceNotificationMessage;
 
 public class VueRechercheMatch extends Fragment {

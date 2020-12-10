@@ -1,16 +1,11 @@
 package com.example.brawler.présentation.vue;
 
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
-import android.os.Handler;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -21,7 +16,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.brawler.R;
 import com.example.brawler.présentation.présenteur.PrésenteurConsulterMessage;
-import com.example.brawler.présentation.présenteur.PrésenteurRechercheMatch;
 import com.example.brawler.présentation.vue.adapter.MessageAdapter;
 
 public class VueConsulterMessage extends Fragment {

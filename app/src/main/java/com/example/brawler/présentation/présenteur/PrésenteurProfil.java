@@ -105,6 +105,10 @@ public class PrésenteurProfil {
         filEsclave.start();
     }
 
+    /**
+     * Obtiens l'utilisateur stocké dans l'intéracteur profil
+     * @return L'Utilisateur actuel
+     */
     public Utilisateur getUtilisateur(){
         Utilisateur utilisateur=null;
         try {
@@ -115,6 +119,9 @@ public class PrésenteurProfil {
         return utilisateur;
     }
 
+    /**
+     * Rafraichir l'utilisateur actuel dans la vue
+     */
     public void rafraichirPage(){
         if(_modèle.getUtilisateur()!=null)
         vueProfil.afficherUtilisateur(_modèle.getUtilisateur());
@@ -151,6 +158,9 @@ public class PrésenteurProfil {
         filEsclave.start();
     }
 
+    /**
+     * Efface le token des preferences pour la deconnection
+     */
     public void DeconnecterUtilisateur()
     {
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(vueProfil.getActivity().getApplicationContext());

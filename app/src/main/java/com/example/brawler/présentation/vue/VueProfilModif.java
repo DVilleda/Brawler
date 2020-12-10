@@ -44,7 +44,9 @@ import java.util.Date;
 import static com.example.brawler.présentation.présenteur.PrésenteurProfil.changerOrientationImage;
 
 public class VueProfilModif extends Fragment {
-
+    /**
+     * Paramètres
+     */
     private PrésenteurProfil _presenteur;
     //Codes pour les requêtes et résultats des Intent
     private static final int REQUEST_IMAGE_CAPTURE = 2;
@@ -94,16 +96,16 @@ public class VueProfilModif extends Fragment {
         });
 
         registerForContextMenu(niveauAdversaire);
-
+        //Charger le profil
         chargerInfosActuel(utilisateurActuel);
-
+        //Confirmer les changements
         confirmerModif.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 montrerAlerteModif();
             }
         });
-
+        //Annuler les changements
         annulerModif.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -140,6 +142,9 @@ public class VueProfilModif extends Fragment {
         }
     }
 
+    /**
+     *Obtenir le résultat d'une activité et agir se le code de résultat
+     */
     @Override
     public  void onActivityResult(int requestCode, int resultCode, Intent data){
         super.onActivityResult(requestCode, resultCode,data);
@@ -202,6 +207,9 @@ public class VueProfilModif extends Fragment {
         }
     }
 
+    /**
+     *Créer les demandes pour les permissions
+     */
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
                                            @NonNull int[] grantResults) {
@@ -226,6 +234,10 @@ public class VueProfilModif extends Fragment {
         }
     }
 
+    /**
+     * Charger les informations du profil et les placer dans les champs
+     * @param utilisateur celui qui est stocké dans le modèle
+     */
     public void chargerInfosActuel(Utilisateur utilisateur){
         if(utilisateur != null) {
             nomProfil.setText(utilisateur.getNom());
@@ -238,6 +250,11 @@ public class VueProfilModif extends Fragment {
         }
     }
 
+    /**
+     * Invoque la demande de permissions
+     * @param permission
+     * @param requestCode
+     */
     public void VerificationPermissions(String permission, int requestCode){
         if(ContextCompat.checkSelfPermission(this.getContext(),permission) == PackageManager.PERMISSION_DENIED)
         {
@@ -245,7 +262,11 @@ public class VueProfilModif extends Fragment {
         }
     }
 
-
+    /**
+     * Sauvegarde la photo dans le stockage du téléphone
+     * @return une photo de type file
+     * @throws IOException
+     */
     public File SauvegarderPhotoCamera() throws IOException {
         //Générer un String qui sera le nom du fichier basé sur la date de création du fichier
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
@@ -262,10 +283,14 @@ public class VueProfilModif extends Fragment {
         return image;
     }
 
+    /**
+     * Lance le dialogue pour choisir une photo dans le stockage ou via la caméra
+     */
     public void ChoisirPhotoProfil(){
         //Les choix pour ce AlertDialog
         final CharSequence[] items={"Caméra","Galerie", "Annuler"};
 
+        //Dialogue pour choisir les photos
         AlertDialog.Builder dialogueChoisirPhoto = new AlertDialog.Builder(this.getContext());
         dialogueChoisirPhoto.setTitle("Changer la photo profil?");
         dialogueChoisirPhoto.setItems(items, new DialogInterface.OnClickListener() {
@@ -313,6 +338,9 @@ public class VueProfilModif extends Fragment {
         dialogueChoisirPhoto.show();
     }
 
+    /**
+     * Demande si on veut confirmer les changements apportés au profil
+     */
     public void montrerAlerteModif()
     {
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
