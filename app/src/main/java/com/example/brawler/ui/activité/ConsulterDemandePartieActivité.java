@@ -78,7 +78,7 @@ public class ConsulterDemandePartieActivité extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()){
             case R.id.menu_profil:
-                Intent profil = new Intent(this,MainActivity.class);
+                Intent profil = new Intent(this,ConsulterProfilActivité.class);
                 startActivity(profil);
                 break;
             case R.id.menu_match:

@@ -2,6 +2,7 @@ package com.example.brawler.DAO;
 
 import android.net.Uri;
 import android.util.JsonReader;
+import android.util.Log;
 
 import com.example.brawler.domaine.entité.Message;
 import com.example.brawler.domaine.entité.Utilisateur;
@@ -43,6 +44,7 @@ public class SourceMessageApi implements SourceMessage {
 
     @Override
     public List<Message> getMessagesparUtilisateurs(int idUtilisateur) throws MessageException, UtilisateursException {
+        Log.d("asdw", "asdwa");
         try {
             url = new URL(urlMessage + idUtilisateur);
         } catch (MalformedURLException e) {

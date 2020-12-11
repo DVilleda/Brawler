@@ -31,7 +31,7 @@ public class PrésenteurDemandeDePartieTest {
         final Partie partie = new Partie();
 
         partie.setAdversaire(new Utilisateur(0, "Jaques", Niveau.DÉBUTANT, "Montréal", "gmail@gmail.com", "cool guy"));
-        partie.setId(0);
+        partie.setIdPartie(0);
         parties.add(partie);
 
         final VueDemandeDePartie mockVue = mock(VueDemandeDePartie.class);
@@ -72,7 +72,7 @@ public class PrésenteurDemandeDePartieTest {
         final Partie partie = new Partie();
 
         partie.setAdversaire(new Utilisateur(0, "Jaques", Niveau.DÉBUTANT, "Montréal", "gmail@gmail.com", "cool guy"));
-        partie.setId(0);
+        partie.setIdPartie(0);
         parties.add(partie);
 
         final VueDemandeDePartie mockVue = mock(VueDemandeDePartie.class);
@@ -107,7 +107,7 @@ public class PrésenteurDemandeDePartieTest {
         final Partie partie = new Partie();
 
         partie.setAdversaire(new Utilisateur(0, "Jaques", Niveau.DÉBUTANT, "Montréal", "gmail@gmail.com", "cool guy"));
-        partie.setId(0);
+        partie.setIdPartie(0);
         parties.add(partie);
 
         final VueDemandeDePartie mockVue = mock(VueDemandeDePartie.class);
@@ -145,7 +145,7 @@ public class PrésenteurDemandeDePartieTest {
         final Partie partie = new Partie();
 
         partie.setAdversaire(new Utilisateur(0, "Jaques", Niveau.DÉBUTANT, "Montréal", "gmail@gmail.com", "cool guy"));
-        partie.setId(0);
+        partie.setIdPartie(0);
         parties.add(partie);
 
         final VueDemandeDePartie mockVue = mock(VueDemandeDePartie.class);

@@ -254,7 +254,7 @@ public class SourcePartiesApi implements SourceParties {
 
         partie = new Partie();
         partie.setAdversaire(adversaire);
-        partie.setId(id);
+        partie.setIdPartie(id);
         partie.setGagnant(gagnant);
         return partie;
     }

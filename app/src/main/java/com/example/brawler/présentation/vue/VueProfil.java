@@ -1,31 +1,20 @@
 package com.example.brawler.présentation.vue;
 
-import android.app.Activity;
-import android.content.ActivityNotFoundException;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.transition.AutoTransition;
 import android.transition.TransitionManager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -34,10 +23,6 @@ import androidx.fragment.app.FragmentTransaction;
 import com.example.brawler.R;
 import com.example.brawler.domaine.entité.Utilisateur;
 import com.example.brawler.présentation.présenteur.PrésenteurProfil;
-import com.example.brawler.ui.activité.MainActivity;
-
-import java.io.FileNotFoundException;
-import java.io.IOException;
 
 public class VueProfil extends Fragment {
 
@@ -80,6 +65,10 @@ public class VueProfil extends Fragment {
         LayoutView = vue.findViewById(R.id.frameLayout);
         Button modifierProfil = vue.findViewById(R.id.aller_modif_profil);
 
+        /**
+         * Initier le fragement modifier profil et assigner le présenteur
+         * Changer le fragment
+         */
         modifierProfil.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -96,6 +85,9 @@ public class VueProfil extends Fragment {
         return vue;
     }
 
+    /**
+     * Aller chercher l'utilisateur lorsque le fragement revient
+     */
     @Override
     public void onResume() {
         _presenteur.rafraichirPage();
@@ -138,10 +130,5 @@ public class VueProfil extends Fragment {
             expandableView.setVisibility(View.INVISIBLE);
             layoutInfosInitiale.setVisibility(View.VISIBLE);
         }
-    }
-
-    public void afficherErreur( String msgErr ){
-        txtNom.setText( "Oups!\n" + msgErr );
-        txtNomExpand.setText( "Oups!\n" + msgErr );
     }
 }

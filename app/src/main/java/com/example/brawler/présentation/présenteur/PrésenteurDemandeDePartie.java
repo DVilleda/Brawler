@@ -222,6 +222,6 @@ public class PrésenteurDemandeDePartie {
     }
 
     public void accederPartie(int position) {
-        modèle.getParties().get(position).getId();
+        modèle.getParties().get(position).getIdPartie();
     }
 }

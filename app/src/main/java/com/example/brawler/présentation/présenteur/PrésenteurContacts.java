@@ -6,7 +6,6 @@ import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 
-import com.example.brawler.domaine.entité.Niveau;
 import com.example.brawler.domaine.entité.Utilisateur;
 import com.example.brawler.domaine.intéracteur.InteracteurAquisitionUtilisateurs;
 import com.example.brawler.domaine.intéracteur.SourceUtilisateurs;
@@ -15,7 +14,6 @@ import com.example.brawler.présentation.modèle.Modèle;
 import com.example.brawler.présentation.vue.VueContacts;
 import com.example.brawler.ui.activité.ConsulterMessageActivité;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class PrésenteurContacts {

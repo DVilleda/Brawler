@@ -136,7 +136,7 @@ public class ConsulterDemandePartieActivitéTest {
         final Partie partie = new Partie();
         partie.setAdversaire(new Utilisateur(-1, "Jaques", Niveau.DÉBUTANT, "Montréal", "gmail@gmail.com", "cool guy"));
 
-        partie.setId(0);
+        partie.setIdPartie(0);
         parties.add(partie);
         final Modèle mockModèle = mock(Modèle.class);
 
@@ -174,7 +174,7 @@ public class ConsulterDemandePartieActivitéTest {
         final Partie partie = new Partie();
         partie.setAdversaire(new Utilisateur(-1, "Jaques", Niveau.DÉBUTANT, "Montréal", "gmail@gmail.com", "cool guy"));
 
-        partie.setId(0);
+        partie.setIdPartie(0);
         parties.add(partie);
         final Modèle mockModèle = mock(Modèle.class);
 
@@ -213,7 +213,7 @@ public class ConsulterDemandePartieActivitéTest {
         final Partie partie = new Partie();
         partie.setAdversaire(new Utilisateur(-1, "Jaques", Niveau.DÉBUTANT, "Montréal", "gmail@gmail.com", "cool guy"));
 
-        partie.setId(0);
+        partie.setIdPartie(0);
         parties.add(partie);
         final Modèle mockModèle = mock(Modèle.class);
         final SourceParties mockSource = mock(SourceParties.class);
@@ -240,7 +240,7 @@ public class ConsulterDemandePartieActivitéTest {
         instrumentation.waitForIdle( new Runnable() {
             public void run() {
                 verify(scenario.onActivity( activité -> activité.getPrésenteur().accederPartie(-1)));
-                verify(mockModèle.getParties().get(-1).getId());
+                verify(mockModèle.getParties().get(-1).getIdPartie());
             }
         });
 
@@ -252,7 +252,7 @@ public class ConsulterDemandePartieActivitéTest {
         for(int i = 0; i < 10; i++) {
             Partie partie = new Partie();
             partie.setAdversaire(new Utilisateur(-1, "Jaques", Niveau.DÉBUTANT, "Montréal", "gmail@gmail.com", "cool guy"));
-            partie.setId(i);
+            partie.setIdPartie(i);
             parties.add(partie);
         }
 
@@ -282,7 +282,7 @@ public class ConsulterDemandePartieActivitéTest {
         final Partie partie = new Partie();
         partie.setAdversaire(new Utilisateur(-1, "Jaques", Niveau.DÉBUTANT, "Montréal", "gmail@gmail.com", "cool guy"));
 
-        partie.setId(0);
+        partie.setIdPartie(0);
         parties.add(partie);
         final Modèle mockModèle = mock(Modèle.class);
         final SourceParties mockSource = mock(SourceParties.class);
@@ -318,7 +318,7 @@ public class ConsulterDemandePartieActivitéTest {
         final Partie partie = new Partie();
         partie.setAdversaire(new Utilisateur(-1, "Jaques", Niveau.DÉBUTANT, "Montréal", "gmail@gmail.com", "cool guy"));
 
-        partie.setId(0);
+        partie.setIdPartie(0);
         parties.add(partie);
         final Modèle mockModèle = mock(Modèle.class);
         final SourceParties mockSource = mock(SourceParties.class);

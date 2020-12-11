@@ -3,78 +3,78 @@ package com.example.brawler.domaine.entité;
 import java.util.List;
 
 public class Partie {
-    int id;
-    Utilisateur adversaire;
+    int idPartie;
+    int idAdv;
     Utilisateur gagnant;
-    List<Tour> tour;
+    Utilisateur adversaire;
+    boolean enCours;
+    boolean gagne;
+    List<Mouvement> mouvementsPartie;
 
-    /**
-     * constructeur
-     */
-    public Partie() {
+    public Partie(int idPartie, boolean enCours,int idAdv,boolean victorieux, List<Mouvement> mouvementsPartie) {
+        this.idPartie = idPartie;
+        this.enCours = enCours;
+        this.idAdv = idAdv;
+        this.mouvementsPartie = mouvementsPartie;
+        this.gagne = victorieux;
     }
 
-    /**
-     *
-     * @return
-     */
+    public Partie() {
+
+    }
+
+    public int getIdPartie() {
+        return idPartie;
+    }
+
+    public void setIdPartie(int idPartie) {
+        this.idPartie = idPartie;
+    }
+
+    public int getIdAdv() {
+        return idAdv;
+    }
+
+    public void setIdAdv(int idAdv) {
+        this.idAdv = idAdv;
+    }
+
+    public boolean isEnCours() {
+        return enCours;
+    }
+
+    public void setEnCours(boolean enCours) {
+        this.enCours = enCours;
+    }
+
+    public List<Mouvement> getMouvementsPartie() {
+        return mouvementsPartie;
+    }
+
+    public void setMouvementsPartie(List<Mouvement> mouvementsPartie) {
+        this.mouvementsPartie = mouvementsPartie;
+    }
+
+    public boolean isGagne() {
+        return gagne;
+    }
+
+    public void setGagne(boolean gagne) {
+        this.gagne = gagne;
+    }
+
+    public Utilisateur getGagnant() {
+        return  gagnant;
+    }
+    public void setGagnant(Utilisateur gagnant){
+        this.gagnant = gagnant;
+    }
+
     public Utilisateur getAdversaire() {
         return adversaire;
     }
 
-    /**
-     *
-     * @param adversaire
-     */
     public void setAdversaire(Utilisateur adversaire) {
         this.adversaire = adversaire;
-    }
-
-    /**
-     *
-     * @return
-     */
-    public Utilisateur getGagnant() {
-        return gagnant;
-    }
-
-    /**
-     *
-     * @param gagnant
-     */
-    public void setGagnant(Utilisateur gagnant) {
-        this.gagnant = gagnant;
-    }
-
-    /**
-     *
-     * @return
-     */
-    public List<Tour> getTour() {
-        return tour;
-    }
-
-    /**
-     *
-     * @param tour
-     */
-    public void setTour(List<Tour> tour) {
-        this.tour = tour;
-    }
-
-    /**
-     *
-     * @return
-     */
-    public int getId() {
-        return id;
-    }
-
-    /**
-     *
-     * @param id
-     */
-    public void setId(int id) {
-        this.id = id;
     }
 }

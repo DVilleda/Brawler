@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:paddingTop="50dp"
-    tools:context=".ui.activité.MainActivity">
+    tools:context=".ui.activité.ConsulterProfilActivité">
 
     <TextView
         android:id="@+id/Nom_lbl"
