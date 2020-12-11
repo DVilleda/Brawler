@@ -6,10 +6,13 @@ import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 
+import com.example.brawler.DAO.SourcePartiesApi;
 import com.example.brawler.domaine.intéracteur.InteracteurAquisitionUtilisateur;
+import com.example.brawler.domaine.intéracteur.InteracteurAquistionPartie;
 import com.example.brawler.domaine.intéracteur.InteracteurMessage;
 import com.example.brawler.domaine.intéracteur.MessageException;
 import com.example.brawler.domaine.intéracteur.SourceMessage;
+import com.example.brawler.domaine.intéracteur.SourceParties;
 import com.example.brawler.domaine.intéracteur.SourceUtilisateur;
 import com.example.brawler.domaine.intéracteur.UtilisateursException;
 import com.example.brawler.présentation.modèle.Modèle;
@@ -23,6 +26,7 @@ public class PrésenteurConsulterMessage {
     private Modèle modèle;
     private SourceMessage sourceMessage;
     private SourceUtilisateur sourceUtilisateur;
+    private SourceParties sourceParite;
 
     private int nbMessageActuel;
     private boolean premierCharqement;
@@ -40,6 +44,7 @@ public class PrésenteurConsulterMessage {
     private final int MSG_ANNULER = 3;
     private final int MSG_VÉRIFER_NOUVEAU_MESSAGE = 4;
     private final int MSG_UTILIASTEUR_CHARGER = 5;
+    private final int MSG_DEMANDE_ENVOYER = 6;
 
     private boolean envoyerVueDébutMessage;
     private boolean nouveauMessage = false;
@@ -72,7 +77,9 @@ public class PrésenteurConsulterMessage {
                     doitRafrahcir = true;
                     rafraichir();
                     doitCharger = true;
-                } else if (msg.what == MSG_VÉRIFER_NOUVEAU_MESSAGE) {
+                } else if (msg.what == MSG_DEMANDE_ENVOYER){
+                    //posibitlité pour plus tard
+                }else if (msg.what == MSG_VÉRIFER_NOUVEAU_MESSAGE) {
                     vue.rafraîchir();
                     if (modèle.getNombreMessageTotale() == 0) {
                         rafraichir();
@@ -87,7 +94,7 @@ public class PrésenteurConsulterMessage {
                 } else if (msg.what == MSG_UTILIASTEUR_CHARGER) {
                     if(modèle.getUtilisateur().getPhoto() != null) {
                         Bitmap bitmap = BitmapFactory.decodeByteArray(modèle.getUtilisateur().getPhoto(), 0, modèle.getUtilisateur().getPhoto().length);
-                        modèle.setBitmap(bitmap);
+                        modèle.setBitmapPhoto(bitmap);
                     }
                     vue.setInfoUtilisateur(modèle.getUtilisateur().getNom(), modèle.getUtilisateur().getPhoto());
                     getNombreMessagesApi(modèle.getUtilisateurEnRevue());
@@ -101,18 +108,47 @@ public class PrésenteurConsulterMessage {
 
     }
 
+    /**
+     *
+     * @param sourceMessage
+     */
     public void setSourceMessage(SourceMessage sourceMessage) {
         this.sourceMessage = sourceMessage;
     }
 
+    /**
+     *
+     * @param sourceUtilisateur
+     */
     public void setSourceUtilisateur(SourceUtilisateur sourceUtilisateur) {
         this.sourceUtilisateur = sourceUtilisateur;
     }
 
+    /**
+     *
+     * @param sourceParite
+     */
+    public void setSourceParite(SourceParties sourceParite) {
+        this.sourceParite = sourceParite;
+    }
+
+    /**
+     *
+     */
     public void commencerVoirMessage(){
         chargerUtilisateur();
     }
 
+    /**
+     *
+     */
+    public void envoyerDemandePartie() {
+        lancerFileEsclaveEnvoyerDemandeDePartie();
+    }
+
+    /**
+     * charge l'utilisateur de message
+     */
     private void chargerUtilisateur() {
         filEsclaveEnvoyerMessage = new Thread(
                 new Runnable() {
@@ -136,6 +172,10 @@ public class PrésenteurConsulterMessage {
     }
 
 
+    /**
+     * envoi un message a l'api
+     * @param texte
+     */
     public void envoyerMessage(final String texte){
         vue.changerBtnEnvoyer(false);
         filEsclaveEnvoyerMessage = new Thread(
@@ -165,6 +205,9 @@ public class PrésenteurConsulterMessage {
         filEsclaveEnvoyerMessage.start();
     }
 
+    /**
+     * rafrachie la vue
+     */
     public void rafraichir() {
 
         if(vue.rvAuMax() && doitCharger && modèle.getMessages().size() <= modèle.getNombreMessageTotale()) {
@@ -185,6 +228,12 @@ public class PrésenteurConsulterMessage {
         }
     }
 
+    /**
+     * obteint tout les message
+     * @param idUtilisateur
+     * @param début
+     * @param fin
+     */
     public void getMessages(final int idUtilisateur, final int début, final int fin){
         filEsclaveEnvoyerMessage = new Thread(
                 new Runnable() {
@@ -206,6 +255,10 @@ public class PrésenteurConsulterMessage {
         filEsclaveEnvoyerMessage.start();
     }
 
+    /**
+     * obtient le nombre de message d'un api
+     * @param idUtilisateur
+     */
     public void getNombreMessagesApi(final int idUtilisateur){
         filEsclaveEnvoyerMessage = new Thread(
                 new Runnable() {
@@ -227,16 +280,28 @@ public class PrésenteurConsulterMessage {
         filEsclaveEnvoyerMessage.start();
     }
 
+    /**
+     * obitent le nombre de mesasge dans le modèle
+     * @return
+     */
     public int getNbMessages() {
         if(modèle.getMessages() != null)
             return modèle.getMessages().size();
         return 0;
     }
 
+    /**
+     * obtient un mesage par postion du modèle
+     * @param id
+     * @return
+     */
     public com.example.brawler.domaine.entité.Message getMessageParPos(int id){
         return modèle.getMessages().get(id);
     }
 
+    /**
+     * cahrge une partie des messages de l'api vers le modèle
+     */
     private void lancerCahrgemetnMessage() {
         if(premierCharqement) {
             if(modèle.getNombreMessageTotale() < 10) {
@@ -255,23 +320,71 @@ public class PrésenteurConsulterMessage {
 
     }
 
+    /**
+     * envoie la deamdne de partie
+     */
+    private void lancerFileEsclaveEnvoyerDemandeDePartie() {
+        filEsclaveEnvoyerMessage = new Thread(
+                new Runnable() {
+                    @Override
+                    public void run() {
+                        Message msg = null;
+                        try {
+                            Thread.sleep(0);
+                            InteracteurAquistionPartie.getInstance(sourceParite).enovyerDemandePartie(modèle.getUtilisateurEnRevue());
+                            msg = handlerRéponse.obtainMessage( MSG_DEMANDE_ENVOYER );
+                        } catch (InterruptedException e) {
+                            msg = handlerRéponse.obtainMessage( MSG_ANNULER );
+                        } catch (SourcePartiesApi.SourcePartieApiException e) {
+                            msg = handlerRéponse.obtainMessage( MSG_ERREUR );
+                        } catch (UtilisateursException e) {
+                            msg = handlerRéponse.obtainMessage( MSG_ERREUR );
+                        }
+
+                        handlerRéponse.sendMessage( msg );
+                    }
+                });
+        filEsclaveEnvoyerMessage.start();
+    }
+
+    /**
+     * obtient le id d'utilisateur
+     * @return
+     */
     public int getIdUtilisateur() {
         return modèle.getUtilisateurEnRevue();
     }
 
+    /**
+     * arêtte de racirchir les message
+     */
     public void arrêterRafraichir(){
         doitRafrahcir = false;
     }
 
+    /**
+     * se remet a rafraichir les messages
+     */
     public void commencerRafraichir(){
         doitRafrahcir = true;
     }
 
+    /**
+     * retourne la photo de l'utilisateur que l'on envoie un message
+     * @return
+     */
     public Bitmap getPhotoUtilisateur() {
-        return modèle.getBitmap();
+        return modèle.getBitmapPhoto();
     }
 
+    /**
+     * stop l'atctivité
+     */
     public void stopActivity() {
         vue.getActivity().finish();
     }
+
+
+
+
 }

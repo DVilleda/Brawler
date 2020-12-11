@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -24,9 +25,9 @@ import com.example.brawler.présentation.modèle.Modèle;
 import com.example.brawler.présentation.présenteur.PrésenteurProfil;
 import com.example.brawler.présentation.vue.VueProfil;
 
-public class MainActivity extends AppCompatActivity {
+public class ConsulterProfilActivité extends AppCompatActivity {
     /**
-     * Paramètres
+     * Paramètres de l'activité
      */
     private PrésenteurProfil présenteurProfil;
     private String token;
@@ -36,22 +37,28 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profil);
 
-
+        /**
+         * Obtenir le token du compte storé dans les prefs
+         */
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         token = sharedPref.getString("token", "");
         if(token.trim().isEmpty()){
             startActivity(new Intent(this, ConnexionActivité.class));
         }
 
-
+        /**
+         * Aller chercher le custom toolbar et l'afficher au haut de l'activité
+         */
         Toolbar toolbar = (Toolbar) findViewById(R.id.navigation_app);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         toolbar.setTitle("");
         toolbar.setSubtitle("");
 
+        /**
+         * Initier le présenteur, le modèle, la source et afficher le fragment
+         */
         Modèle modèle = new Modèle();
-
         VueProfil vueProfil = new VueProfil();
         présenteurProfil = new PrésenteurProfil(vueProfil,modèle);
         présenteurProfil.setSourceUtilisateur(new SourceProfilApi(token));
@@ -65,6 +72,9 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onStart(){
         super.onStart();
+        /**
+         * Charger le thread pour obtenir l'utilisateur
+         */
         présenteurProfil.chargerUtilisateur();
     }
 
@@ -77,6 +87,9 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        /**
+         * Switch case pour naviguer les activités principales de l'application
+         */
         switch (item.getItemId()){
             case R.id.menu_profil:
                 break;
@@ -87,6 +100,10 @@ public class MainActivity extends AppCompatActivity {
             case R.id.menu_contact:
                 Intent contact = new Intent(this,CommunicationUtilisateurs.class);
                 startActivity(contact);
+                break;
+            case R.id.menu_partie:
+                Intent demandePartie = new Intent(this,ConsulterDemandePartieActivité.class);
+                startActivity(demandePartie);
                 break;
         }
         return super.onOptionsItemSelected(item);
@@ -100,13 +117,14 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     *
+     * Cette fonction a pour but de déconnecter l'utilisateur et le retourner à la page de connection
      * @param view
      */
     public void DeconnecterProfil(View view)
     {
         présenteurProfil.DeconnecterUtilisateur();
         finish();
-        startActivity(getIntent());
+        Intent connection = new Intent(this,ConnexionActivité.class);
+        startActivity(connection);
     }
 }

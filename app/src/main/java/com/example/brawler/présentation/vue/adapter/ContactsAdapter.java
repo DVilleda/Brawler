@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.brawler.R;
 import com.example.brawler.domaine.entité.Utilisateur;
 import com.example.brawler.présentation.présenteur.PrésenteurContacts;
+import com.example.brawler.présentation.présenteur.PrésenteurDemandeDePartie;
 
 import java.util.List;
 
@@ -27,9 +28,16 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ViewHo
         this.layoutInflater = LayoutInflater.from(context);
     }
 
+    /**
+     * Set la liste d'utilisateur pour le recycler view
+     */
     public void setListUtilisateurs(){
         listUtilisateurs = présenteur.getListContact();}
 
+    /**
+     * Cette méthode set le présenteur du recycler view
+     * @param présenteur présenteur du fragment
+     */
     public void setPrésenteur(PrésenteurContacts présenteur){this.présenteur = présenteur;}
     @NonNull
     @Override
@@ -54,7 +62,9 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ViewHo
         return listUtilisateurs.size();
     }
 
-    //CLasse pour la carte du RecyclerView
+    /**
+     * CLasse pour la carte du RecyclerView
+     */
     public class ViewHolder extends RecyclerView.ViewHolder{
         private TextView nomContact;
         private TextView txtMessage;
@@ -75,6 +85,11 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ViewHo
             });
         }
     }
+
+    /**
+     * Permet de retirer un contact de la liste
+     * @param position position de la vue
+     */
     public void removeContact(int position){
         listUtilisateurs.remove(position);
         notifyItemRemoved(position);

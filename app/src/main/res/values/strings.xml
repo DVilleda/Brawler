@@ -46,5 +46,18 @@
     <string name="channel_name">brawlerChannel</string>
     <string name="nom_utilisateur_notification_reply">Vous</string>
     <string name="btn_deconnecter">Déconnecter</string>
+    <string name="accepter">Accepter</string>
+    <string name="refuser">Refuser</string>
+    <string name="allet_partie">Aller Partie</string>
+    <string name="vosDemandeDePArtie">Vos demandes de partie:</string>
+    <string name="demandePartie">Demande de partie</string>
+    <string name="partieEnCour">Parties en cour</string>
+    <string name="accederPartie">Acceder partie</string>
+    <string name="vosPartieEnCour">Vos parties en cour:</string>
+    <string name="boutton_choisir_arme">Choisir Votre Main</string>
+    <string name="r_sultat">Résultat :</string>
+    <string name="votre_adversaire_avait_jou"><![CDATA[<- Votre adversaire avait joué]]></string>
+    <string name="votre_mouvement_dernier_tour"><![CDATA[Votre main le dernier tour ->]]></string>
+    <string name="Demander_Partie">Lancer Partie</string>
 
 </resources>

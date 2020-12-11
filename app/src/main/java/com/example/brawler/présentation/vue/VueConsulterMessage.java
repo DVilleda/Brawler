@@ -1,16 +1,11 @@
 package com.example.brawler.présentation.vue;
 
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
-import android.os.Handler;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -21,7 +16,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.brawler.R;
 import com.example.brawler.présentation.présenteur.PrésenteurConsulterMessage;
-import com.example.brawler.présentation.présenteur.PrésenteurRechercheMatch;
 import com.example.brawler.présentation.vue.adapter.MessageAdapter;
 
 public class VueConsulterMessage extends Fragment {
@@ -30,6 +24,7 @@ public class VueConsulterMessage extends Fragment {
     private PrésenteurConsulterMessage présenteur;
     private TextView txtMessage;
     private ImageButton btnEnvoyerMessage;
+    private ImageButton btnEnvoyerDemandePartie;
     private RecyclerView rvMessages;
     private MessageAdapter messageAdapter;
     private ImageButton btnBack;
@@ -48,6 +43,7 @@ public class VueConsulterMessage extends Fragment {
         View vue = inflater.inflate(R.layout.fragment_consulter_message, container, false);
         txtMessage = vue.findViewById(R.id.txtMessage);
         btnEnvoyerMessage = vue.findViewById(R.id.btnEnvoyerMessage);
+        btnEnvoyerDemandePartie = vue.findViewById(R.id.btnEnvoyerDemandePartie);
         rvMessages = vue.findViewById(R.id.rvMessages);
         btnBack = vue.findViewById(R.id.btnBack);
         imgNomConversation = vue.findViewById(R.id.imgConversation);
@@ -72,6 +68,12 @@ public class VueConsulterMessage extends Fragment {
         btnEnvoyerMessage.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v){
                 présenteur.envoyerMessage(txtMessage.getText().toString());
+            }
+        });
+
+        btnEnvoyerDemandePartie.setOnClickListener(new View.OnClickListener(){
+            public void onClick(View v){
+                présenteur.envoyerDemandePartie();
             }
         });
 

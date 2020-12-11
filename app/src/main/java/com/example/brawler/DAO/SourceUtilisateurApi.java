@@ -3,7 +3,6 @@ package com.example.brawler.DAO;
 import android.util.Base64;
 import android.util.JsonReader;
 import android.util.JsonToken;
-import android.util.Log;
 
 import com.example.brawler.domaine.entité.Niveau;
 import com.example.brawler.domaine.entité.Utilisateur;
@@ -141,7 +140,6 @@ public class SourceUtilisateurApi implements SourceUtilisateur {
                 } else {
                     jsonReader.nextNull();
                 }
-                Log.d("photo", String.valueOf(photoProfil));
             }
             else {
                 jsonReader.skipValue();

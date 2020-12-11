@@ -10,10 +10,10 @@ import android.view.MenuItem;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.example.brawler.DAO.SourceMessageApi;
+import com.example.brawler.DAO.SourcePartiesApi;
 import com.example.brawler.DAO.SourceUtilisateurApi;
 import com.example.brawler.R;
 import com.example.brawler.présentation.modèle.Modèle;
@@ -45,6 +45,7 @@ public class ConsulterMessageActivité extends AppCompatActivity {
         présenteur = new PrésenteurConsulterMessage(vue, modèle);
         présenteur.setSourceMessage(new SourceMessageApi(clé));
         présenteur.setSourceUtilisateur(new SourceUtilisateurApi(clé));
+        présenteur.setSourceParite(new SourcePartiesApi(clé));
         vue.setPrésenteur(présenteur);
 
         FragmentTransaction ft=getSupportFragmentManager().beginTransaction();
@@ -94,7 +95,7 @@ public class ConsulterMessageActivité extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()){
             case R.id.menu_profil:
-                Intent profil = new Intent(this,MainActivity.class);
+                Intent profil = new Intent(this, ConsulterProfilActivité.class);
                 startActivity(profil);
                 break;
             case R.id.menu_match:
@@ -104,6 +105,10 @@ public class ConsulterMessageActivité extends AppCompatActivity {
             case R.id.menu_contact:
                 Intent contact = new Intent(this,CommunicationUtilisateurs.class);
                 startActivity(contact);
+                break;
+            case R.id.menu_partie:
+                Intent demandePartie = new Intent(this,ConsulterDemandePartieActivité.class);
+                startActivity(demandePartie);
                 break;
         }
         return super.onOptionsItemSelected(item);

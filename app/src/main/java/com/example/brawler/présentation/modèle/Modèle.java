@@ -3,6 +3,8 @@ package com.example.brawler.présentation.modèle;
 import android.graphics.Bitmap;
 
 import com.example.brawler.domaine.entité.Message;
+import com.example.brawler.domaine.entité.Mouvement;
+import com.example.brawler.domaine.entité.Partie;
 import com.example.brawler.domaine.entité.Utilisateur;
 
 import java.util.ArrayList;
@@ -18,13 +20,19 @@ public class Modèle {
     private List<Message> messages;
     private String texteRéponse;
     private int nombreMessageTotale;
+    private Bitmap bitmapPhoto;
+    private List<Partie> parties;
     private Bitmap bitmap;
+    private Partie partieChoisi;
+    private List<Mouvement> mouvementList;
 
     public Modèle() {
         listeUtilisateurs = new ArrayList<>();
         listUtilisateursId = new ArrayList<>();
         utilisateurEnRevue = 0;
+        parties = new ArrayList<>();
         messages = new ArrayList<>();
+
     }
 
     public List<Utilisateur> getListUtilisateurs() {
@@ -52,7 +60,7 @@ public class Modèle {
     }
 
     public int getUtilisateurIdActuel() {
-        return listUtilisateursId.get(utilisateurEnRevue);
+        return utilisateurEnRevue;
     }
 
     public int getUtilisateurEnRevue(){
@@ -69,7 +77,7 @@ public class Modèle {
     }
 
     public Utilisateur getUtilisateur(){
-        return utilisateur;
+        return this.utilisateur;
     }
 
     public void setUtilisateur(Utilisateur utilisateur) {
@@ -80,10 +88,6 @@ public class Modèle {
 
     public void setUtilisateurEnRevue(int i) {
         utilisateurEnRevue = i;
-    }
-
-    public List<Utilisateur> getListeUtilisateurs() {
-        return listeUtilisateurs;
     }
 
     public String getTexteRéponse() {
@@ -106,12 +110,12 @@ public class Modèle {
         this.messages.addAll(messagesparUtilisateursEntreDeux);
     }
 
-    public Bitmap getBitmap() {
-        return bitmap;
+    public Bitmap getBitmapPhoto() {
+        return bitmapPhoto;
     }
 
-    public void setBitmap(Bitmap bitmap) {
-        this.bitmap = bitmap;
+    public void setBitmapPhoto(Bitmap bitmapPhoto) {
+        this.bitmapPhoto = bitmapPhoto;
     }
 
     public Utilisateur getUtilisateurDeApplication() {
@@ -124,5 +128,30 @@ public class Modèle {
 
     public void setMessages(List<Message> messages) {
         this.messages = messages;
+    }
+
+
+    //Partie
+    public void setParties(List<Partie> parties){
+        this.parties = parties;
+    }
+
+    public List<Partie> getParties() {
+        return this.parties;
+      }
+    public Partie getPartieChoisi() {
+        return partieChoisi;
+    }
+
+    public void setPartieChoisi(Partie partieChoisi) {
+        this.partieChoisi = partieChoisi;
+    }
+
+    public List<Mouvement> getMouvementList() {
+        return mouvementList;
+    }
+
+    public void setMouvementList(List<Mouvement> mouvementList) {
+        this.mouvementList = mouvementList;
     }
 }

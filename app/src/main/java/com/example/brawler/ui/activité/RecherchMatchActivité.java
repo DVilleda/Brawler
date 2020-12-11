@@ -1,14 +1,11 @@
 package com.example.brawler.ui.activité;
 
-import android.Manifest;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
-import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -34,9 +31,7 @@ import com.example.brawler.présentation.présenteur.PrésenteurRechercheMatch;
 import com.example.brawler.présentation.vue.VueRechercheMatch;
 import com.example.brawler.ui.activité.Services.ServiceNotificationMessage;
 import com.google.android.gms.location.FusedLocationProviderClient;
-import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -56,7 +51,7 @@ public class RecherchMatchActivité extends AppCompatActivity {
 
 
 
-    @RequiresApi(api = Build.VERSION_CODES.M)
+    //@RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -96,6 +91,8 @@ public class RecherchMatchActivité extends AppCompatActivity {
     @Override
     public void onStart() {
         super.onStart();
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        clé = sharedPref.getString("token", "");
         présenteur.démmarerPrésenteur();
         présenteur.ThreadDeUpdateNiveauUserConnecté(clé);
         getDeviceLocation();
@@ -106,8 +103,8 @@ public class RecherchMatchActivité extends AppCompatActivity {
         super.onResume();
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         clé = sharedPref.getString("token", "");
-        présenteur.setSourceUtilisateurs(new SourceUtilisateursApi(clé));
-        présenteur.setSourceLike(new SourceLikeApi(clé));
+        présenteur.démmarerPrésenteur();
+        //getDeviceLocation();
     }
 
     @Override
@@ -121,7 +118,7 @@ public class RecherchMatchActivité extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()){
             case R.id.menu_profil:
-                Intent profil = new Intent(this,MainActivity.class);
+                Intent profil = new Intent(this, ConsulterProfilActivité.class);
                 startActivity(profil);
                 break;
             case R.id.menu_match:
@@ -129,6 +126,10 @@ public class RecherchMatchActivité extends AppCompatActivity {
             case R.id.menu_contact:
                 Intent contact = new Intent(this,CommunicationUtilisateurs.class);
                 startActivity(contact);
+                break;
+            case R.id.menu_partie:
+                Intent demandePartie = new Intent(this,ConsulterDemandePartieActivité.class);
+                startActivity(demandePartie);
                 break;
         }
         return super.onOptionsItemSelected(item);
@@ -150,12 +151,13 @@ public class RecherchMatchActivité extends AppCompatActivity {
         }
     }
 
+
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         if (requestCode == PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION){
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
                 locationPermissionGranted = true;
-                getDeviceLocation();
+                //getDeviceLocation();
             }else{
                 getLocationPermission();
             }
