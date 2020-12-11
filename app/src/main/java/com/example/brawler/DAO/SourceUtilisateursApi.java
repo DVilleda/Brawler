@@ -258,6 +258,11 @@ public class SourceUtilisateursApi implements SourceUtilisateurs {
 
     }
 
+    /**
+     * Transforme un string en niveau
+     * @param niveau
+     * @return
+     */
     private Niveau stringVersNiveau(String niveau) {
         Niveau unNiveau = null;
 
@@ -274,6 +279,15 @@ public class SourceUtilisateursApi implements SourceUtilisateurs {
         return  unNiveau;
     }
 
+    /**
+     * insere un nouvel utilisatuer dans la BD
+     * @param email
+     * @param mdp
+     * @param prénom
+     * @param location
+     * @param description
+     * @return
+     */
     public JSONObject creerNouveauUtilisateur(String email, String mdp, String prénom, String location, String description ){
 
         String serviceResponseInText ="";
@@ -332,6 +346,12 @@ public class SourceUtilisateursApi implements SourceUtilisateurs {
         return serviceResponse;
     }
 
+    /**
+     * Verifie les informations en parametre avec la BD. Si concorde, retourne clé d'API
+     * @param leEmail
+     * @param leMdp
+     * @return
+     */
     public String Authentifier(String leEmail, String leMdp) {
 
         String serviceResponse = "0";
@@ -381,6 +401,11 @@ public class SourceUtilisateursApi implements SourceUtilisateurs {
         return serviceResponse;
     }
 
+    /**
+     * met la localisation en parametre dans la BD
+     * @param localisation
+     * @return 1, si succes. 0, si erreur
+     */
     public boolean setLocalisation (String localisation){
         boolean serviceResponse = false;
         String urlParameters  = "location=" + localisation;
@@ -416,6 +441,10 @@ public class SourceUtilisateursApi implements SourceUtilisateurs {
         return serviceResponse;
     }
 
+    /**
+     * toutes les parties du joueur connecté
+     * @return
+     */
     public JSONObject getParties() {
         String serviceResponseInText ="";
         JSONObject parties = new JSONObject();

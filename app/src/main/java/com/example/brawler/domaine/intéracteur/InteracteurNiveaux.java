@@ -61,7 +61,7 @@ public class InteracteurNiveaux {
     /**
      * Pour obtenir le niveu de l'utilisateur connecté, basé sur ses statistiques
      * @param clé
-     * @return Objet de tyoe niveux
+     * @return Objet de tyoe niveau
      */
     public Niveau getNiveu(String clé){
         Statistique stats = ConstruireStats(clé);

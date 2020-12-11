@@ -32,6 +32,15 @@ public class PrésenteurCréationCompte {
     public void setInteracteur(InscriptionUtilisateur interacteur){this.interacteur = interacteur;}
 
 
+    /**
+     * methode du presenteur pour creer un compte, appelle la fonction du DAO
+     * @param email
+     * @param mdp
+     * @param prénom
+     * @param location
+     * @param description
+     * @return
+     */
     public String creationDeCompte(String email, String mdp, String prénom, String location, String description ){
         JSONObject resultatEnJSON = new JSONObject();
 
@@ -56,6 +65,15 @@ public class PrésenteurCréationCompte {
         return resultat;
     }
 
+    /**
+     * simple thread pour la methode creationDeCompte()
+     * @param email
+     * @param mdp
+     * @param prénom
+     * @param location
+     * @param description
+     * @return
+     */
     public String ThreadDeCreationDeCompte(final String email, final String mdp, final String prénom, final String  location, final String  description){
         filEsclave = new Thread(
                 new Runnable() {

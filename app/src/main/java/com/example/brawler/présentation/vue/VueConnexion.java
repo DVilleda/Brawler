@@ -36,6 +36,13 @@ public class VueConnexion extends Fragment {
     }
 
 
+    /**
+     * Lie la vue, crée clickableSpan pour creation de compte, set OnClickListener pour se connecter
+     * @param inflater
+     * @param container
+     * @param savedInstanceState
+     * @return
+     */
     @Override
     public View onCreateView (LayoutInflater inflater,
                               ViewGroup container,
@@ -77,17 +84,36 @@ public class VueConnexion extends Fragment {
         return vue;
     }
 
+    /**
+     * le nom d'utilisatuer du textbox
+     * @return
+     */
     public String getNomUtilisateur() { return etNomUtilisateur.getText().toString(); }
 
+    /**
+     * le mot de passe du textbox
+     * @return
+     */
     public String getMotDePasseUtilisateur() { return txtPassword.getText().toString(); }
 
+    /**
+     * valeur en boolean du bouton se souvenir
+     * @return
+     */
     public boolean getSeSouvenir() { return checkBoxSouvenir.isChecked(); }
 
+    /**
+     * set le message d'erreur de connexion
+     */
     public void setMessageErreurMauvaisesCredentials(){
         etNomUtilisateur.setError(getString(R.string.erreurConnexion)
                 +" "+ getString(R.string.erreurInfoErronées));
     }
 
+    /**
+     * notifie que la connexion a été un succes
+     * @param reponse
+     */
     public void notifierConnexionSuccès(String reponse) {
         if (reponse.equals("0")) {
             setMessageErreurMauvaisesCredentials();

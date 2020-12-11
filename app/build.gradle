@@ -54,5 +54,6 @@ dependencies {
 
     // optional - Test helpers
     androidTestImplementation "androidx.work:work-testing:$work_version"
+    androidTestImplementation group: 'org.mockito', name: 'mockito-android', version: '3.5.11'
 
 }

@@ -26,6 +26,13 @@ public class VueCréationCompte extends Fragment {
         this.présenteur = présenteur;
     }
 
+    /**
+     * lie la vue et set le OnClickListener du boutton Enter
+     * @param inflater
+     * @param container
+     * @param savedInstanceState
+     * @return
+     */
     @Override
     public View onCreateView (LayoutInflater inflater,
                           ViewGroup container,
@@ -64,9 +71,33 @@ public class VueCréationCompte extends Fragment {
         return vue;
     }
 
+    /**
+     * get email du textbox
+     * @return
+     */
     public String getEmailText(){ return etEmail.getText().toString(); }
+
+    /**
+     * get mot de passe du textbox
+     * @return
+     */
     public String getMdpText(){ return etMdp.getText().toString(); }
+
+    /**
+     * get prenom du textbox
+     * @return
+     */
     public String getPrénomText(){ return etPrenom.getText().toString(); }
+
+    /**
+     * get location du textbox
+     * @return
+     */
     public String getLocationText(){ return etLocation.getText().toString(); }
+
+    /**
+     * get descriptions du textbox
+     * @return
+     */
     public String getDescriptionText(){ return etDescription.getText().toString(); }
 }
