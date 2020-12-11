@@ -5,6 +5,7 @@ import android.os.Message;
 import android.util.Log;
 
 import com.example.brawler.domaine.entité.Niveau;
+import com.example.brawler.domaine.intéracteur.ILocalisationUtilisateur;
 import com.example.brawler.domaine.intéracteur.InteracteurAquisitionUtilisateur;
 import com.example.brawler.domaine.intéracteur.InteracteurAquisitionUtilisateurs;
 import com.example.brawler.domaine.intéracteur.InteracteurLikeUtilisateur;
@@ -223,6 +224,10 @@ public class PrésenteurRechercheMatch {
         filEsclave.start();
     }
 
+    public void MettreLocalisationAJour(String clé, String localisation){
+        LocalisationUtilisateur localisationUtilisateur = LocalisationUtilisateur.getInstance();
+        localisationUtilisateur.setLocalisation(clé, localisation);
+    }
     /**
      * Lance la file esclave
      * @param clé
@@ -235,7 +240,7 @@ public class PrésenteurRechercheMatch {
                     public void run() {
                         Message msg = null;
                         try {
-                            LocalisationUtilisateur source = new LocalisationUtilisateur();
+                            MettreLocalisationAJour(clé, localisation);
                             msg = handlerRéponseApi.obtainMessage( MSG_LOCALISATION_A_JOUR );
                         } catch (Exception e) {
                             msg = handlerRéponseApi.obtainMessage( MSG_ERREUR, e );

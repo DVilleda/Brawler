@@ -51,7 +51,7 @@ public class RecherchMatchActivité extends AppCompatActivity {
 
 
 
-    @RequiresApi(api = Build.VERSION_CODES.M)
+    //@RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -103,7 +103,7 @@ public class RecherchMatchActivité extends AppCompatActivity {
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         clé = sharedPref.getString("token", "");
         présenteur.démmarerPrésenteur();
-        getDeviceLocation();
+        //getDeviceLocation();
     }
 
     @Override
@@ -150,12 +150,13 @@ public class RecherchMatchActivité extends AppCompatActivity {
         }
     }
 
+
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         if (requestCode == PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION){
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
                 locationPermissionGranted = true;
-                getDeviceLocation();
+                //getDeviceLocation();
             }else{
                 getLocationPermission();
             }
