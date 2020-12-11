@@ -8,6 +8,7 @@ import com.example.brawler.domaine.entité.Niveau;
 import com.example.brawler.domaine.intéracteur.InteracteurAquisitionUtilisateur;
 import com.example.brawler.domaine.intéracteur.InteracteurAquisitionUtilisateurs;
 import com.example.brawler.domaine.intéracteur.InteracteurLikeUtilisateur;
+import com.example.brawler.domaine.intéracteur.InteracteurNiveaux;
 import com.example.brawler.domaine.intéracteur.InterfaceUtiliasteur;
 import com.example.brawler.domaine.intéracteur.LocalisationUtilisateur;
 import com.example.brawler.domaine.intéracteur.SourceLike;
@@ -295,6 +296,24 @@ public class PrésenteurRechercheMatch {
                     }
                 });
         filEsclave.start();
+    }
+
+    public Niveau updateNiveauUserConnecté(String clé){
+        InteracteurNiveaux instance = InteracteurNiveaux.getInstance();
+        return instance.getNiveu(clé);
+    }
+
+    public Niveau ThreadDeUpdateNiveauUserConnecté(String clé){
+        final Niveau[] newLevel = new Niveau[1];
+        filEsclave = new Thread(
+                new Runnable() {
+                    @Override
+                    public void run() {
+                        newLevel[0] = updateNiveauUserConnecté(clé);
+                    }
+                });
+        filEsclave.start();
+        return newLevel[0];
     }
 
 }
