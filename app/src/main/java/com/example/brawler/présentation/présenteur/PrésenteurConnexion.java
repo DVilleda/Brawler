@@ -63,12 +63,23 @@ public class PrésenteurConnexion {
         this.source = source;
     }
 
+    /**
+     * appelle la fonction de verification des informations de login
+     * @param email
+     * @param mdp
+     * @return
+     */
     public String VerifierInformations(String email, String mdp) {
         String response;
         response = source.Authentifier(email, mdp);
         return response;
     }
 
+    /**
+     * simplement un thread pour la methode VerifierInformations()
+     * @param email
+     * @param mdp
+     */
     public void ThreadDeAuthentifer(final String email, final String mdp){
         filEsclave = new Thread(
                 new Runnable() {
@@ -84,18 +95,29 @@ public class PrésenteurConnexion {
         filEsclave.start();
     }
 
+    /**
+     * Intent d'ouverture de l'activité CréationCompteActivité
+     */
     public void openVueCreationCompte(){
         Intent nouvelleVue = new Intent(vue.getActivity(), CréationCompteActivité.class);
         vue.startActivity(nouvelleVue);
         vue.getActivity().finish();
     }
 
+    /**
+     * Retourne dans les SharedPreferences le username si le usager l'a enregistré
+     * @return
+     */
     public String getUsernameFromSharedPreferences(){
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(vue.getActivity().getApplicationContext());
         return sharedPref.getString("savedUsername", "");
     }
 
-        public String getMdpFromSharedPreferences(){
+    /**
+     * Retourne dans les SharedPreferences le mot de passe si le usager l'a enregistré
+     * @return
+     */
+    public String getMdpFromSharedPreferences(){
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(vue.getActivity().getApplicationContext());
         return sharedPref.getString("savedMdp", "");
     }

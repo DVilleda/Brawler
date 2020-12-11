@@ -101,6 +101,10 @@ public class CommunicationUtilisateurs extends AppCompatActivity {
                 break;
             case R.id.menu_contact:
                 break;
+            case R.id.menu_partie:
+                Intent demandePartie = new Intent(this,ConsulterDemandePartieActivité.class);
+                startActivity(demandePartie);
+                break;
         }
         return super.onOptionsItemSelected(item);
     }

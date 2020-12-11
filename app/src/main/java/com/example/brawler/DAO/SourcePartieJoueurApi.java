@@ -2,7 +2,6 @@ package com.example.brawler.DAO;
 
 import android.util.JsonReader;
 import android.util.JsonToken;
-import android.util.Log;
 import android.util.Pair;
 
 import com.example.brawler.domaine.entité.Mouvement;

@@ -94,6 +94,7 @@ public class RecherchMatchActivité extends AppCompatActivity {
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         clé = sharedPref.getString("token", "");
         présenteur.démmarerPrésenteur();
+        présenteur.ThreadDeUpdateNiveauUserConnecté(clé);
         getDeviceLocation();
     }
 

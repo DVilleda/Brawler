@@ -74,6 +74,7 @@ public class PrésenteurDemandeDePartie {
      * permet de démarrer pour la première fois le présenteur
      */
     public void démarer(){
+        modèle.getParties().removeAll(modèle.getParties());
         if(afficherDemandeDePartie) {
             chercherDemandeDePartie();
         } else {

@@ -30,6 +30,7 @@ public class SourceUtilisateursApi implements SourceUtilisateurs {
 
     private URL url;
     private URL urlUnUtilisateur;
+    private String urlDeBase = "http://52.3.68.3/";
     private String urlUtilisateur = "http://52.3.68.3/utilisateur/";
     private String urlContact = "http://52.3.68.3/contact";
     private String clé;
@@ -257,6 +258,11 @@ public class SourceUtilisateursApi implements SourceUtilisateurs {
 
     }
 
+    /**
+     * Transforme un string en niveau
+     * @param niveau
+     * @return
+     */
     private Niveau stringVersNiveau(String niveau) {
         Niveau unNiveau = null;
 
@@ -273,6 +279,15 @@ public class SourceUtilisateursApi implements SourceUtilisateurs {
         return  unNiveau;
     }
 
+    /**
+     * insere un nouvel utilisatuer dans la BD
+     * @param email
+     * @param mdp
+     * @param prénom
+     * @param location
+     * @param description
+     * @return
+     */
     public JSONObject creerNouveauUtilisateur(String email, String mdp, String prénom, String location, String description ){
 
         String serviceResponseInText ="";
@@ -285,7 +300,7 @@ public class SourceUtilisateursApi implements SourceUtilisateurs {
                 "&description=" + description;
 
         try {
-            url = new URL("http://52.3.68.3/inscription");
+            url = new URL(urlDeBase + "inscription");
         } catch (MalformedURLException e) {
             e.printStackTrace();
         }
@@ -331,13 +346,19 @@ public class SourceUtilisateursApi implements SourceUtilisateurs {
         return serviceResponse;
     }
 
+    /**
+     * Verifie les informations en parametre avec la BD. Si concorde, retourne clé d'API
+     * @param leEmail
+     * @param leMdp
+     * @return
+     */
     public String Authentifier(String leEmail, String leMdp) {
 
         String serviceResponse = "0";
         String urlParameters  = "email=" + leEmail + "&mdp=" + leMdp;
 
         try {
-            url = new URL("http://52.3.68.3/connexion");
+            url = new URL(urlDeBase + "connexion");
         } catch (MalformedURLException e) {
             e.printStackTrace();
         }
@@ -380,11 +401,16 @@ public class SourceUtilisateursApi implements SourceUtilisateurs {
         return serviceResponse;
     }
 
+    /**
+     * met la localisation en parametre dans la BD
+     * @param localisation
+     * @return 1, si succes. 0, si erreur
+     */
     public boolean setLocalisation (String localisation){
         boolean serviceResponse = false;
         String urlParameters  = "location=" + localisation;
         try {
-            url = new URL("http://52.3.68.3/modifierLocation");
+            url = new URL(urlDeBase + "modifierLocation");
         } catch (MalformedURLException e) {
             //try/catch obligatoire pour satisfaire le compilateur.
         }
@@ -415,4 +441,46 @@ public class SourceUtilisateursApi implements SourceUtilisateurs {
         return serviceResponse;
     }
 
+    /**
+     * toutes les parties du joueur connecté
+     * @return
+     */
+    public JSONObject getParties() {
+        String serviceResponseInText ="";
+        JSONObject parties = new JSONObject();
+        try {
+            url = new URL(urlDeBase + "partie");
+        } catch (MalformedURLException e) {
+            //try/catch obligatoire pour satisfaire le compilateur.
+        }
+        try{
+            HttpURLConnection connexion =
+                    (HttpURLConnection)url.openConnection();
+            connexion.setRequestProperty("Authorization", cléBearer);
+            if(connexion.getResponseCode()==200){
+                BufferedReader in = new BufferedReader(new InputStreamReader(
+                        connexion.getInputStream()));
+                String inputLine;
+                StringBuffer response = new StringBuffer();
+
+                while ((inputLine = in.readLine()) != null) {
+                    response.append(inputLine);
+                }
+                in.close();
+
+                // store result on variable
+                serviceResponseInText = response.toString();
+                parties = new JSONObject(serviceResponseInText);
+
+
+            } else {
+                parties = new JSONObject("{\"r\\u00e9ponse\":\"getParties a échoué\",\"statut\":\"échec\"}");
+            }
+        }
+        catch(IOException | JSONException e) {
+            e.printStackTrace();
+        }
+
+        return parties;
+    }
 }

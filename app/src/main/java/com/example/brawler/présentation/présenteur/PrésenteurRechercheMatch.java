@@ -9,6 +9,7 @@ import com.example.brawler.domaine.intéracteur.ILocalisationUtilisateur;
 import com.example.brawler.domaine.intéracteur.InteracteurAquisitionUtilisateur;
 import com.example.brawler.domaine.intéracteur.InteracteurAquisitionUtilisateurs;
 import com.example.brawler.domaine.intéracteur.InteracteurLikeUtilisateur;
+import com.example.brawler.domaine.intéracteur.InteracteurNiveaux;
 import com.example.brawler.domaine.intéracteur.InterfaceUtiliasteur;
 import com.example.brawler.domaine.intéracteur.LocalisationUtilisateur;
 import com.example.brawler.domaine.intéracteur.SourceLike;
@@ -131,7 +132,6 @@ public class PrésenteurRechercheMatch {
     public void prochainUtilsateur() {
         modèle.prochainUtilisateur();
         if (modèle.getListUtilisateursId().size() < 1 || modèle.getListUtilisateursId().size() == modèle.getUtilisateurEnRevue()) {
-            Log.d("", String.valueOf(modèle.getUtilisateurEnRevue()));
             lancerChargerUtilisateur();
         } else {
             lancerFileEsclaveObtenirUtilisateurParId();
@@ -145,7 +145,6 @@ public class PrésenteurRechercheMatch {
     public void lancerChargerUtilisateur(){
         if (modèle.getListUtilisateurs().size() < 1 || modèle.getListUtilisateursId().size() == modèle.getUtilisateurEnRevue()) {
             vue.toggleÉtatBouton();
-            Log.d("passe", "la");
             lancerFileEsclaveChargerUtilisateur();
         } else if(modèle.getListUtilisateursId().size() > modèle.getUtilisateurEnRevue()){
 
@@ -179,7 +178,6 @@ public class PrésenteurRechercheMatch {
                             Thread.sleep(0);
                             modèle.viderListeUtilisateurs();
                             if(parNiveau) {
-                                Log.d("passe", "ici");
                                 modèle.setListUtilisateursId(InteracteurAquisitionUtilisateurs.getInstance(sourceUtilisateurs).getNouvelleUtilisateurgetNouvelUtilsaiteurParNiveauIdSeulement(modèle.getUtilisateurDeApplication().getNiveau()));
                             } else {
                                 modèle.setListUtilisateursId(InteracteurAquisitionUtilisateurs.getInstance(sourceUtilisateurs).getNouvelleUtilisateurIdSeulement());
@@ -267,11 +265,13 @@ public class PrésenteurRechercheMatch {
                         Message msg = null;
                         try {
                             Thread.sleep(0);
-                            Log.d("id", String.valueOf(modèle.getListUtilisateursId().get(modèle.getUtilisateurIdActuel())));
-                            if(parNiveau) {
-                                modèle.setListUtilisateursId(InteracteurAquisitionUtilisateurs.getInstance(sourceUtilisateurs).getNouvelleUtilisateurgetNouvelUtilsaiteurParNiveauIdSeulement(modèle.getUtilisateurDeApplication().getNiveau()));
-                            } else {
-                                    modèle.setUtilisateur(InteracteurAquisitionUtilisateur.getInstance(sourceUtilisateur).getUtilisateurParId(modèle.getListUtilisateursId().get(modèle.getUtilisateurIdActuel())));
+                            if(modèle.getListUtilisateursId().size() > 0){
+                                if(parNiveau) {
+                                    modèle.setListUtilisateursId(InteracteurAquisitionUtilisateurs.getInstance(sourceUtilisateurs).getNouvelleUtilisateurgetNouvelUtilsaiteurParNiveauIdSeulement(modèle.getUtilisateurDeApplication().getNiveau()));
+                                } else {
+
+                                        modèle.setUtilisateur(InteracteurAquisitionUtilisateur.getInstance(sourceUtilisateur).getUtilisateurParId(modèle.getListUtilisateursId().get(modèle.getUtilisateurIdActuel())));
+                                }
                             }
                             msg = handlerRéponseApi.obtainMessage( MSG_AFFICHER_UTILISATEUR );
                         } catch (UtilisateursException e) {
@@ -309,6 +309,24 @@ public class PrésenteurRechercheMatch {
                     }
                 });
         filEsclave.start();
+    }
+
+    public Niveau updateNiveauUserConnecté(String clé){
+        InteracteurNiveaux instance = InteracteurNiveaux.getInstance();
+        return instance.getNiveu(clé);
+    }
+
+    public Niveau ThreadDeUpdateNiveauUserConnecté(String clé){
+        final Niveau[] newLevel = new Niveau[1];
+        filEsclave = new Thread(
+                new Runnable() {
+                    @Override
+                    public void run() {
+                        newLevel[0] = updateNiveauUserConnecté(clé);
+                    }
+                });
+        filEsclave.start();
+        return newLevel[0];
     }
 
 }

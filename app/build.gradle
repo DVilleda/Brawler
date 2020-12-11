@@ -68,7 +68,7 @@ dependencies {
     implementation "androidx.work:work-gcm:$work_version"
 
     // optional - Test helpers
-
+    androidTestImplementation "androidx.work:work-testing:$work_version"
     // required if you want to use Mockito for Android tests
     androidTestImplementation group: 'org.mockito', name: 'mockito-android', version: '3.5.11'
     androidTestImplementation 'androidx.test:rules:1.2.0'

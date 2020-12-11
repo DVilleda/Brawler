@@ -18,6 +18,8 @@ public class Statistique {
         return nombrePerdu;
     }
 
+    public int getPartiesAuTotal() { return nombrePerdu+nombrePerdu; }
+
     public void setNombreVictoire(int nombreVictoire) {
         this.nombreVictoire = nombreVictoire;
     }
