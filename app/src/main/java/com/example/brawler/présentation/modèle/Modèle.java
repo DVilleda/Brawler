@@ -154,4 +154,12 @@ public class Modèle {
     public void setMouvementList(List<Mouvement> mouvementList) {
         this.mouvementList = mouvementList;
     }
+
+    public void ajouterDebutListe(List<Message> messagesparUtilisateursEntreDeux) {
+        for (Message message:
+             messagesparUtilisateursEntreDeux) {
+            messages.add(0, message );
+        }
+
+    }
 }

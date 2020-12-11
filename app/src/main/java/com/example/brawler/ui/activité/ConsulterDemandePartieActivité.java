@@ -47,6 +47,7 @@ public class ConsulterDemandePartieActivité extends AppCompatActivity {
         VueDemandeDePartie vue = new VueDemandeDePartie();
         présenteur = new PrésenteurDemandeDePartie(vue, modèle);
         présenteur.setSourceParties(new SourcePartiesApi(clé));
+        présenteur.setActivité(this);
         vue.setPresenteur(présenteur);
 
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();

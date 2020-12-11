@@ -70,6 +70,10 @@ public class PrésenteurDemandeDePartie {
         this.sourceParties = sourceParties;
     }
 
+    public void setActivité(Activity activité) {
+        this.activité = activité;
+    }
+
     /**
      * permet de démarrer pour la première fois le présenteur
      */

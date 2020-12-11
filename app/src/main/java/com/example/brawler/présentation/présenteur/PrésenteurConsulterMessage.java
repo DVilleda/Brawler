@@ -84,7 +84,9 @@ public class PrésenteurConsulterMessage {
                     if (modèle.getNombreMessageTotale() == 0) {
                         rafraichir();
                     } else if (modèle.getNombreMessageTotale() > nbMessageActuel) {
-                        lancerCahrgemetnMessage();
+                        premierCharqement = true;
+                        chargerNoveuMessage(modèle.getUtilisateurEnRevue(), 0, modèle.getNombreMessageTotale() - nbMessageActuel);
+                        nbMessageActuel = modèle.getNombreMessageTotale();
                     } else {
                         rafraichir();
                     }
@@ -107,6 +109,8 @@ public class PrésenteurConsulterMessage {
         };
 
     }
+
+
 
     /**
      *
@@ -253,6 +257,27 @@ public class PrésenteurConsulterMessage {
                     }
                 });
         filEsclaveEnvoyerMessage.start();
+    }
+
+    private void chargerNoveuMessage(final int idUtilisateur, final int début, final int fin) {
+            filEsclaveEnvoyerMessage = new Thread(
+                    new Runnable() {
+                        @Override
+                        public void run() {
+                            Message msg = null;
+                            try {
+                                modèle.ajouterDebutListe(InteracteurMessage.getInstance(sourceMessage).getMessagesparUtilisateursEntreDeux(idUtilisateur, début, fin));
+                                msg = handlerRéponse.obtainMessage( MSG_CHARGER_MESSAGES );
+                            } catch (MessageException e) {
+                                msg = handlerRéponse.obtainMessage( MSG_ERREUR );
+                            } catch (UtilisateursException e) {
+                                msg = handlerRéponse.obtainMessage( MSG_ERREUR );
+                            }
+
+                            handlerRéponse.sendMessage( msg );
+                        }
+                    });
+            filEsclaveEnvoyerMessage.start();
     }
 
     /**
