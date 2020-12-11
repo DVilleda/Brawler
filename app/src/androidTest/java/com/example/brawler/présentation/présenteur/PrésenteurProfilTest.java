@@ -26,16 +26,16 @@ import static org.mockito.Mockito.when;
 
 
 
-@RunWith(AndroidJUnit4.class)
+
 public class PrésenteurProfilTest {
-    @Test
+
     public void testchargerUtilisateur(){
         final VueProfil mockVue = mock(VueProfil.class);
         final Modèle mockModele = mock(Modèle.class);
         final SourceUtilisateur mockSource = mock(SourceUtilisateur.class);
         final Utilisateur utilisateur = new Utilisateur(0,"Dan", Niveau.LÉGENDAIRE,"MTL","email@email.com","TEST");
 
-        when(mockModele.getUtilisateurActuel()).thenReturn(utilisateur);
+        when(mockModele.getUtilisateur()).thenReturn(utilisateur);
 
         try{
             when(mockSource.getUtilisateur()).thenReturn(utilisateur);
@@ -63,7 +63,7 @@ public class PrésenteurProfilTest {
         });
     }
 
-    @Test
+
     public void testModifierUtilisateur(){
         final VueProfil mockVue = mock(VueProfil.class);
         final Modèle mockModele = mock(Modèle.class);
@@ -71,7 +71,7 @@ public class PrésenteurProfilTest {
         final Utilisateur utilisateur = new Utilisateur(0,"Dan", Niveau.LÉGENDAIRE,"MTL","email@email.com","TEST");
         mockModele.setUtilisateur(utilisateur);
 
-        when(mockModele.getUtilisateurActuel()).thenReturn(utilisateur);
+        when(mockModele.getUtilisateur()).thenReturn(utilisateur);
 
         try{
             when(mockSource.getUtilisateur()).thenReturn(utilisateur);

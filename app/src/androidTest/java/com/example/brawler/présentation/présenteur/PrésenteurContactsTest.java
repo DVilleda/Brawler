@@ -34,9 +34,9 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-@RunWith(AndroidJUnit4.class)
+
 public class PrésenteurContactsTest {
-    @Test
+
     public void testChargerListeContacts(){
         final ConsulterMessageActivité mockActivity = mock(ConsulterMessageActivité.class);
         final VueContacts mockVue = mock(VueContacts.class);
