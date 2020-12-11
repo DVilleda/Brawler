@@ -97,7 +97,7 @@ public class RecherchMatchActivité extends AppCompatActivity {
     public void onStart() {
         super.onStart();
         présenteur.démmarerPrésenteur();
-        //présenteur.ThreadDeUpdateNiveauUserConnecté(clé);
+        présenteur.ThreadDeUpdateNiveauUserConnecté(clé);
         getDeviceLocation();
     }
 
