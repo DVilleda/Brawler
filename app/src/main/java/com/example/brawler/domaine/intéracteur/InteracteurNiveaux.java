@@ -67,7 +67,13 @@ public class InteracteurNiveaux {
         Statistique stats = ConstruireStats(clé);
         int nbTotal = stats.getPartiesAuTotal();
         int nbGagnées = stats.getNombreVictoire();
-        double pourcentageGagnées = (100*nbGagnées)/nbTotal;
+        double pourcentageGagnées;
+        if (nbTotal<1){
+            return Niveau.DÉBUTANT;
+        }else{
+            pourcentageGagnées = (100*nbGagnées)/nbTotal;
+        }
+
 
         if (pourcentageGagnées <= 20){
             return Niveau.DÉBUTANT;
