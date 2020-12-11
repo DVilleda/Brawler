@@ -10,9 +10,9 @@
     <string name="modifier_les_informations">Modifier les informations</string>
     <string name="annuler">Retourner</string>
     <string name="age">Votre Âge</string>>
-    <string name="distance">Distance maximale des joueurs...</string>
+    <string name="distance">Distance maximale des joueurs…</string>
     <string name="ex_100">Ex:100</string>
-    <string name="mofidier">Mofidier</string>
+    <string name="mofidier">Modifier</string>
     <string name="modif_description">Modifier Description</string>
     <string name="modif_description_image">Modifier Image</string>
 
@@ -39,7 +39,7 @@
     <string name="emailHint">Entrez votre email</string>
     <string name="nameHint">Entrez votre Prénom</string>
     <string name="locationHint">Entrez votre ville</string>
-    <string name="descriptionHint">Decrivez vous</string>
+    <string name="descriptionHint">Décrivez vous</string>
 
     <!--Page Recherce de Match-->
     <string name="aboutPhoto">Photo de profil de l\'utilisateur</string>
@@ -49,11 +49,11 @@
     <string name="accepter">Accepter</string>
     <string name="refuser">Refuser</string>
     <string name="allet_partie">Aller Partie</string>
-    <string name="vosDemandeDePArtie">Vos demandes de partie:</string>
+    <string name="vosDemandeDePArtie">Vos demandes de parties:</string>
     <string name="demandePartie">Demande de partie</string>
-    <string name="partieEnCour">Parties en cour</string>
+    <string name="partieEnCour">Parties en cours</string>
     <string name="accederPartie">Acceder partie</string>
-    <string name="vosPartieEnCour">Vos parties en cour:</string>
+    <string name="vosPartieEnCour">Vos parties en cours:</string>
     <string name="boutton_choisir_arme">Choisir Votre Main</string>
     <string name="r_sultat">Résultat :</string>
     <string name="votre_adversaire_avait_jou"><![CDATA[<- Votre adversaire avait joué]]></string>
