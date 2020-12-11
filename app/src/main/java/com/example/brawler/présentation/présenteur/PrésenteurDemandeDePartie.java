@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 
 import com.example.brawler.DAO.SourcePartiesApi;
 import com.example.brawler.R;
@@ -53,6 +54,7 @@ public class PrésenteurDemandeDePartie {
                 filEsclaveEnvoyerMessage = null;
 
                 if (msg.what == MSG_CHARGER_PARTIE || msg.what == MSG_PARTIE_ACCEPTER  || msg.what == MSG_REFUSER_PARTIE) {
+                    Log.d("aa", "yoo");
                     vue.chargerAdapterListePartie(afficherDemandeDePartie);
                     vue.rafraichirVue();
                 } else if (msg.what == MSG_ERREUR) {
@@ -79,11 +81,7 @@ public class PrésenteurDemandeDePartie {
      */
     public void démarer(){
         modèle.getParties().removeAll(modèle.getParties());
-        if(afficherDemandeDePartie) {
-            chercherDemandeDePartie();
-        } else {
-            checherPartieEnCour();
-        }
+        chercherDemandeDePartie();
     }
 
 
@@ -114,7 +112,12 @@ public class PrésenteurDemandeDePartie {
                     public void run() {
                         Message msg = null;
                         try {
-                            modèle.setParties(InteracteurAquistionPartie.getInstance(sourceParties).getDemandePartie());
+                            if(afficherDemandeDePartie) {
+                                modèle.setParties(InteracteurAquistionPartie.getInstance(sourceParties).getDemandePartie());
+                            } else {
+                                Log.d("aa", "aaaaa");
+                                modèle.setParties(InteracteurAquistionPartie.getInstance(sourceParties).getPartieEnCour());
+                            }
                             msg = handlerRéponse.obtainMessage( MSG_CHARGER_PARTIE );
                         } catch (SourcePartiesApi.SourcePartieApiException e) {
                             msg = handlerRéponse.obtainMessage( MSG_ERREUR );
@@ -133,6 +136,7 @@ public class PrésenteurDemandeDePartie {
                     public void run() {
                         Message msg = null;
                         try {
+                            Log.d("aa", "de");
                             modèle.setParties(InteracteurAquistionPartie.getInstance(sourceParties).getPartieEnCour());
                             msg = handlerRéponse.obtainMessage( MSG_CHARGER_PARTIE );
                         } catch (SourcePartiesApi.SourcePartieApiException e) {

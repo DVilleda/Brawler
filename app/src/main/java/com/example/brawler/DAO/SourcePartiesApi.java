@@ -225,8 +225,8 @@ public class SourcePartiesApi implements SourceParties {
         Partie partie = null;
         int id = -1;
         boolean enCour = true;
+        boolean gangée = false;
         Utilisateur adversaire = null;
-        Utilisateur gagnant = null;
 
         jsonReader.beginObject();
         while (jsonReader.hasNext()){
@@ -241,21 +241,26 @@ public class SourcePartiesApi implements SourceParties {
             } else if(key.equals("EnCour")) {
                 if(!jsonReader.nextBoolean())
                     enCour = false;
-            } else {
+            } else if (key.equals("Gagné")){
+                gangée = jsonReader.nextBoolean();
+            }
+            else {
                 jsonReader.skipValue();
             }
         }
         jsonReader.endObject();
 
-        //Le gangnant est l'adversaire si la partie n'est pas en cour et null si en cour
-        if(!enCour){
-            partie.setGagnant(gagnant);
-        }
+
 
         partie = new Partie();
+
+        //Le gangnant est l'adversaire si la partie n'est pas en cour et null si en cour
+        if(!enCour){
+            if(!gangée)
+                partie.setGagnant(adversaire);
+        }
         partie.setAdversaire(adversaire);
         partie.setIdPartie(id);
-        partie.setGagnant(gagnant);
         return partie;
     }
 }
