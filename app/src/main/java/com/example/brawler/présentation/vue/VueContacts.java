@@ -35,10 +35,6 @@ public class VueContacts extends Fragment {
         contactsAdapter.setPrésenteur(_presenteur);
         rvContacts.setAdapter(contactsAdapter);
         rvContacts.setLayoutManager(new LinearLayoutManager(this.getContext()));
-        /**
-         * Fonction future
-         * new ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(rvContacts);
-         */
         return view;
     }
 
@@ -58,37 +54,4 @@ public class VueContacts extends Fragment {
             contactsAdapter.notifyDataSetChanged();
     }
 
-    /**
-     * Fonction de delete contact non implémenté
-     *
-     ItemTouchHelper.SimpleCallback itemTouchHelperCallback = new ItemTouchHelper.SimpleCallback(0,ItemTouchHelper.LEFT) {
-        @Override
-        public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
-            return false;
-        }
-
-        @Override
-        public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
-            final int position = viewHolder.getAdapterPosition();
-
-
-            switch (direction) {
-                case ItemTouchHelper.LEFT:
-                contactsAdapter.removeContact(position);
-                contactsAdapter.notifyDataSetChanged();
-                contactsAdapter.notifyItemRangeChanged(viewHolder.getAdapterPosition(), contactsAdapter.getItemCount());
-            }
-        }
-
-        @Override
-        public void onChildDraw(@NonNull Canvas c, @NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
-
-            new RecyclerViewSwipeDecorator.Builder(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
-                    .addSwipeLeftBackgroundColor(ContextCompat.getColor(getContext(),R.color.colorJeter))
-                    .addSwipeLeftActionIcon(R.drawable.ic_baseline_delete_24)
-                    .create()
-                    .decorate();
-            super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
-        }
-    };**/
 }

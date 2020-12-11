@@ -15,6 +15,8 @@ import com.example.brawler.présentation.présenteur.PresenteurPartieBrawler;
 import com.example.brawler.présentation.vue.VuePartieBrawler;
 
 public class MatchBrawler extends AppCompatActivity {
+    private static final String EXTRA_ID_PARTIE = "com.brawler.idPartie";
+
     /**
      * Params de l'activité qui sont le présenteur et token
      */
@@ -51,7 +53,8 @@ public class MatchBrawler extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        //TODO UTILISER LE BUNDLE POUR AVOIR LE ID
-        _presenteur.chargerPartie(22);
+
+        int idPartie = getIntent().getIntExtra(EXTRA_ID_PARTIE, -1);
+        _presenteur.chargerPartie(idPartie);
     }
 }

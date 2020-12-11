@@ -1,5 +1,7 @@
 package com.example.brawler.présentation.présenteur;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Handler;
 import android.os.Message;
 
@@ -11,10 +13,15 @@ import com.example.brawler.domaine.intéracteur.SourceParties;
 import com.example.brawler.domaine.intéracteur.UtilisateursException;
 import com.example.brawler.présentation.modèle.Modèle;
 import com.example.brawler.présentation.vue.VueDemandeDePartie;
+import com.example.brawler.ui.activité.ConsulterMessageActivité;
+import com.example.brawler.ui.activité.MatchBrawler;
 
 public class PrésenteurDemandeDePartie {
+    private static final String EXTRA_ID_PARTIE = "com.brawler.idPartie";
+
     private final Handler handlerRéponse;
     private Thread filEsclaveEnvoyerMessage = null;
+    private Activity activité;
 
     VueDemandeDePartie vue;
     Modèle modèle;
@@ -222,6 +229,9 @@ public class PrésenteurDemandeDePartie {
     }
 
     public void accederPartie(int position) {
+        Intent intentConsulterMessage = new Intent(activité, MatchBrawler.class);
+        intentConsulterMessage.putExtra(EXTRA_ID_PARTIE, modèle.getParties().get(position).getIdPartie());
+        activité.startActivity(intentConsulterMessage);
         modèle.getParties().get(position).getIdPartie();
     }
 }

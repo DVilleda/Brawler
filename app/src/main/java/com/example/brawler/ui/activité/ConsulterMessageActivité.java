@@ -13,6 +13,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.example.brawler.DAO.SourceMessageApi;
+import com.example.brawler.DAO.SourcePartiesApi;
 import com.example.brawler.DAO.SourceUtilisateurApi;
 import com.example.brawler.R;
 import com.example.brawler.présentation.modèle.Modèle;
@@ -44,6 +45,7 @@ public class ConsulterMessageActivité extends AppCompatActivity {
         présenteur = new PrésenteurConsulterMessage(vue, modèle);
         présenteur.setSourceMessage(new SourceMessageApi(clé));
         présenteur.setSourceUtilisateur(new SourceUtilisateurApi(clé));
+        présenteur.setSourceParite(new SourcePartiesApi(clé));
         vue.setPrésenteur(présenteur);
 
         FragmentTransaction ft=getSupportFragmentManager().beginTransaction();

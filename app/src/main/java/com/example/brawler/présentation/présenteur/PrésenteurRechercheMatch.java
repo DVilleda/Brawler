@@ -129,8 +129,8 @@ public class PrésenteurRechercheMatch {
      */
     public void prochainUtilsateur() {
         modèle.prochainUtilisateur();
-
         if (modèle.getListUtilisateursId().size() < 1 || modèle.getListUtilisateursId().size() == modèle.getUtilisateurEnRevue()) {
+            Log.d("", String.valueOf(modèle.getUtilisateurEnRevue()));
             lancerChargerUtilisateur();
         } else {
             lancerFileEsclaveObtenirUtilisateurParId();
@@ -144,8 +144,10 @@ public class PrésenteurRechercheMatch {
     public void lancerChargerUtilisateur(){
         if (modèle.getListUtilisateurs().size() < 1 || modèle.getListUtilisateursId().size() == modèle.getUtilisateurEnRevue()) {
             vue.toggleÉtatBouton();
+            Log.d("passe", "la");
             lancerFileEsclaveChargerUtilisateur();
         } else if(modèle.getListUtilisateursId().size() > modèle.getUtilisateurEnRevue()){
+
             vue.afficherUtilisateur(modèle.getUtilisateur());
         }
     }
@@ -158,7 +160,7 @@ public class PrésenteurRechercheMatch {
     public void changerRecherche(Boolean bool) {
         if(bool != parNiveau){
             parNiveau = bool;
-            prochainUtilsateur();
+            lancerFileEsclaveChargerUtilisateur();
         }
     }
 
@@ -175,12 +177,14 @@ public class PrésenteurRechercheMatch {
                         try {
                             Thread.sleep(0);
                             modèle.viderListeUtilisateurs();
-
-                            if (parNiveau) {
+                            if(parNiveau) {
+                                Log.d("passe", "ici");
                                 modèle.setListUtilisateursId(InteracteurAquisitionUtilisateurs.getInstance(sourceUtilisateurs).getNouvelleUtilisateurgetNouvelUtilsaiteurParNiveauIdSeulement(modèle.getUtilisateurDeApplication().getNiveau()));
                             } else {
                                 modèle.setListUtilisateursId(InteracteurAquisitionUtilisateurs.getInstance(sourceUtilisateurs).getNouvelleUtilisateurIdSeulement());
                             }
+
+
 
                             msg = handlerRéponseApi.obtainMessage( MSG_NOUVEAU_UTILISATEURS );
                         } catch (UtilisateursException e) {
@@ -209,7 +213,7 @@ public class PrésenteurRechercheMatch {
                             Thread.sleep(0);
 
                             InteracteurLikeUtilisateur.getInstance(sourceLike).likerUtilisateur(utilisateurLiker);
-
+                            modèle.setListUtilisateursId(InteracteurAquisitionUtilisateurs.getInstance(sourceUtilisateurs).getNouvelleUtilisateurIdSeulement());
                             msg = handlerRéponseApi.obtainMessage( MSG_NOUVEAU_LIKE );
                         } catch (UtilisateursException e) {
                             msg = handlerRéponseApi.obtainMessage( MSG_ERREUR, e );
@@ -258,7 +262,12 @@ public class PrésenteurRechercheMatch {
                         Message msg = null;
                         try {
                             Thread.sleep(0);
-                            modèle.setUtilisateur(InteracteurAquisitionUtilisateur.getInstance(sourceUtilisateur).getUtilisateurParId(modèle.getUtilisateurIdActuel()));
+                            Log.d("id", String.valueOf(modèle.getListUtilisateursId().get(modèle.getUtilisateurIdActuel())));
+                            if(parNiveau) {
+                                modèle.setListUtilisateursId(InteracteurAquisitionUtilisateurs.getInstance(sourceUtilisateurs).getNouvelleUtilisateurgetNouvelUtilsaiteurParNiveauIdSeulement(modèle.getUtilisateurDeApplication().getNiveau()));
+                            } else {
+                                    modèle.setUtilisateur(InteracteurAquisitionUtilisateur.getInstance(sourceUtilisateur).getUtilisateurParId(modèle.getListUtilisateursId().get(modèle.getUtilisateurIdActuel())));
+                            }
                             msg = handlerRéponseApi.obtainMessage( MSG_AFFICHER_UTILISATEUR );
                         } catch (UtilisateursException e) {
                             msg = handlerRéponseApi.obtainMessage( MSG_ERREUR, e );

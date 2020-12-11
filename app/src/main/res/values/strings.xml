@@ -58,5 +58,6 @@
     <string name="r_sultat">Résultat :</string>
     <string name="votre_adversaire_avait_jou"><![CDATA[<- Votre adversaire avait joué]]></string>
     <string name="votre_mouvement_dernier_tour"><![CDATA[Votre main le dernier tour ->]]></string>
+    <string name="Demander_Partie">Lancer Partie</string>
 
 </resources>

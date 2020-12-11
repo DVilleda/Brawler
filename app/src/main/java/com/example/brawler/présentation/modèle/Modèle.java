@@ -77,7 +77,7 @@ public class Modèle {
     }
 
     public Utilisateur getUtilisateur(){
-        return utilisateur;
+        return this.utilisateur;
     }
 
     public void setUtilisateur(Utilisateur utilisateur) {
