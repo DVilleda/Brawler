@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:background="#26a5a9b0"
+    android:layout_marginBottom="10dp">
+
+    <TextView
+        android:id="@+id/txtNomAdversaire"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_weight="1"
+        android:paddingLeft="50dp"
+        android:text="TextView" />
+
+    <Button
+        android:id="@+id/btn_acceder"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:layout_gravity="center"
+        android:layout_marginStart="32dp"
+        android:background="#26636569"
+        android:contentDescription="@string/accederPartie"
+        android:elevation="7dp"
+        android:outlineAmbientShadowColor="#000"
+        android:text="@string/accederPartie"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+</LinearLayout>

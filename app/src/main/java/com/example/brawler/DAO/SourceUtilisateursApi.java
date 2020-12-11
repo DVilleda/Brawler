@@ -1,11 +1,9 @@
 package com.example.brawler.DAO;
 
 import android.util.JsonReader;
-import android.util.Log;
 
 import com.example.brawler.domaine.entité.Niveau;
 import com.example.brawler.domaine.entité.Utilisateur;
-import com.example.brawler.domaine.intéracteur.SourceUtilisateur;
 import com.example.brawler.domaine.intéracteur.SourceUtilisateurs;
 import com.example.brawler.domaine.intéracteur.UtilisateursException;
 
@@ -17,17 +15,12 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-
-import javax.xml.transform.Source;
 
 public class SourceUtilisateursApi implements SourceUtilisateurs {
 
@@ -76,6 +69,34 @@ public class SourceUtilisateursApi implements SourceUtilisateurs {
     }
 
     @Override
+    public List<Integer> getUtilisateurIDSeulementParNiveau(Niveau niveau) throws UtilisateursException {
+        List<Integer> utilisateursRecue = null;
+
+        try {
+            url = new URL(urlUtilisateur + "/niveau/" + niveau.toString());
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+        utilisateursRecue = lancerConnexionIdSeulement();
+
+        return utilisateursRecue;
+    }
+
+    @Override
+    public List<Integer> getUtilisateurIDSeulement() throws UtilisateursException {
+        List<Integer> utilisateursRecue = null;
+        try {
+            url = new URL(urlUtilisateur + "location");
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+
+        utilisateursRecue = lancerConnexionIdSeulement();
+
+        return utilisateursRecue;
+    }
+
+    @Override
     public List<Utilisateur> getContact() throws UtilisateursException {
         List<Utilisateur> utilisateursRecue = null;
         try {
@@ -91,7 +112,6 @@ public class SourceUtilisateursApi implements SourceUtilisateurs {
 
     private List<Utilisateur> lancerConnexion() throws UtilisateursException {
         List<Utilisateur> utilisateursRecue = null;
-        Log.d("clé:", cléBearer);
 
         try{
             HttpURLConnection connexion =
@@ -99,6 +119,27 @@ public class SourceUtilisateursApi implements SourceUtilisateurs {
             connexion.setRequestProperty("Authorization", cléBearer);
             if(connexion.getResponseCode()==200){
                 utilisateursRecue = décoderJson(connexion.getInputStream());
+            }
+            else{
+                throw new SourceUtilisateursApi.SourceUtilisateursApiException( connexion.getResponseCode() );
+            }
+        }
+        catch(IOException e){
+            throw new UtilisateursException( e );
+        }
+
+        return utilisateursRecue;
+    }
+
+    private List<Integer> lancerConnexionIdSeulement() throws UtilisateursException {
+        List<Integer> utilisateursRecue = null;
+
+        try{
+            HttpURLConnection connexion =
+                    (HttpURLConnection)url.openConnection();
+            connexion.setRequestProperty("Authorization", cléBearer);
+            if(connexion.getResponseCode()==200){
+                utilisateursRecue = décoderJsonIdSeulement(connexion.getInputStream());
             }
             else{
                 throw new SourceUtilisateursApi.SourceUtilisateursApiException( connexion.getResponseCode() );
@@ -121,10 +162,10 @@ public class SourceUtilisateursApi implements SourceUtilisateurs {
 
         while(jsonReader.hasNext()) {
             String key = jsonReader.nextName();
-            Log.d("Json", key);
             if(key.equals("utilisateurs")){
                 utilisateursArrayList = commencerDécoderUtilasteur(jsonReader);
             } else if(key.equals("réponse")) {
+
             } else {
                 jsonReader.skipValue();
             }
@@ -132,6 +173,29 @@ public class SourceUtilisateursApi implements SourceUtilisateurs {
         }
         return utilisateursArrayList;
     }
+
+    private List<Integer> décoderJsonIdSeulement (InputStream utilisateursEncoder) throws IOException, UtilisateursException {
+        InputStreamReader responseBodyReader =
+                new InputStreamReader(utilisateursEncoder, "UTF-8");
+        List<Integer> utilisateursArrayList= null;
+
+        JsonReader jsonReader = new JsonReader(responseBodyReader);
+        jsonReader.beginObject();
+
+        while(jsonReader.hasNext()) {
+            String key = jsonReader.nextName();
+            if(key.equals("utilisateurs")){
+                utilisateursArrayList = commencerDécoderUtilasteurIdSeulement(jsonReader);
+            } else if(key.equals("réponse")) {
+
+            } else {
+                jsonReader.skipValue();
+            }
+
+        }
+        return utilisateursArrayList;
+    }
+
 
     private List<Utilisateur> commencerDécoderUtilasteur(JsonReader jsonReader) throws IOException, UtilisateursException {
         List<Utilisateur> utilisateurs = new ArrayList<Utilisateur>();
@@ -144,6 +208,36 @@ public class SourceUtilisateursApi implements SourceUtilisateurs {
         return utilisateurs;
     }
 
+    private List<Integer> commencerDécoderUtilasteurIdSeulement(JsonReader jsonReader) throws IOException, UtilisateursException {
+        List<Integer> utilisateurs = new ArrayList<Integer>();
+
+        jsonReader.beginArray();
+        while (jsonReader.hasNext()){
+            int id = lireUtilisateurIdSeulement(jsonReader);
+            if(id != -1)
+                utilisateurs.add(id);
+        }
+        jsonReader.endArray();
+        return utilisateurs;
+    }
+
+    private int lireUtilisateurIdSeulement(JsonReader jsonReader) throws IOException {
+        int id = -1;
+        Utilisateur utilisateur = null;
+        jsonReader.beginObject();
+        while(jsonReader.hasNext()) {
+            String key = jsonReader.nextName();
+            if(key.equals("id")){
+                id = jsonReader.nextInt();
+            } else {
+                jsonReader.skipValue();
+            }
+        }
+        jsonReader.endObject();
+        return  id;
+
+    }
+
     private Utilisateur lireUtilisateur(JsonReader jsonReader) throws IOException, UtilisateursException {
         int id = -1;
         Utilisateur utilisateur = null;
@@ -153,7 +247,7 @@ public class SourceUtilisateursApi implements SourceUtilisateurs {
             if(key.equals("id")){
                 id = jsonReader.nextInt();
                 SourceUtilisateurApi nouvelleSource = new SourceUtilisateurApi(clé);
-                utilisateur = nouvelleSource.getUtilisateurParId(id);
+                utilisateur = nouvelleSource.getUtilisateurParId(id, true);
             } else {
                 jsonReader.skipValue();
             }
@@ -285,4 +379,40 @@ public class SourceUtilisateursApi implements SourceUtilisateurs {
         }
         return serviceResponse;
     }
+
+    public boolean setLocalisation (String localisation){
+        boolean serviceResponse = false;
+        String urlParameters  = "location=" + localisation;
+        try {
+            url = new URL("http://52.3.68.3/modifierLocation");
+        } catch (MalformedURLException e) {
+            //try/catch obligatoire pour satisfaire le compilateur.
+        }
+        try {
+            HttpURLConnection connexion = (HttpURLConnection)url.openConnection();
+            connexion.setRequestMethod("POST");
+            connexion.setRequestProperty("Authorization", cléBearer);
+            connexion.setRequestProperty( "Content-Type", "application/x-www-form-urlencoded");
+            connexion.setRequestProperty( "charset", "utf-8");
+            connexion.setDoOutput(true);
+            byte[] postData       = urlParameters.getBytes( StandardCharsets.UTF_8 );
+            int postDataLength    = postData.length;
+            connexion.setRequestProperty( "Content-Length", Integer.toString( postDataLength ));
+
+            try( DataOutputStream wr = new DataOutputStream( connexion.getOutputStream())) {
+                wr.write( postData );
+            }
+
+            int responseCode = connexion.getResponseCode();
+            if (responseCode == HttpURLConnection.HTTP_OK) {
+                serviceResponse = true;
+            } else {
+                serviceResponse = false;
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return serviceResponse;
+    }
+
 }

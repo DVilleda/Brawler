@@ -1,11 +1,18 @@
 package com.example.brawler.présentation.vue.adapter;
 
+import android.content.res.ColorStateList;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.media.Image;
+import android.text.BoringLayout;
 import android.text.Layout;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -35,20 +42,29 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     }
 
     @Override
-    public void onBindViewHolder(@NonNull final RecyclerView.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull final RecyclerView.ViewHolder holder, final int position) {
         Message message = présenteur.getMessageParPos(position);
         String date = message.getTemps().getYear() + "-"+ message.getTemps().getMonth() + "-"+message.getTemps().getDay() + " " + message.getTemps().getHours() + ":" + message.getTemps().getMinutes();
-        ((TextView) holder.itemView.findViewById(R.id.txtMessage)).setText(message.getTexte());
-        ((TextView) holder.itemView.findViewById(R.id.txtNom)).setText(message.getUtilisateur().getNom());
-        ((TextView) holder.itemView.findViewById(R.id.txtTemps)).setText(date);
+        TextView tvTexte = holder.itemView.findViewById(R.id.txtMessage);
+        TextView tvNom = holder.itemView.findViewById(R.id.txtNom);
+        TextView tvTemps = holder.itemView.findViewById(R.id.txtTemps);
+        ImageView imageView = (ImageView) holder.itemView.findViewById(R.id.imgUtilisateur);
+
+        tvNom.setText(message.getUtilisateur().getNom());
+        tvTexte.setText(message.getTexte());
+        tvTemps.setText(date);
+
         if(message.getUtilisateur().getId() == présenteur.getIdUtilisateur()) {
             ((LinearLayout) holder.itemView.findViewById(R.id.layoutMessage)).setGravity(Gravity.LEFT);
-            ((TextView) holder.itemView.findViewById(R.id.txtMessage)).setBackgroundResource(R.drawable.autre_utilsateur_message);
+            tvTexte.setTextColor(Color.BLACK);
+            imageView.setVisibility(View.VISIBLE);
+            if(présenteur.getPhotoUtilisateur() != null)
+                ((ImageView) holder.itemView.findViewById(R.id.imgUtilisateur)).setImageBitmap(présenteur.getPhotoUtilisateur());
         } else {
             ((LinearLayout) holder.itemView.findViewById(R.id.layoutMessage)).setGravity(Gravity.RIGHT);
-            ((TextView) holder.itemView.findViewById(R.id.txtMessage)).setBackgroundResource(R.drawable.utilisateur_messsage);
+            tvTexte.setTextColor(Color.BLUE);
+            imageView.setVisibility(View.INVISIBLE);
         }
-
 
         ((TextView) holder.itemView.findViewById(R.id.txtMessage)).setOnClickListener(new View.OnClickListener() {
                                                                                           @Override

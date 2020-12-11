@@ -1,11 +1,9 @@
 package com.example.brawler.ui.activité;
 
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -16,13 +14,12 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.example.brawler.DAO.SourceMessageApi;
-import com.example.brawler.DAO.SourceUtilisateursApi;
+import com.example.brawler.DAO.SourceUtilisateurApi;
 import com.example.brawler.R;
 import com.example.brawler.présentation.modèle.Modèle;
 import com.example.brawler.présentation.présenteur.PrésenteurConsulterMessage;
-import com.example.brawler.présentation.présenteur.PrésenteurRechercheMatch;
 import com.example.brawler.présentation.vue.VueConsulterMessage;
-import com.example.brawler.présentation.vue.VueRechercheMatch;
+import com.example.brawler.ui.activité.Services.ServiceNotificationMessage;
 
 public class ConsulterMessageActivité extends AppCompatActivity {
     private static final String EXTRA_ID_UTILSAITEUR = "com.brawler.idUtilisateur";
@@ -34,26 +31,20 @@ public class ConsulterMessageActivité extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_consulter_message);
 
 
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         clé = sharedPref.getString("token", "");
-        Log.d("clé", clé);
         if(clé.trim().isEmpty()){
             startActivity(new Intent(this, ConnexionActivité.class));
         }
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.navigation_app);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
-        toolbar.setTitle("");
-        toolbar.setSubtitle("");
-
         modèle = new Modèle();
         VueConsulterMessage vue = new VueConsulterMessage();
         présenteur = new PrésenteurConsulterMessage(vue, modèle);
-        présenteur.setSource(new SourceMessageApi(clé));
+        présenteur.setSourceMessage(new SourceMessageApi(clé));
+        présenteur.setSourceUtilisateur(new SourceUtilisateurApi(clé));
         vue.setPrésenteur(présenteur);
 
         FragmentTransaction ft=getSupportFragmentManager().beginTransaction();
@@ -64,10 +55,32 @@ public class ConsulterMessageActivité extends AppCompatActivity {
     @Override
     public void onStart() {
         super.onStart();
+        ServiceNotificationMessage.arrêterJob(getApplicationContext());
 
         int idUtilisateurConversation = getIntent().getIntExtra(EXTRA_ID_UTILSAITEUR, -1);
         modèle.setUtilisateurEnRevue(idUtilisateurConversation);
-        présenteur.getMessages(idUtilisateurConversation);
+        présenteur.commencerVoirMessage();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        ServiceNotificationMessage.arrêterJob(getApplicationContext());
+        présenteur.commencerRafraichir();
+    }
+
+    @Override
+    protected void onPause(){
+        super.onPause();
+        ServiceNotificationMessage.démarerJob(getApplicationContext());
+        présenteur.arrêterRafraichir();
+    }
+
+    @Override
+    protected void onStop(){
+        super.onStop();
+        ServiceNotificationMessage.démarerJob(getApplicationContext());
+        présenteur.arrêterRafraichir();
     }
 
     @Override
@@ -91,6 +104,10 @@ public class ConsulterMessageActivité extends AppCompatActivity {
             case R.id.menu_contact:
                 Intent contact = new Intent(this,CommunicationUtilisateurs.class);
                 startActivity(contact);
+                break;
+            case R.id.menu_partie:
+                Intent demandePartie = new Intent(this,ConsulterDemandePartieActivité.class);
+                startActivity(demandePartie);
                 break;
         }
         return super.onOptionsItemSelected(item);

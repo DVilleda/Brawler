@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -7,10 +8,50 @@
     android:layout_weight="2"
     android:orientation="vertical">
 
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="204dp"
+        android:layout_weight="1">
+
+        <ImageButton
+            android:id="@+id/btnBack"
+            android:layout_width="43dp"
+            android:layout_height="86dp"
+            android:layout_gravity="left"
+            android:layout_weight="1"
+            android:background="@null"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="?attr/homeAsUpIndicator" />
+
+        <TextView
+            android:id="@+id/txtNomConversation"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="188dp"
+            android:textSize="24sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.493" />
+
+        <ImageView
+            android:id="@+id/imgConversation"
+            android:layout_width="83dp"
+            android:layout_height="39dp"
+            android:layout_weight="1"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/txtNomConversation"
+            app:layout_constraintStart_toEndOf="@+id/btnBack"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_baseline_people_24" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvMessages"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="633dp"
         android:layout_weight="1"
         android:scrollbars="vertical"
         app:reverseLayout="true"
@@ -18,8 +59,10 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:layout_height="80dp"
+        android:orientation="horizontal"
+
+        android:padding="0dp">
 
         <EditText
             android:id="@+id/txtMessage"
@@ -30,14 +73,22 @@
             android:gravity="start|top"
             android:hint="@string/entererMessage"
             android:inputType="textMultiLine"
+            android:maxLength="65"
             android:maxLines="3"
-            android:maxLength="65"/>
+            android:layout_marginLeft="15dp"
+            android:layout_marginBottom="10dp"
+            android:paddingLeft="5dp"
+            android:paddingTop="10dp"
+            android:background="@drawable/edit_text_envoyer_message"/>
 
-        <Button
+        <ImageButton
             android:id="@+id/btnEnvoyerMessage"
-            android:layout_width="56dp"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:text="@string/envoyerMessage" />
+            android:layout_gravity="center"
+            android:layout_weight="2"
+            android:background="@null"
+            app:srcCompat="@drawable/send_24px"/>
+
     </LinearLayout>
 </LinearLayout>

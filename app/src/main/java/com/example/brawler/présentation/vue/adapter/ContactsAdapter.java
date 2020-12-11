@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.brawler.R;
 import com.example.brawler.domaine.entité.Utilisateur;
 import com.example.brawler.présentation.présenteur.PrésenteurContacts;
+import com.example.brawler.présentation.présenteur.PrésenteurDemandeDePartie;
 
 import java.util.List;
 

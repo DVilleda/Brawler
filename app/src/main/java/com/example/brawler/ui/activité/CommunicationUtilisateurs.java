@@ -64,11 +64,19 @@ public class CommunicationUtilisateurs extends AppCompatActivity {
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        présenteurContacts.chargerListeContacts();
+    }
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.toolbar_navigation_menu,menu);
         return super.onCreateOptionsMenu(menu);
     }
+
+
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {

@@ -23,15 +23,14 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
-import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
-import java.util.UUID;
 
 public class SourceProfilApi implements SourceUtilisateur{
+
+
 
     public class SourceProfilApiException extends UtilisateursException{
         public SourceProfilApiException (int numErreur){super("Erreur num: "+numErreur);}
@@ -71,6 +70,11 @@ public class SourceProfilApi implements SourceUtilisateur{
         }
 
         return utilisateur;
+    }
+
+    @Override
+    public Utilisateur getUtilisateurParId(int id, boolean bool) throws UtilisateursException {
+        return null;
     }
 
     @Override
@@ -129,6 +133,11 @@ public class SourceProfilApi implements SourceUtilisateur{
         catch(IOException e) {
             throw new UtilisateursException(e);
         }
+    }
+
+    @Override
+    public Utilisateur getUtilisateurActuel() throws UtilisateursException {
+        return null;
     }
 
     private Utilisateur décoderUtilisateur (InputStream utilisateurEncoder) throws IOException {

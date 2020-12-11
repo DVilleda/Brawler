@@ -77,6 +77,16 @@ public class SourceUtilisateurFictif implements SourceUtilisateurs {
     }
 
     @Override
+    public List<Integer> getUtilisateurIDSeulementParNiveau(Niveau niveau) throws UtilisateursException {
+        return null;
+    }
+
+    @Override
+    public List<Integer> getUtilisateurIDSeulement() throws UtilisateursException {
+        return null;
+    }
+
+    @Override
     public List<Utilisateur> getContact() throws UtilisateursException {
         return null;
     }

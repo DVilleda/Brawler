@@ -1,6 +1,8 @@
 package com.example.brawler.présentation.vue;
 
 import android.app.Activity;
+import android.app.NotificationManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.SpannableString;
 import android.text.Spanned;
@@ -94,4 +96,5 @@ public class VueConnexion extends Fragment {
             getActivity().finish();
         }
     }
+
 }

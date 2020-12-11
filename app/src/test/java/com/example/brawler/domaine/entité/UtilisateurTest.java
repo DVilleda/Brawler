@@ -10,7 +10,7 @@ public class UtilisateurTest {
     @Test
     public void testAccesseurNom() {
         Utilisateur unUtilisateur;
-        unUtilisateur = new Utilisateur("Jaques", Niveau.DÉBUTANT, "Montréal");
+        unUtilisateur = new Utilisateur(0, "Jaques", Niveau.DÉBUTANT, "Montréal");
 
         assertEquals("Jaques", unUtilisateur.getNom());
     }
@@ -18,7 +18,7 @@ public class UtilisateurTest {
     @Test
     public void testModificateurNom() {
         Utilisateur unUtilisateur;
-        unUtilisateur = new Utilisateur("Jaques", Niveau.DÉBUTANT, "Montréal");
+        unUtilisateur = new Utilisateur(0, "Jaques", Niveau.DÉBUTANT, "Montréal");
         unUtilisateur.setNom("Robert");
 
         assertEquals("Robert", unUtilisateur.getNom());
@@ -27,7 +27,7 @@ public class UtilisateurTest {
     @Test
     public void testAccesseurNiveau() {
         Utilisateur unUtilisateur;
-        unUtilisateur = new Utilisateur("Jaques", Niveau.DÉBUTANT, "Montréal");
+        unUtilisateur = new Utilisateur(0, "Jaques", Niveau.DÉBUTANT, "Montréal");
 
         assertEquals(Niveau.DÉBUTANT, unUtilisateur.getNiveau());
     }
@@ -35,7 +35,7 @@ public class UtilisateurTest {
     @Test
     public void setNiveau() {
         Utilisateur unUtilisateur;
-        unUtilisateur = new Utilisateur("Jaques", Niveau.DÉBUTANT, "Montréal");
+        unUtilisateur = new Utilisateur(0, "Jaques", Niveau.DÉBUTANT, "Montréal");
         unUtilisateur.setNiveau(Niveau.EXPERT);
 
         assertEquals(Niveau.EXPERT, unUtilisateur.getNiveau());
@@ -44,7 +44,7 @@ public class UtilisateurTest {
     @Test
     public void getLocation() {
         Utilisateur unUtilisateur;
-        unUtilisateur = new Utilisateur("Jaques", Niveau.DÉBUTANT, "Montréal");
+        unUtilisateur = new Utilisateur(0, "Jaques", Niveau.DÉBUTANT, "Montréal");
 
         assertEquals("Montréal", unUtilisateur.getLocation());
     }
@@ -52,7 +52,7 @@ public class UtilisateurTest {
     @Test
     public void setLocation() {
         Utilisateur unUtilisateur;
-        unUtilisateur = new Utilisateur("Jaques", Niveau.DÉBUTANT, "Montréal");
+        unUtilisateur = new Utilisateur(0, "Jaques", Niveau.DÉBUTANT, "Montréal");
         unUtilisateur.setLocation("Québec");
 
         assertEquals("Québec", unUtilisateur.getLocation());

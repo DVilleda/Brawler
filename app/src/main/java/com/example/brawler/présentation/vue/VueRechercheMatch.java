@@ -1,5 +1,7 @@
 package com.example.brawler.présentation.vue;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,6 +16,7 @@ import androidx.fragment.app.Fragment;
 import com.example.brawler.R;
 import com.example.brawler.domaine.entité.Utilisateur;
 import com.example.brawler.présentation.présenteur.PrésenteurRechercheMatch;
+import com.example.brawler.ui.activité.Services.ServiceNotificationMessage;
 
 public class VueRechercheMatch extends Fragment {
 
@@ -48,6 +51,8 @@ public class VueRechercheMatch extends Fragment {
         btnParNiveau = vue.findViewById(R.id.btn_ParNiveau);
         imgUtilisateur = vue.findViewById(R.id.img_utilisateur);
 
+        ServiceNotificationMessage.démarerJob(getContext());
+
         btnAccepter.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v){
                 présenteur.jugerUtilisateur(true);
@@ -79,9 +84,14 @@ public class VueRechercheMatch extends Fragment {
         txtLocation.setText(utilisateur.getLocation());
         txtNom.setText(utilisateur.getNom());
         txtVictoire.setText(String.valueOf(utilisateur.getStatistique().getNombreVictoire()));
+        if(utilisateur.getPhoto() != null) {
+            Bitmap bitmap = BitmapFactory.decodeByteArray(utilisateur.getPhoto(), 0, utilisateur.getPhoto().length);
+            imgUtilisateur.setImageBitmap(bitmap);
+        }
     }
 
     public void  toggleÉtatBouton() {
+
         btnMatchClickable = !btnMatchClickable;
         btnAccepter.setClickable(btnMatchClickable);
         btnPasser.setClickable(btnMatchClickable);

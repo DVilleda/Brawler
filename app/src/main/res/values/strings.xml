@@ -33,6 +33,7 @@
     <string name="aller_matcher">Aller Matcher</string>
     <string name="liste_de_contacts">"Liste de Contacts : "</string>
     <string name="createCompte">Pas de compte? Creez-en un</string>
+    <string name="reply_name">Répondre</string>
 
     <!--Creation de compte Page-->
     <string name="emailHint">Entrez votre email</string>
@@ -42,6 +43,16 @@
 
     <!--Page Recherce de Match-->
     <string name="aboutPhoto">Photo de profil de l\'utilisateur</string>
+    <string name="channel_name">brawlerChannel</string>
+    <string name="nom_utilisateur_notification_reply">Vous</string>
     <string name="btn_deconnecter">Déconnecter</string>
+    <string name="accepter">Accepter</string>
+    <string name="refuser">Refuser</string>
+    <string name="allet_partie">Aller Partie</string>
+    <string name="vosDemandeDePArtie">Vos demandes de partie:</string>
+    <string name="demandePartie">Demande de partie</string>
+    <string name="partieEnCour">Parties en cour</string>
+    <string name="accederPartie">Acceder partie</string>
+    <string name="vosPartieEnCour">Vos parties en cour:</string>
 
 </resources>

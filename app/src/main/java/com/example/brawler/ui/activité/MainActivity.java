@@ -1,9 +1,15 @@
 package com.example.brawler.ui.activité;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.FragmentTransaction;
+
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -82,6 +88,10 @@ public class MainActivity extends AppCompatActivity {
             case R.id.menu_contact:
                 Intent contact = new Intent(this,CommunicationUtilisateurs.class);
                 startActivity(contact);
+                break;
+            case R.id.menu_partie:
+                Intent demandePartie = new Intent(this,ConsulterDemandePartieActivité.class);
+                startActivity(demandePartie);
                 break;
         }
         return super.onOptionsItemSelected(item);
