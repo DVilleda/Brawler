@@ -192,6 +192,7 @@ public class PrésenteurConsulterMessage {
                             doitRafrahcir = false;
                             envoyerVueDébutMessage = true;
                             modèle.getMessages().add(0, InteracteurMessage.getInstance(sourceMessage).envoyerMessage(modèle.getUtilisateurEnRevue(), texte));
+                            nbMessageActuel +=1;
                             msg = handlerRéponse.obtainMessage( MSG_NOUVEAU_MESSAGE );
                         } catch (InterruptedException e) {
                             msg = handlerRéponse.obtainMessage( MSG_ANNULER );
