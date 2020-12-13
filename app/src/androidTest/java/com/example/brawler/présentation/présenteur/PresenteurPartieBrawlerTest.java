@@ -39,8 +39,14 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+@RunWith(AndroidJUnit4.class)
 public class PresenteurPartieBrawlerTest {
 
+    @Test
+    /**
+     * Test pour vérifier que le présenteur peut obtenir la partie de la source de données
+     * en utilisant le ID de la partie
+     */
     public void testChargerPartie(){
         final VuePartieBrawler mockVue = mock(VuePartieBrawler.class);
         final Modèle mockModele = mock(Modèle.class);
@@ -72,7 +78,11 @@ public class PresenteurPartieBrawlerTest {
         });
     }
 
-
+    @Test
+    /**
+     * Test pour charger le mouvement le plus récent qui est reçu de la source de données,
+     * chaque fois qu'un nouvelle item s'ajoute à la liste de mouvements
+     */
     public void testGetDernierMoveAdv(){
         final VuePartieBrawler mockVue = mock(VuePartieBrawler.class);
         final Modèle mockModele = mock(Modèle.class);
@@ -104,7 +114,10 @@ public class PresenteurPartieBrawlerTest {
         });
     }
 
-
+    @Test
+    /**
+     * Test pour vérifier que les mouvements sont envoyées à la source de données
+     */
     public void testEnvoyerMove(){
         final VuePartieBrawler mockVue = mock(VuePartieBrawler.class);
         final Modèle mockModele = mock(Modèle.class);

@@ -34,9 +34,14 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-
+@RunWith(AndroidJUnit4.class)
 public class PrésenteurContactsTest {
 
+    @Test
+    /**
+     * Test pour vérifier que le présenteur peut obtenir une liste d'utilisateur de la source de
+     * données
+     */
     public void testChargerListeContacts(){
         final ConsulterMessageActivité mockActivity = mock(ConsulterMessageActivité.class);
         final VueContacts mockVue = mock(VueContacts.class);
@@ -70,6 +75,10 @@ public class PrésenteurContactsTest {
     }
 
     @UiThreadTest
+    /**
+     * Test pour vérifier que le présenteur peut initer le chargement de conversation et enlever
+     * la vue actuelle.
+     */
     public void testChargerConversationUtilisateur(){
         final ConsulterMessageActivité mockActivity = mock(ConsulterMessageActivité.class);
         final Context context = mock(Context.class);

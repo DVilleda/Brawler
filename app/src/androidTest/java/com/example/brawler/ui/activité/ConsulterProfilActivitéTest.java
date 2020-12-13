@@ -2,15 +2,10 @@ package com.example.brawler.ui.activité;
 
 
 import android.app.Instrumentation;
-import android.content.Context;
-import android.content.Intent;
 
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Lifecycle;
 import androidx.test.core.app.ActivityScenario;
-import androidx.test.espresso.intent.Intents;
-import androidx.test.espresso.intent.rule.IntentsTestRule;
-import androidx.test.espresso.matcher.ViewMatchers;
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.filters.LargeTest;
@@ -28,7 +23,6 @@ import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.assertion.ViewAssertions.doesNotExist;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
-import static androidx.test.espresso.intent.Intents.intended;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static org.junit.Assert.assertNotNull;
@@ -104,7 +98,7 @@ public class ConsulterProfilActivitéTest {
         onView(withId(R.id.expandable_view)).check(matches(isDisplayed()));
     }
     
-    //TODO enlever comments
+    //TODO Enlever le test d'en commentaire seulment pour tester le log off car ca elle peut pas se reconnecter automatiquement!
     /**
     @Test
     public void testClickBtnDeconnecter(){

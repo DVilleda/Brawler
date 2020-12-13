@@ -25,7 +25,7 @@ public class InteracteurChargementProfil {
      * Constructeur de la classe
      * @param source
      */
-    private InteracteurChargementProfil(SourceUtilisateur source) {
+    protected InteracteurChargementProfil(SourceUtilisateur source) {
         this._sourceUtilisateur = source;
     }
 

@@ -2,7 +2,6 @@ package com.example.brawler.DAO;
 
 import android.util.JsonReader;
 import android.util.JsonToken;
-import android.util.Log;
 import android.util.Pair;
 
 import com.example.brawler.domaine.entité.Mouvement;
@@ -19,7 +18,6 @@ import java.io.OutputStreamWriter;
 import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
-import java.net.ProtocolException;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
@@ -103,11 +101,6 @@ public class SourcePartieJoueurApi implements SourceDeroulementPartie {
         } catch (IOException e) {
             throw new PartieException(e);
         }
-    }
-
-    @Override
-    public ArrayList RecevoirMouvements(int idPartie) {
-        return null;
     }
 
     private Partie decoderPartie (InputStream partieEncoder) throws IOException{

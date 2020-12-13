@@ -26,9 +26,13 @@ import static org.mockito.Mockito.when;
 
 
 
-
+@RunWith(AndroidJUnit4.class)
 public class PrésenteurProfilTest {
 
+    @Test
+    /**
+     * Test pour vérifier que le présenteur peut obtenir un utilisateur de la source de données
+     */
     public void testchargerUtilisateur(){
         final VueProfil mockVue = mock(VueProfil.class);
         final Modèle mockModele = mock(Modèle.class);
@@ -63,7 +67,10 @@ public class PrésenteurProfilTest {
         });
     }
 
-
+    @Test
+    /**
+     * Test pour vérifier que le présenteur peut modifier un utilisateur dans la source de données
+     */
     public void testModifierUtilisateur(){
         final VueProfil mockVue = mock(VueProfil.class);
         final Modèle mockModele = mock(Modèle.class);

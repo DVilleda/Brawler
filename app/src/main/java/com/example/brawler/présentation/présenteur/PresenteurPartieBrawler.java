@@ -145,10 +145,6 @@ public class PresenteurPartieBrawler {
                 scheduler.scheduleAtFixedRate(rafraichirPartie,5, 5L, TimeUnit.SECONDS);
     }
 
-    public void chargerUtilisateur(){
-    }
-
-
     /**
      * Set la source de parties
      * @param sourceDeroulementPartie Source de la partie voulu

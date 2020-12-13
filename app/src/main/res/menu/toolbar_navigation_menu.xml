@@ -5,18 +5,18 @@
     android:id="@+id/menu_profil"
     android:title="@string/aller_profil"
     android:icon="@drawable/ic_aller_profil"
-    app:showAsAction="ifRoom"
+    app:showAsAction="always"
     />
     <item
         android:id="@+id/menu_contact"
         android:title="@string/aller_discuter"
         android:icon="@drawable/ic_baseline_people_24"
-        app:showAsAction="ifRoom"
+        app:showAsAction="always"
         />
     <item
         android:id="@+id/menu_match"
         android:title="@string/aller_matcher"
         android:icon="@drawable/ic_baseline_tag_faces_24"
-        app:showAsAction="ifRoom"
+        app:showAsAction="always"
         />
 </menu>

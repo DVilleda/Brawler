@@ -4,6 +4,9 @@ import com.example.brawler.domaine.entité.Partie;
 
 import java.util.ArrayList;
 
+/**
+ * Cette classe à pour but d'obtenir les mouvement d'une partie
+ */
 public class InteracteurJouerPartie {
     private SourceDeroulementPartie sourceDeroulementPartie;
     private Partie _partie;
@@ -27,7 +30,7 @@ public class InteracteurJouerPartie {
      * Met la source à utiliser
      * @param _source
      */
-    private InteracteurJouerPartie(SourceDeroulementPartie _source){
+    protected InteracteurJouerPartie(SourceDeroulementPartie _source){
         this.sourceDeroulementPartie = _source;
     }
 
@@ -63,10 +66,6 @@ public class InteracteurJouerPartie {
      */
     public boolean getBoolTourChange(){
         return this.tourChange;
-    }
-    //Non nécessaire dans l'application
-    public ArrayList getMouvementsPartie(int id){
-        return sourceDeroulementPartie.RecevoirMouvements(id);
     }
 
     /**
