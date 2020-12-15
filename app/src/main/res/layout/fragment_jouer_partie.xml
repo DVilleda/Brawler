@@ -26,28 +26,6 @@
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="?attr/homeAsUpIndicator" />
 
-        <TextView
-            android:id="@+id/txtNomAdversaire"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="188dp"
-            android:textSize="24sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.493" />
-
-        <ImageView
-            android:id="@+id/imgAdversaire"
-            android:layout_width="83dp"
-            android:layout_height="39dp"
-            android:layout_weight="1"
-            android:background="@drawable/bordure_contact"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/txtNomAdversaire"
-            app:layout_constraintStart_toEndOf="@+id/btnRetourner"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ic_baseline_people_24" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -172,13 +150,32 @@
 
         android:padding="0dp">
 
-        <Button
-            android:id="@+id/choisirArme"
-            android:layout_width="236dp"
-            android:layout_height="match_parent"
-            android:layout_weight="2"
+        <ImageButton
+            android:id="@+id/btn_roche"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:adjustViewBounds="true"
             android:background="@drawable/bordure_contact"
-            android:text="@string/boutton_choisir_arme" />
+            android:scaleType="centerInside"
+            app:srcCompat="@drawable/rock" />
+
+        <ImageButton
+            android:id="@+id/btn_papier"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:adjustViewBounds="true"
+            android:background="@drawable/bordure_contact"
+            android:scaleType="centerInside"
+            app:srcCompat="@drawable/paper" />
+
+        <ImageButton
+            android:id="@+id/btn_ciseaux"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:adjustViewBounds="true"
+            android:background="@drawable/bordure_contact"
+            android:scaleType="centerInside"
+            app:srcCompat="@drawable/scissors" />
 
         <Button
             android:id="@+id/btnJouer"

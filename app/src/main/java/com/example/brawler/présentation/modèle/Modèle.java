@@ -22,9 +22,7 @@ public class Modèle {
     private int nombreMessageTotale;
     private Bitmap bitmapPhoto;
     private List<Partie> parties;
-    private Bitmap bitmap;
     private Partie partieChoisi;
-    private List<Mouvement> mouvementList;
 
     public Modèle() {
         listeUtilisateurs = new ArrayList<>();
@@ -71,7 +69,7 @@ public class Modèle {
 
     public void viderListeUtilisateurs() {
         if (listUtilisateursId.size() != 0) {
-            listUtilisateursId.removeAll(listeUtilisateurs);
+            listUtilisateursId.clear();
             utilisateurEnRevue = 0;
         }
     }
@@ -130,7 +128,6 @@ public class Modèle {
         this.messages = messages;
     }
 
-
     //Partie
     public void setParties(List<Partie> parties){
         this.parties = parties;
@@ -145,14 +142,6 @@ public class Modèle {
 
     public void setPartieChoisi(Partie partieChoisi) {
         this.partieChoisi = partieChoisi;
-    }
-
-    public List<Mouvement> getMouvementList() {
-        return mouvementList;
-    }
-
-    public void setMouvementList(List<Mouvement> mouvementList) {
-        this.mouvementList = mouvementList;
     }
 
     public void ajouterDebutListe(List<Message> messagesparUtilisateursEntreDeux) {

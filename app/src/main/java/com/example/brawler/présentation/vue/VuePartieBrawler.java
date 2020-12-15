@@ -22,7 +22,9 @@ import com.example.brawler.présentation.présenteur.PresenteurPartieBrawler;
 
 public class VuePartieBrawler extends Fragment {
     private PresenteurPartieBrawler _presenteur;
-    private Button btnChoisirMove;
+    private ImageButton btnRoche;
+    private ImageButton btnPapier;
+    private ImageButton btnCiseaux;
     private Button btnEnvoyerMove;
     private ImageButton btnRetourner;
     private ImageView imgMoveSoi;
@@ -46,26 +48,38 @@ public class VuePartieBrawler extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View vue=inflater.inflate(R.layout.fragment_jouer_partie,container,false);
-        btnChoisirMove = vue.findViewById(R.id.choisirArme);
+        btnRoche = vue.findViewById(R.id.btn_roche);
+        btnPapier = vue.findViewById(R.id.btn_papier);
+        btnCiseaux = vue.findViewById(R.id.btn_ciseaux);
         btnEnvoyerMove = vue.findViewById(R.id.btnJouer);
         btnRetourner = vue.findViewById(R.id.btnRetourner);
         imgMoveSoi = vue.findViewById(R.id.mouvement_soi);
         imgDernierMoveADV = vue.findViewById(R.id.mouvement_adv);
         imgDernierMoveSoi =vue.findViewById(R.id.move_soi_dernier);
-        imgPFPADV = vue.findViewById(R.id.imgAdversaire);
-        nomAdversaire = vue.findViewById(R.id.txtNomAdversaire);
         txtResultat = vue.findViewById(R.id.txt_result);
         txtRondes = vue.findViewById(R.id.num_tour);
         layoutResultats = vue.findViewById(R.id.resultat_last_round);
         txtResultat.setVisibility(View.INVISIBLE);
 
         /**
-         * Assigne le menu au boutton
+         * Assigner l'image à chaque boutton des mains
          */
-        btnChoisirMove.setOnClickListener(new View.OnClickListener() {
+        btnRoche.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                registerForContextMenu(btnChoisirMove);
+                changerIMGMoveSoi(1);
+            }
+        });
+        btnPapier.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                changerIMGMoveSoi(2);
+            }
+        });
+        btnCiseaux.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                changerIMGMoveSoi(3);
             }
         });
 
@@ -93,26 +107,6 @@ public class VuePartieBrawler extends Fragment {
     public void onCreateContextMenu(@NonNull ContextMenu menu, @NonNull View v, @Nullable ContextMenu.ContextMenuInfo menuInfo) {
         super.onCreateContextMenu(menu, v, menuInfo);
         getActivity().getMenuInflater().inflate(R.menu.option_jouer_main_menu,menu);
-    }
-
-    @Override
-    public boolean onContextItemSelected(@NonNull MenuItem item) {
-        /**
-         * Switch case pour changer l'image selon l'id de l'option qu'on va choisir
-         */
-        switch (item.getItemId()){
-            case R.id.JouerRoche:
-                _presenteur.ChangerIMGMouvement(1);
-                return true;
-            case R.id.JouerPapier:
-                _presenteur.ChangerIMGMouvement(2);
-                return true;
-            case R.id.JouerCiceaux:
-                _presenteur.ChangerIMGMouvement(3);
-                return true;
-            default:
-                return super.onContextItemSelected(item);
-        }
     }
 
     /**
@@ -220,7 +214,7 @@ public class VuePartieBrawler extends Fragment {
     }
 
     /**
-     * Changer le message du résultat
+     * Changer le message du résultat et change la visibilité des layouts
      * @param msg le message du résultat
      */
     public void changerMSGResultat(String msg){

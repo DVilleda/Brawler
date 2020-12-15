@@ -2,6 +2,7 @@ package com.example.brawler.présentation.modèle;
 
 import com.example.brawler.domaine.entité.Message;
 import com.example.brawler.domaine.entité.Niveau;
+import com.example.brawler.domaine.entité.Partie;
 import com.example.brawler.domaine.entité.Utilisateur;
 
 import org.junit.Test;
@@ -13,6 +14,9 @@ import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 
+/**
+ * Classe de test pour les getter et setter de la classe Modèle
+ */
 public class ModèleTest {
 
     @Test
@@ -90,11 +94,15 @@ public class ModèleTest {
         Utilisateur mock2 = new Utilisateur(2,"John",Niveau.LÉGENDAIRE,"New York");
         List<Utilisateur> mock = Arrays.asList(mock1,mock2);
         modèle.setListeUtilisateurs(mock);
-        List<Utilisateur> attendu = Arrays.asList(new Utilisateur(1,"Danny", Niveau.EXPERT,"Toronto"),new Utilisateur(2,"John",Niveau.LÉGENDAIRE,"New York"));
+        List<Integer> attendu = Arrays.asList(1,2);
+        List<Integer> utilisateursID = new ArrayList<>();
 
         for(int i=0;i<modèle.getListUtilisateurs().size();i++) {
-            assertEquals(attendu.get(i).getId(), modèle.getUtilisateurActuel().getId());
-            assertEquals(attendu.get(i).getEmail(), modèle.getUtilisateurActuel().getEmail());
+            utilisateursID.add(modèle.getListUtilisateurs().get(i).getId());
+        }
+        modèle.setListUtilisateursId(utilisateursID);
+        for(int i=0;i<modèle.getListUtilisateursId().size();i++){
+            assertEquals(attendu.get(i),modèle.getListUtilisateursId().get(i));
             modèle.prochainUtilisateur();
         }
     }
@@ -132,14 +140,19 @@ public class ModèleTest {
         Modèle modèle = new Modèle();
         Utilisateur mock1 = new Utilisateur(1,"Danny", Niveau.EXPERT,"Toronto");
         Utilisateur mock2 = new Utilisateur(2,"John",Niveau.LÉGENDAIRE,"New York");
-        List<Utilisateur> mock = new ArrayList<>();
-        mock.add(mock1);
-        mock.add(mock2);
+        List<Utilisateur> mock = Arrays.asList(mock1,mock2);
         modèle.setListeUtilisateurs(mock);
+        List<Integer> attendu = Arrays.asList(1,2);
+        List<Integer> utilisateursID = new ArrayList<>();
 
-        assertEquals(2,modèle.getListUtilisateurs().size());
+        for(int i=0;i<modèle.getListUtilisateurs().size();i++) {
+            utilisateursID.add(modèle.getListUtilisateurs().get(i).getId());
+        }
+        modèle.setListUtilisateursId(utilisateursID);
+
+        assertEquals(attendu.size(),modèle.getListUtilisateursId().size());
         modèle.viderListeUtilisateurs();
-        assertEquals(0,modèle.getListUtilisateurs().size());
+        assertEquals(0,modèle.getListUtilisateursId().size());
 
     }
 
@@ -219,5 +232,46 @@ public class ModèleTest {
 
         modèle.ajouterListeMessage(messageList);
         assertEquals(4,modèle.getMessages().size());
+    }
+
+    @Test
+    public void testGetPartie(){
+        Modèle modèle = new Modèle();
+        Partie mock1 = new Partie(1,true,2,false,null);
+        modèle.setPartieChoisi(mock1);
+
+        assertEquals(2,modèle.getPartieChoisi().getIdAdv());
+        assertEquals(1,modèle.getPartieChoisi().getIdPartie());
+    }
+
+    @Test
+    public void testSetPartie(){
+        Modèle modèle = new Modèle();
+        Partie mock1 = new Partie(1,true,2,false,null);
+        modèle.setPartieChoisi(mock1);
+
+        assertEquals(2,modèle.getPartieChoisi().getIdAdv());
+        assertEquals(1,modèle.getPartieChoisi().getIdPartie());
+    }
+
+    @Test
+    public void testSetUtilisateurDeApplication(){
+        Modèle modèle = new Modèle();
+        Utilisateur mockUser1 = new Utilisateur(1,"Danny", Niveau.EXPERT,"Toronto");
+
+        modèle.setUtilisateurDeApplication(mockUser1);
+        assertEquals(1,modèle.getUtilisateurDeApplication().getId());
+        assertEquals("Danny",modèle.getUtilisateurDeApplication().getNom());
+    }
+
+    @Test
+    public void getUtilisateurDeApplication(){
+        Modèle modèle = new Modèle();
+        Utilisateur mockUser1 = new Utilisateur(1,"Danny", Niveau.EXPERT,"Toronto");
+        Utilisateur attendu = new Utilisateur(1,"Danny",Niveau.EXPERT,"Toronto");
+
+        modèle.setUtilisateurDeApplication(mockUser1);
+        assertEquals(attendu.getId(),modèle.getUtilisateurDeApplication().getId());
+        assertEquals(attendu.getNom(),modèle.getUtilisateurDeApplication().getNom());
     }
 }

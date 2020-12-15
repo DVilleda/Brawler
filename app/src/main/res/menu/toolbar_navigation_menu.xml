@@ -19,10 +19,4 @@
         android:icon="@drawable/ic_baseline_tag_faces_24"
         app:showAsAction="always"
         />
-    <item
-        android:id="@+id/menu_partie"
-        android:title="@string/allet_partie"
-        android:icon="@drawable/ic_fist"
-        app:showAsAction="always"
-        />
 </menu>

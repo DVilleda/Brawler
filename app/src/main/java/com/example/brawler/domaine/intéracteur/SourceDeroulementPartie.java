@@ -1,5 +1,6 @@
 package com.example.brawler.domaine.intéracteur;
 
+import com.example.brawler.domaine.entité.Mouvement;
 import com.example.brawler.domaine.entité.Partie;
 
 import java.util.ArrayList;
@@ -10,5 +11,4 @@ public interface SourceDeroulementPartie {
 
     void EnvoyerMouvement(int idPartie,int idAdversaire, String mouvement) throws PartieException;
 
-    ArrayList RecevoirMouvements(int idPartie);
 }
