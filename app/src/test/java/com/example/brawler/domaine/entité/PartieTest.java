@@ -31,21 +31,12 @@ public class PartieTest {
     }
 
     @Test
-    public void tour() {
-        Partie partie = new Partie();
-        final List<Tour> tour= new ArrayList<Tour>();
-        partie.setTour(tour);
-
-        assertEquals(tour, partie.getTour());
-    }
-
-    @Test
     public void Id() {
         Partie partie = new Partie();
         final int i = 1;
-        partie.setId(i);
+        partie.setIdPartie(i);
 
-        assertEquals(partie.getId(), i);
+        assertEquals(partie.getIdPartie(), i);
     }
 
     @Test
